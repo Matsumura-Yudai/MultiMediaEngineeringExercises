@@ -1,11 +1,9 @@
 import os
-from datetime import datetime
 
 # Commit comment
-now = datetime.now()
-comment = "update : " + datetime.now().strftime("%Y/%m/%d-%H:%M:%S")
+print("===== Input The Comment About Pushing =====")
+comment = input()
 
 # Push
-os.system('git add .')
-os.system('git commit -m "{}"'.format(comment))
-os.system('git push https://github.com/Matsumura-Yudai/graduation_work.git main')
+os.system('git commit -a -m "{}"'.format(comment))
+os.system('git push origin master')
