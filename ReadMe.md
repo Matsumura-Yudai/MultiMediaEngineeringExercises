@@ -144,6 +144,8 @@ $ conda activate tengan_env
 
 ## プログラムの実行
 [TenGAN ソースコード]に付属のmain.pyを実行してみた。
+
+### ZINC
 実行方法は、TenGANディレクトリに移動し、仮想環境が起動した状態で以下のコマンドを実行するだけである。
 ```
 $ python main.py
@@ -306,9 +308,14 @@ File names for drawing distributions: ['res/generated_smiles_ZINC.csv']
 Distributions are not generated.
 ********************************************************************************
 ```
-データセットQM9.csvを用いて実行したいと思ったが、失敗した。
+
+### QM9
+データセットQM9.csvを用いて実行した。
+
+#### 事前学習
+まずは、生成器と識別機の事前学習を行った。
 ```
-(tengan_env) you2002724@UD0724:~/workspace/MultiMediaEngineeringExercises/TenGAN$ python main.py --gen_pretrain --dataset_name QM9 --max_len 60
+(tengan_env) you2002724@UD0724:~/workspace/MultiMediaEngineeringExercises/TenGAN$ python main.py --gen_pretrain --dis_pretrain --dataset_name QM9 --max_len 60 --generated_num 5000 --gen_train_size 4800 --roll_num 16
 
 
 
@@ -321,9 +328,9 @@ Parameter Information:
 ==================================================================
 POSITIVE_FILE            :   dataset/QM9.csv
 NEGATIVE_FILE            :   res/generated_smiles_QM9.csv
-G_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_8//batch_64/druglikeness/g_pretrained.pkl
-D_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_8//batch_64/druglikeness/d_pretrained.pkl
-PROPERTY_FILE            :   res/save_models/QM9/TenGAN_0.5/rollout_8//batch_64/druglikeness/trained_results.csv
+G_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/g_pretrained.pkl
+D_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/d_pretrained.pkl
+PROPERTY_FILE            :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/trained_results.csv
 BATCH_SIZE               :   64
 MAX_LEN                  :   60
 VOCAB_SIZE               :   40
@@ -332,8 +339,126 @@ GPUS                     :   1
 
 
 GEN_PRETRAIN             :   True
-GENERATED_NUM            :   10000
-GEN_TRAIN_SIZE           :   9600
+GENERATED_NUM            :   5000
+GEN_TRAIN_SIZE           :   4800
+GEN_NUM_ENCODER_LAYERS   :   4
+GEN_DIM_FEEDFORWARD      :   1024
+GEN_D_MODEL              :   128
+GEN_NUM_HEADS            :   4
+GEN_MAX_LR               :   0.0008
+GEN_DROPOUT              :   0.1
+GEN_EPOCHS               :   150
+
+
+DIS_PRETRAIN             :   True
+DIS_WGAN                 :   False
+DIS_MINIBATCH            :   False
+DIS_NUM_ENCODER_LAYERS   :   4
+DIS_D_MODEL              :   100
+DIS_NUM_HEADS            :   5
+DIS_MAX_LR               :   8e-07
+DIS_EPOCHS               :   10
+DIS_FEED_FORWARD         :   200
+DIS_DROPOUT              :   0.25
+
+
+ADVERSARIAL_TRAIN        :   False
+PROPERTIES               :   druglikeness
+DIS_LAMBDA               :   0.5
+MODEL_NAME               :   TenGAN_0.5
+UPDATE_RATE              :   0.8
+ADV_LR                   :   8e-05
+G_STEP                   :   1
+D_STEP                   :   1
+ADV_EPOCHS               :   100
+ROLL_NUM                 :   16
+==================================================================
+
+
+
+Start time is 2025-04-27 16:43:06
+
+
+
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Pre-train Generator...
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Epoch 149: 100%|███████████████████| 79/79 [00:02<00:00, 37.42it/s, loss=0.534, v_num=2, val_loss=0.891]
+Generator Pre-train Time: 0.25 hours
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:14<00:00,  5.26it/s]
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4471    (89.56%)
+Uniqueness:   4183    (93.56%)
+Novelty:      3493    (83.50%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+NC1C2NC1C(O)C2O
+NC(=O)CC1(O)COC1
+CCCC12NC3C1C32O
+CC(CO)C(=O)C(=N)N
+O=Cn1nnc(CO)n1
+
+
+[druglikeness]: [Mean: 0.477   STD: 0.069   MIN: 0.175   MAX: 0.665]
+********************************************************************************
+
+
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Pre-train Discriminator...
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Epoch 9: 100%|█| 157/157 [00:02<00:00, 77.58it/s, loss=0.699, v_num=3, val_loss=0.693, val_acc=0.519, tr
+Discriminator Pre-train Time: 0.27 hours
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+TenGAN Generator path does NOT exist: res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/Epoch_66_gen.pkl
+```
+
+#### 敵対的学習
+事前学習した生成器と識別機を用いて敵対的学習および生成を行った。
+```
+(tengan_env) you2002724@UD0724:~/workspace/MultiMediaEngineeringExercises/TenGAN$ python main.py --adversarial_train --dataset_name QM9 --max_len 60 --generated_num 5000 --gen_train_size 4800 --roll_num 16
+
+
+
+Vocabulary Information:
+==================================================================
+{' ': 0, '^': 1, '$': 2, 'H': 3, 'B': 4, 'c': 5, 'C': 6, 'n': 7, 'N': 8, 'o': 9, 'O': 10, 'p': 11, 'P': 12, 's': 13, 'S': 14, 'F': 15, 'Q': 16, 'W': 17, 'I': 18, '[': 19, ']': 20, '+': 21, 'Z': 22, 'X': 23, '-': 24, '=': 25, '#': 26, '.': 27, '(': 28, ')': 29, '1': 30, '2': 31, '3': 32, '4': 33, '5': 34, '6': 35, '7': 36, '@': 37, '/': 38, '\\': 39}
+
+
+Parameter Information:
+==================================================================
+POSITIVE_FILE            :   dataset/QM9.csv
+NEGATIVE_FILE            :   res/generated_smiles_QM9.csv
+G_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/g_pretrained.pkl
+D_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/d_pretrained.pkl
+PROPERTY_FILE            :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/trained_results.csv
+BATCH_SIZE               :   64
+MAX_LEN                  :   60
+VOCAB_SIZE               :   40
+DEVICE                   :   cuda
+GPUS                     :   1
+
+
+GEN_PRETRAIN             :   False
+GENERATED_NUM            :   5000
+GEN_TRAIN_SIZE           :   4800
 GEN_NUM_ENCODER_LAYERS   :   4
 GEN_DIM_FEEDFORWARD      :   1024
 GEN_D_MODEL              :   128
@@ -355,7 +480,7 @@ DIS_FEED_FORWARD         :   200
 DIS_DROPOUT              :   0.25
 
 
-ADVERSARIAL_TRAIN        :   False
+ADVERSARIAL_TRAIN        :   True
 PROPERTIES               :   druglikeness
 DIS_LAMBDA               :   0.5
 MODEL_NAME               :   TenGAN_0.5
@@ -364,12 +489,12 @@ ADV_LR                   :   8e-05
 G_STEP                   :   1
 D_STEP                   :   1
 ADV_EPOCHS               :   100
-ROLL_NUM                 :   8
+ROLL_NUM                 :   16
 ==================================================================
 
 
 
-Start time is 2025-04-27 14:54:40
+Start time is 2025-04-27 17:03:37
 
 
 
@@ -378,31 +503,28 @@ TPU available: False, using: 0 TPU cores
 IPU available: False, using: 0 IPUs
 
 
-Pre-train Generator...
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
-Epoch 149: 100%|███████████████████████| 79/79 [00:02<00:00, 35.31it/s, loss=0.534, v_num=0, val_loss=0.891]
-Generator Pre-train Time: 0.28 hours
-Generating 10000 samples...
-100%|█████████████████████████████████████████████████████████████████████| 156/156 [00:29<00:00,  5.34it/s]
+Load Pre-trained Generator.
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [01:07<00:00,  1.16it/s]
 
 Results Report:
 ********************************************************************************
-Total Mols:   9984
-Validity:     8978    (89.92%)
-Uniqueness:   7961    (88.67%)
-Novelty:      6758    (84.89%)
+Total Mols:   4992
+Validity:     4459    (89.32%)
+Uniqueness:   4149    (93.05%)
+Novelty:      3456    (83.30%)
 Diversity:    0.92
 
 
 Samples of Novel SMILES:
-CCC1C(=O)C12COC2
-N#CCCCC1CCC1
-CC12C[C]1[CH]C1NC12
-CCC(CC)CC(C)C
-C#CC1CC2(O)C(O)C12
+COc1cc(CO)no1
+CC1C2C[N][C]3OC1N32
+N#CC12CC1C1CC12
+O=C1CC12CCOC2=O
+CCOc1oncc1N
 
 
-[druglikeness]: [Mean: 0.476   STD: 0.070   MIN: 0.126   MAX: 0.668]
+[druglikeness]: [Mean: 0.478   STD: 0.069   MIN: 0.000   MAX: 0.690]
 ********************************************************************************
 
 
@@ -412,16 +534,138 @@ IPU available: False, using: 0 IPUs
 
 
 Load Pre-trained Discriminator.
-Traceback (most recent call last):
-  File "main.py", line 482, in <module>
-    main()
-  File "main.py", line 360, in main
-    dis.load_state_dict(torch.load(D_PRETRAINED_MODEL))
-  File "/home/you2002724/anaconda3/envs/tengan_env/lib/python3.6/site-packages/torch/serialization.py", line 579, in load
-    with _open_file_like(f, 'rb') as opened_file:
-  File "/home/you2002724/anaconda3/envs/tengan_env/lib/python3.6/site-packages/torch/serialization.py", line 230, in _open_file_like
-    return _open_file(name_or_buffer, mode)
-  File "/home/you2002724/anaconda3/envs/tengan_env/lib/python3.6/site-packages/torch/serialization.py", line 211, in __init__
-    super(_open_file, self).__init__(open(name, mode))
-FileNotFoundError: [Errno 2] No such file or directory: 'res/save_models/QM9/TenGAN_0.5/rollout_8//batch_64/druglikeness/d_pretrained.pkl'
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Adversarial Training...
+
+
+
+Epoch 1 / 100, G_STEP 1 / 1, PG_Loss: -1.757
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:14<00:00,  5.41it/s]
+
+Total Computational Time:  0.22  hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4499    (90.12%)
+Uniqueness:   4185    (93.02%)
+Novelty:      3494    (83.49%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CC12CC(O)(C1)[C]([NH])O2
+CCC(=NC)N(C)C#N
+C#CC1CC12CC(=O)C2
+OC12CCCOC1C2
+C1=CC2C3CC1C1C2C31
+
+
+[druglikeness]: [Mean: 0.477   STD: 0.071   MIN: 0.162   MAX: 0.658]
+********************************************************************************
+
+
+:
+:
+:
+
+
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+
+
+Epoch 99 / 100, G_STEP 1 / 1, PG_Loss: -3.988
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:26<00:00,  3.00it/s]
+
+Total Computational Time:  3.94  hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4914    (98.44%)
+Uniqueness:   2882    (58.65%)
+Novelty:      2757    (95.66%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+CCCCC(N)CNC
+CCOCCC(C)C
+CC(N)CC(C)CC#N
+CCC(C)(CC)CO
+COCC(C)OCC(C)O
+
+
+[druglikeness]: [Mean: 0.555   STD: 0.055   MIN: 0.247   MAX: 0.673]
+********************************************************************************
+
+
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+
+
+Epoch 100 / 100, G_STEP 1 / 1, PG_Loss: 0.952
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:24<00:00,  3.20it/s]
+
+Total Computational Time:  4.00  hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4891    (97.98%)
+Uniqueness:   2826    (57.78%)
+Novelty:      2689    (95.15%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+CCC(=N)NC(C)=O
+CC(C)C(C)CCCCO
+CC(C=O)C1(C)CCO1
+CCOCCC(C)C
+CCC(COC)C(C)N
+
+
+[druglikeness]: [Mean: 0.555   STD: 0.055   MIN: 0.311   MAX: 0.687]
+********************************************************************************
+
+
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Top-12 Molecules of [druglikeness]:
+c1[nH]c(CCOC)nc1C        0.687
+C(C)c1c(N)onc1OC         0.674
+[nH]1ncc(CCC)c1NC        0.671
+Nc1nc(CCC)ncc1   0.671
+c1(OCCC)ncc[nH]1         0.668
+CCCc1cc(N)oc1    0.659
+o1c(CCCO)ncc1    0.658
+n1c(OCCC)n[nH]c1         0.658
+C1CCC(CCC(=O)O)C1        0.657
+CC(C)C(O)CC(OC)C         0.656
+CCc1c(NC)ocn1    0.656
+C(c1occ(CO)c1)C          0.655
+********************************************************************************
+
+
+File names for drawing distributions: ['res/generated_smiles_QM9.csv', 'res/generated_smiles_ZINC.csv']
+Mean Real QED Score: 0.479
+Mean GAN QED Score: 0.559
+Mean WGAN QED Score: 0.836
+
+Mean Real SA Score: 0.263
+Mean GAN SA Score: 0.553
+Mean WGAN SA Score: 0.886
+
+Mean Real logP Score: 0.299
+Mean GAN logP Score: 0.423
+Mean WGAN logP Score: 0.643
+
+********************************************************************************
 ```
