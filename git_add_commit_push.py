@@ -21,7 +21,7 @@ print("[Step 1] Working on submodule 'TenGAN'")
 os.chdir('TenGAN')  # TenGANディレクトリに移動
 os.system('git add .')
 os.system('git commit -m "{}"'.format(comment))
-os.system('git push origin main')  # サブモジュールのブランチ（mainやmasterに注意）
+# os.system('git push origin main')  # サブモジュールのブランチ（mainやmasterに注意）
 
 # --- 親リポジトリに戻る ---
 print("[Step 2] Working on parent repository")
