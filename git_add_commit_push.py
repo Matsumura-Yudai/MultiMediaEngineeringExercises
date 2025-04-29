@@ -6,5 +6,6 @@ comment = input()
 print("===========================================")
 
 # Push
+os.system('git add .gitmodules TenGAN')
 os.system('git commit -a -m "{}"'.format(comment))
 os.system('git push origin master')
