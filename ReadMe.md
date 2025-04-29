@@ -14,10 +14,15 @@
     - [実験と結果](#実験と結果)
     - [Contributeとまとめ](#contributeとまとめ)
     - [今後の課題](#今後の課題)
-- [ローカル]()
-    - [環境構築]()
-    - [動作確認]()
-
+- [ローカル](#ローカル)
+    - [環境構築](#環境構築)
+        - [Anaconda](#Anaconda)
+        - [仮想環境構築](#仮想環境構築)
+    - [プログラムの実行](#プログラムの実行)
+        - [ZINC](#zinc)
+        - [QM9](#qm9)
+            - [事前学習](#事前学習)
+            - [敵対的学習](#敵対的学習)
 
 # 参考文献
 1. [TenGAN: Pure Transformer Encoders Make an Efficient Discrete GAN for De Novo Molecular Generation | Chen Li, Yoshihiro Yamanishi Proceedings of The 27th International Conference on Artificial Intelligence and Statistics, PMLR 238:361-369, 2024.]
@@ -669,3 +674,7 @@ Mean WGAN logP Score: 0.643
 
 ********************************************************************************
 ```
+
+# Author
+大阪大学大学院 情報科学研究科 マルチメディア工学専攻 データ生成工学講座 1年
+松村優大
