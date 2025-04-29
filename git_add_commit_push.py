@@ -30,4 +30,4 @@ os.chdir('..')  # 親ディレクトリに戻る
 # 親リポジトリ全体を add → commit → push
 os.system('git add .')  # 親リポジトリのすべての変更と、サブモジュール更新もまとめてadd
 os.system('git commit -m "{}"'.format(comment))
-os.system('git push origin main')  # 親リポジトリのブランチ
+os.system('git push origin master')  # 親リポジトリのブランチ
