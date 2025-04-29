@@ -1,0 +1,3 @@
+[submodule "TenGAN"]
+	path = TenGAN
+	url = https://github.com/naruto7283/TenGAN.git
