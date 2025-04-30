@@ -1,1 +1,7 @@
 複数属性の最適化＝druglikeness以外の属性も同時に最適化
+
+強化学習のrewardはmol_metrics.pyのreward_fn()で計算される。
+
+
+コマンドライン引数「--properties」に「all」を指定すれば、
+druglikeness, solubility, synthesizabilityの単純和の最適化が行われるように。

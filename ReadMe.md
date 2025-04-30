@@ -18,11 +18,13 @@
     - [環境構築](#環境構築)
         - [Anaconda](#Anaconda)
         - [仮想環境構築](#仮想環境構築)
-    - [プログラムの実行](#プログラムの実行)
+    - [既存のプログラムの実行](#既存のプログラムの実行)
         - [ZINC](#zinc)
         - [QM9](#qm9)
             - [事前学習](#事前学習)
             - [敵対的学習](#敵対的学習)
+- [演習内容](#演習内容)
+    - [単純和](#単純和)
 
 # 参考文献
 1. [TenGAN: Pure Transformer Encoders Make an Efficient Discrete GAN for De Novo Molecular Generation | Chen Li, Yoshihiro Yamanishi Proceedings of The 27th International Conference on Artificial Intelligence and Statistics, PMLR 238:361-369, 2024.]
@@ -147,7 +149,7 @@ $ conda activate tengan_env
 (tengan_env) UserName:~/ ... /TenGAN$
 ```
 
-## プログラムの実行
+## 既存のプログラムの実行
 [TenGAN ソースコード]に付属のmain.pyを実行してみた。
 
 ### ZINC
@@ -673,6 +675,57 @@ Mean GAN logP Score: 0.423
 Mean WGAN logP Score: 0.643
 
 ********************************************************************************
+```
+
+# 演習内容
+複数属性の最適化を行っていく。
+既存のアルゴリズムでは「druglikeness」「solubility」「synthesizability」のうちどれか一つに対する最適化を行っている。
+
+## 単純和
+「druglikeness」「solubility」「synthesizability」のすべてのスコアを単純に足し合わせる。
+コマンドライン引数の```--properties```オプションに```all```という設定を追加した。
+これを指定することで、単純和が最適化対象となる。
+
+また、mol_metrics.pyのreward_fn()関数に処理を追加した。
+```
+def reward_fn(properties, generated_smiles):
+    if properties == 'druglikeness':
+        vals = batch_druglikeness(generated_smiles) 
+    elif properties == 'solubility':
+        vals = batch_solubility(generated_smiles)
+    elif properties == 'synthesizability':
+        vals = batch_SA(generated_smiles)
+    elif properties == 'all':
+        vals = batch_druglikeness(generated_smiles) + batch_solubility(generated_smiles) + batch_SA(generated_smiles)
+    return vals
+```
+
+utils.pyのtop_mols_show()関数にも```all```分岐での処理を追加した。
+```
+def top_mols_show(filename, properties):
+    """
+		filename: NEGATIVE FILES (generated dataset of SMILES)
+		properties: 'druglikeness' or 'solubility' or 'synthesizability'
+    """
+    mols, scores = [], []
+    # Read the generated SMILES data
+    smiles = open(filename, 'r').read()
+    smiles = list(smiles.split('\n'))  
+        
+    if properties == 'druglikeness':
+        scores = batch_druglikeness(smiles)      
+    elif properties == 'synthesizability':
+        scores = batch_SA(smiles)  
+    elif properties == 'solubility':
+        scores = batch_solubility(smiles)
+	elif properties == 'all':
+		scores = batch_druglikeness(smiles) + batch_SA(smiles) + batch_solubility(smiles)
+
+  	# Sort the scores
+    dic = dict(zip(smiles, scores))
+    dic=sorted(dic.items(),key=lambda x:x[1],reverse=True)
+:
+:
 ```
 
 # Author
