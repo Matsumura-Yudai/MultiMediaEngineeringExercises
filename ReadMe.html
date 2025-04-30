@@ -1,0 +1,771 @@
+<!DOCTYPE html><html><head>
+      <title>ReadMe</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:////home/matsumura/.vscode-server/extensions/shd101wyy.markdown-preview-enhanced-0.8.18/crossnote/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+body {
+  counter-reset: chapter;
+}
+h1 {
+  counter-reset: sub-chapter;
+}
+h2 {
+  counter-reset: section;
+}
+h3 {
+  counter-reset: sub-section;
+}
+h4 {
+  counter-reset: sub-sub-section;
+}
+.markdown-preview.markdown-preview h1::before {
+  counter-increment: chapter;
+  content: counter(chapter) ". ";
+}
+.markdown-preview.markdown-preview h2::before {
+  counter-increment: sub-chapter;
+  content: counter(chapter) "." counter(sub-chapter) ". ";
+}
+.markdown-preview.markdown-preview h3::before {
+  counter-increment: section;
+  content: counter(chapter) "." counter(sub-chapter) "." counter(section) ". ";
+}
+.markdown-preview.markdown-preview h4::before {
+  counter-increment: sub-section;
+  content: counter(chapter) "." counter(sub-chapter) "." counter(section) "." counter(sub-section) ".";
+}
+.markdown-preview.markdown-preview h5::before {
+  counter-increment: sub-sub-section;
+  content: counter(chapter) "." counter(sub-chapter) "." counter(section) "." counter(sub-section) "." counter(sub-sub-section) ".";
+}
+div.TOC ul {
+  counter-reset: section;
+}
+.markdown-preview.markdown-preview div.TOC li {
+  list-style: none;
+}
+.markdown-preview.markdown-preview div.TOC ul > li:before {
+  counter-increment: section;
+  content: counters(section, '.') '. ';
+}
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="マルチメディア工学演習">マルチメディア工学演習 </h1>
+<p>生成AIを活用したゼロからの創薬に取り組む予定です。<br>
+具体的には、以下の論文で提案されている手法（Transformer Encoder＋GAN＋強化学習を用いたSMILESの単一属性最適化）を基に、複数属性の最適化を目指します。</p>
+<h2 id="目次">目次 </h2>
+<ul>
+<li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">参考文献</a></li>
+<li><a href="#tengan%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">TenGANについて</a>
+<ul>
+<li><a href="#%E8%83%8C%E6%99%AF%E3%81%A8%E8%AA%B2%E9%A1%8C">背景と課題</a></li>
+<li><a href="#%E6%8F%90%E6%A1%88%E6%89%8B%E6%B3%95tengan--tenwgan">提案手法（TenGAN / Ten(W)GAN）</a></li>
+<li><a href="#%E5%AE%9F%E9%A8%93%E3%81%A8%E7%B5%90%E6%9E%9C">実験と結果</a></li>
+<li><a href="#contribute%E3%81%A8%E3%81%BE%E3%81%A8%E3%82%81">Contributeとまとめ</a></li>
+<li><a href="#%E4%BB%8A%E5%BE%8C%E3%81%AE%E8%AA%B2%E9%A1%8C">今後の課題</a></li>
+</ul>
+</li>
+<li><a href="#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB">ローカル</a>
+<ul>
+<li><a href="#%E7%92%B0%E5%A2%83%E6%A7%8B%E7%AF%89">環境構築</a>
+<ul>
+<li><a href="#Anaconda">Anaconda</a></li>
+<li><a href="#%E4%BB%AE%E6%83%B3%E7%92%B0%E5%A2%83%E6%A7%8B%E7%AF%89">仮想環境構築</a></li>
+</ul>
+</li>
+<li><a href="#%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E3%81%AE%E5%AE%9F%E8%A1%8C">プログラムの実行</a>
+<ul>
+<li><a href="#zinc">ZINC</a></li>
+<li><a href="#qm9">QM9</a>
+<ul>
+<li><a href="#%E4%BA%8B%E5%89%8D%E5%AD%A6%E7%BF%92">事前学習</a></li>
+<li><a href="#%E6%95%B5%E5%AF%BE%E7%9A%84%E5%AD%A6%E7%BF%92">敵対的学習</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="参考文献">参考文献 </h1>
+<ol>
+<li><a href="https://proceedings.mlr.press/v238/li24d.html">TenGAN: Pure Transformer Encoders Make an Efficient Discrete GAN for De Novo Molecular Generation | Chen Li, Yoshihiro Yamanishi Proceedings of The 27th International Conference on Artificial Intelligence and Statistics, PMLR 238:361-369, 2024.</a></li>
+<li><a href="https://github.com/naruto7283/TenGAN">TenGAN ソースコード</a></li>
+<li><a href="https://www.salesanalytics.co.jp/datascience/datascience141/">WSL Anaconda導入</a></li>
+</ol>
+<h1 id="tenganについて">TenGANについて </h1>
+<h2 id="背景と課題">背景と課題 </h2>
+<ul>
+<li>
+<p>新しい分子（化合物）をゼロから自動生成（de novo molecular generation）する研究は、創薬などで非常に重要です。</p>
+</li>
+<li>
+<p>特に分子を文字列で表現するSMILESフォーマットを使った生成には、GAN（敵対的生成ネットワーク）が使われますが、<br>
+離散データを扱うため、学習が不安定になりやすく、モード崩壊や多様性の低下が問題になっていました。</p>
+</li>
+</ul>
+<h2 id="提案手法tengan--tenwgan">提案手法（TenGAN / Ten(W)GAN） </h2>
+<ul>
+<li>
+<p>TenGANは、純粋にTransformer Encoderのみで構成された新しいGANモデルです。</p>
+</li>
+<li>
+<p>ジェネレータもディスクリミネータも、従来のRNNやCNNではなく、マスク付きTransformer Encoderを使います。</p>
+</li>
+<li>
+<p>強化学習（Reinforcement Learning） を組み合わせることで、離散データに対しても学習可能にしています。</p>
+</li>
+<li>
+<p>バリアントSMILES（同じ分子を違う順番で表すSMILES） を使ったデータ拡張で、SMILESの意味・構文をより深く学習。</p>
+</li>
+<li>
+<p>改良版のTen(W)GANではさらに、</p>
+<ul>
+<li>
+<p>ミニバッチディスクリミネーション（多様性向上）</p>
+</li>
+<li>
+<p>Wasserstein GAN（学習安定化） を導入しています。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="実験と結果">実験と結果 </h2>
+<ul>
+<li>
+<p>小規模な分子データセット（QM9, ZINC）で実験。</p>
+</li>
+<li>
+<p>有効な分子の生成率（Validity）、新規性（Novelty）、多様性（Diversity）など、ほぼ全ての指標で既存手法（ORGANなど）を上回る成果。</p>
+</li>
+<li>
+<p>生成分子の薬物らしさ（QEDスコア）、合成容易性（SAスコア）、溶解性（logP）の最適化にも成功。</p>
+</li>
+<li>
+<p>従来のRNNベースGANより、学習速度も高速（GPUでの実行時間が短縮）。</p>
+</li>
+</ul>
+<h2 id="contributeとまとめ">Contributeとまとめ </h2>
+<ul>
+<li>
+<p>完全にTransformer EncoderだけでSMILES文字列を生成できる新しいGANを開発。</p>
+</li>
+<li>
+<p>データ拡張・ミニバッチディスクリミネーション・WGANを組み合わせ、学習安定性と多様性を両立。</p>
+</li>
+<li>
+<p>生成された分子が、化学的にも意味があり、より高品質であることを実証。</p>
+</li>
+</ul>
+<h2 id="今後の課題">今後の課題 </h2>
+<p>モンテカルロサーチ（強化学習中に使う）による計算コストと性能安定性のトレードオフが残っており、<br>
+将来的にはSoft Actor-Critic法などを使った改善を検討している。</p>
+<h1 id="ローカル">ローカル </h1>
+<p><a href="https://github.com/naruto7283/TenGAN">参考文献[2]</a>を参考にして、TenGANの実行環境をローカルに構築し、実験等を行う。</p>
+<h2 id="環境構築">環境構築 </h2>
+<p><a href="https://github.com/naruto7283/TenGAN">参考文献[2]</a>のREADMEを参考にして、環境構築を行う。<br>
+なお、著者の開発環境は以下のとおりである。</p>
+<ul>
+<li>Windows11 HOME</li>
+<li>wsl2(Ubuntu)</li>
+</ul>
+<h3 id="anaconda">Anaconda </h3>
+<p><a href="https://www.salesanalytics.co.jp/datascience/datascience141/">参考文献[3]</a>を参考にして、以下の手順でWSL(Ubuntu)にAnacondaをインストールした。</p>
+<ol>
+<li>最新版のAnacondaをダウンロード<br>
+<a href="https://www.anaconda.com/products/distribution#Downloads">Anaconda公式ダウンロードサイト</a>にアクセスし、最新のLinux版のAnacondaのリンクをコピーして、<br>
+Ubuntu上で以下のコマンドを実行する。<br>
+ただし、以下のURLは2025年4月現在、最新版のものである。</li>
+</ol>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>$ wget https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh
+</code></pre><ol start="2">
+<li>Anacondaをインストール<br>
+Ubuntu上で、以下のコマンドを記述し実行すると、ダウンロードしたAnacondaのインストールが開始される。<br>
+ただし、シェルスクリプトはURLの末尾に示されたものである。</li>
+</ol>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>$ bash Anaconda3-2024.10-1-Linux-x86_64.sh
+</code></pre><ol start="3">
+<li>condaコマンドのパスを通す<br>
+ホームディレクトリの下にある「.bashrc」ファイルを開き、末尾に</li>
+</ol>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>export PATH="/home/you2002724/anaconda3/bin:$PATH"
+</code></pre><p>を追加し、一度、ターミナルを再起動するか、</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>$ source .bashrc
+</code></pre><p>というコマンドを実行する。<br>
+その後、</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>$ conda --version
+</code></pre><p>というコマンドを実行し、インストールしたcondaのバージョンが表示されれば、Anaconda環境の構築は完了である。</p>
+<h3 id="仮想環境構築">仮想環境構築 </h3>
+<p><a href="https://github.com/naruto7283/TenGAN">TenGAN ソースコード</a>にはTenGAN実行のための仮想環境が付属している。<br>
+これをアクティベートするには、以下の手順でコマンドを実行する。</p>
+<ol>
+<li>ソースコードの一部を書き換え<br>
+付属しているソースコードは一部、書き換えが必要な箇所が存在する。<br>
+具体的には、TenGAN/env/env.ymlの117行目</li>
+</ol>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>- install==1.3.5
+</code></pre><p>である。これをコメントアウトするか、削除する必要がある。</p>
+<p>また、TenGAN/main.pyの36行目の</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>parser.add_argument('--gen_pretrain:', action='store_true', help='whether pretrain the dataset')
+</code></pre><p>のうち<code>'--gen_pretrain:'</code>の末尾の:(コロン)が不要なため、元の行を削除するかコメントアウトして、以下のように書き換える。</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>parser.add_argument('--gen_pretrain', action='store_true', help='whether pretrain the dataset')
+</code></pre><ol start="2">
+<li>環境の構築と起動<br>
+TenGANディレクトリに移動し、以下のコマンドを順に実行すれば、仮想環境の構築は完了である。</li>
+</ol>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>$ conda env create -n tengan_env -f env/env.yml
+$ source ~/.bashrc
+$ conda activate tengan_env
+</code></pre><p>ターミナルの画面において以下のように表示されていれば成功である。</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>(tengan_env) UserName:~/ ... /TenGAN$
+</code></pre><h2 id="プログラムの実行">プログラムの実行 </h2>
+<p><a href="https://github.com/naruto7283/TenGAN">TenGAN ソースコード</a>に付属のmain.pyを実行してみた。</p>
+<h3 id="zinc">ZINC </h3>
+<p>実行方法は、TenGANディレクトリに移動し、仮想環境が起動した状態で以下のコマンドを実行するだけである。</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>$ python main.py
+</code></pre><p>実行結果は以下の通りである。</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>(tengan_env) you2002724@UD0724:~/workspace/MultiMediaEngineeringExercises/TenGAN$ python main.py
+
+
+
+Vocabulary Information:
+==================================================================
+{' ': 0, '^': 1, '$': 2, 'H': 3, 'B': 4, 'c': 5, 'C': 6, 'n': 7, 'N': 8, 'o': 9, 'O': 10, 'p': 11, 'P': 12, 's': 13, 'S': 14, 'F': 15, 'Q': 16, 'W': 17, 'I': 18, '[': 19, ']': 20, '+': 21, 'Z': 22, 'X': 23, '-': 24, '=': 25, '#': 26, '.': 27, '(': 28, ')': 29, '1': 30, '2': 31, '3': 32, '4': 33, '5': 34, '6': 35, '7': 36, '@': 37, '/': 38, '\\': 39}
+
+
+Parameter Information:
+==================================================================
+POSITIVE_FILE            :   dataset/ZINC.csv
+NEGATIVE_FILE            :   res/generated_smiles_ZINC.csv
+G_PRETRAINED_MODEL       :   res/save_models/ZINC/TenGAN_0.5/rollout_8//batch_64/druglikeness/g_pretrained.pkl
+D_PRETRAINED_MODEL       :   res/save_models/ZINC/TenGAN_0.5/rollout_8//batch_64/druglikeness/d_pretrained.pkl
+PROPERTY_FILE            :   res/save_models/ZINC/TenGAN_0.5/rollout_8//batch_64/druglikeness/trained_results.csv
+BATCH_SIZE               :   64
+MAX_LEN                  :   70
+VOCAB_SIZE               :   40
+DEVICE                   :   cuda
+GPUS                     :   1
+
+
+GEN_PRETRAIN             :   False
+GENERATED_NUM            :   10000
+GEN_TRAIN_SIZE           :   9600
+GEN_NUM_ENCODER_LAYERS   :   4
+GEN_DIM_FEEDFORWARD      :   1024
+GEN_D_MODEL              :   128
+GEN_NUM_HEADS            :   4
+GEN_MAX_LR               :   0.0008
+GEN_DROPOUT              :   0.1
+GEN_EPOCHS               :   150
+
+
+DIS_PRETRAIN             :   False
+DIS_WGAN                 :   False
+DIS_MINIBATCH            :   False
+DIS_NUM_ENCODER_LAYERS   :   4
+DIS_D_MODEL              :   100
+DIS_NUM_HEADS            :   5
+DIS_MAX_LR               :   8e-07
+DIS_EPOCHS               :   10
+DIS_FEED_FORWARD         :   200
+DIS_DROPOUT              :   0.25
+
+
+ADVERSARIAL_TRAIN        :   False
+PROPERTIES               :   druglikeness
+DIS_LAMBDA               :   0.5
+MODEL_NAME               :   TenGAN_0.5
+UPDATE_RATE              :   0.8
+ADV_LR                   :   8e-05
+G_STEP                   :   1
+D_STEP                   :   1
+ADV_EPOCHS               :   100
+ROLL_NUM                 :   8
+==================================================================
+
+
+
+Start time is 2025-04-27 14:35:25
+
+
+
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Load Pre-trained Generator.
+Generating 10000 samples...
+100%|█████████████████████████████████████████████████████████████████████| 156/156 [01:58&lt;00:00,  1.32it/s]
+
+Results Report:
+********************************************************************************
+Total Mols:   9984
+Validity:     8496    (85.10%)
+Uniqueness:   8310    (97.81%)
+Novelty:      8108    (97.57%)
+Diversity:    0.89
+
+
+Samples of Novel SMILES:
+CC(=O)c1ccc(CNC(=O)[C@@H]2C=CC[C@@H]2C(=O)[O-])cc1
+O=C(COC(=O)c1cnc(Cl)c(Cl)c1)Nc1ccc(Cl)cc1Cl
+O=C(Nc1ccc(Cl)c(Cl)c1)[C@@H]1[C@@H]2C=C[C@@H](O2)[C@@H]1C(=O)[O-]
+C[C@@H](Oc1ccccc1)C(=O)Nc1cccc(S(N)(=O)=O)c1
+O=C(CSc1nnc2ccccn12)NCCCc1ccc(Cl)cc1
+
+
+[druglikeness]: [Mean: 0.788   STD: 0.104   MIN: 0.271   MAX: 0.946]
+********************************************************************************
+
+
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Load Pre-trained Discriminator.
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Load TenGAN Generator: res/save_models/ZINC/TenGAN_0.5/rollout_8//batch_64/druglikeness/Epoch_66_gen.pkl
+
+
+Generating 10000 samples...
+100%|█████████████████████████████████████████████████████████████████████| 156/156 [00:58&lt;00:00,  2.67it/s]
+
+Results Report:
+********************************************************************************
+Total Mols:   9983
+Validity:     9514    (95.30%)
+Uniqueness:   7943    (83.49%)
+Novelty:      7647    (96.27%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CCC(=O)Oc1ccccc1C[NH+]1CCOCC1
+O=C(Cc1ccccc1)Nc1ccccc1Br
+CCOc1ccccc1C[NH+]1[C@@H](C)CCC[C@H]1C
+COc1ccc(C#N)cc1OCC(=O)Nc1ccccc1
+COC(=O)c1ccccc1C(=O)Nc1ccccc1
+
+
+[druglikeness]: [Mean: 0.830   STD: 0.081   MIN: 0.246   MAX: 0.946]
+********************************************************************************
+
+
+Load TenGAN Discriminator: res/save_models/ZINC/TenGAN_0.5/rollout_8//batch_64/druglikeness/Epoch_66_dis.pkl
+
+
+Top-12 Molecules of [druglikeness]:
+c1cc(NC(=O)c2ccccc2Br)c(C(=O)[O-])cc1    0.946
+c1cc(S(=O)(Nc2ccc3c(c2)OCO3)=O)ccc1F     0.945
+N(c1ccc2c(c1)OCO2)S(=O)(c1ccc(F)cc1)=O   0.945
+c1(NC(c2ccc(Cl)c(Cl)c2)=O)ccccc1C(=O)[O-]        0.945
+c1(C(Nc2ccc(C(=O)[O-])cc2)=O)c(Cl)cccc1Cl        0.945
+C(=O)([O-])c1ccccc1NC(c1ccc(Cl)cc1Cl)=O          0.945
+c1(NC(c2ccc(Cl)cc2Cl)=O)ccc(C([O-])=O)cc1        0.945
+N(S(=O)(c1ccc2c(c1)OCO2)=O)c1ccc(F)cc1F          0.944
+O1c2ccccc2OC[C@@H]1C(Nc1ccc(N(C)C)cc1)=O         0.944
+c1ccc2c(c1)O[C@@H](C(Nc1ccc(N(C)C)cc1)=O)CO2     0.944
+C1CCCc2c1nn(CC(=O)Nc1ncc(Cl)cc1)c2       0.944
+O=C(Cn1c(=O)c2c(cccc2)nc1CC)NC1CCCC1     0.944
+********************************************************************************
+
+
+File names for drawing distributions: ['res/generated_smiles_ZINC.csv']
+Distributions are not generated.
+********************************************************************************
+</code></pre><h3 id="qm9">QM9 </h3>
+<p>データセットQM9.csvを用いて実行した。</p>
+<h4 id="事前学習">事前学習 </h4>
+<p>まずは、生成器と識別機の事前学習を行った。</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>(tengan_env) you2002724@UD0724:~/workspace/MultiMediaEngineeringExercises/TenGAN$ python main.py --gen_pretrain --dis_pretrain --dataset_name QM9 --max_len 60 --generated_num 5000 --gen_train_size 4800 --roll_num 16
+
+
+
+Vocabulary Information:
+==================================================================
+{' ': 0, '^': 1, '$': 2, 'H': 3, 'B': 4, 'c': 5, 'C': 6, 'n': 7, 'N': 8, 'o': 9, 'O': 10, 'p': 11, 'P': 12, 's': 13, 'S': 14, 'F': 15, 'Q': 16, 'W': 17, 'I': 18, '[': 19, ']': 20, '+': 21, 'Z': 22, 'X': 23, '-': 24, '=': 25, '#': 26, '.': 27, '(': 28, ')': 29, '1': 30, '2': 31, '3': 32, '4': 33, '5': 34, '6': 35, '7': 36, '@': 37, '/': 38, '\\': 39}
+
+
+Parameter Information:
+==================================================================
+POSITIVE_FILE            :   dataset/QM9.csv
+NEGATIVE_FILE            :   res/generated_smiles_QM9.csv
+G_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/g_pretrained.pkl
+D_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/d_pretrained.pkl
+PROPERTY_FILE            :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/trained_results.csv
+BATCH_SIZE               :   64
+MAX_LEN                  :   60
+VOCAB_SIZE               :   40
+DEVICE                   :   cuda
+GPUS                     :   1
+
+
+GEN_PRETRAIN             :   True
+GENERATED_NUM            :   5000
+GEN_TRAIN_SIZE           :   4800
+GEN_NUM_ENCODER_LAYERS   :   4
+GEN_DIM_FEEDFORWARD      :   1024
+GEN_D_MODEL              :   128
+GEN_NUM_HEADS            :   4
+GEN_MAX_LR               :   0.0008
+GEN_DROPOUT              :   0.1
+GEN_EPOCHS               :   150
+
+
+DIS_PRETRAIN             :   True
+DIS_WGAN                 :   False
+DIS_MINIBATCH            :   False
+DIS_NUM_ENCODER_LAYERS   :   4
+DIS_D_MODEL              :   100
+DIS_NUM_HEADS            :   5
+DIS_MAX_LR               :   8e-07
+DIS_EPOCHS               :   10
+DIS_FEED_FORWARD         :   200
+DIS_DROPOUT              :   0.25
+
+
+ADVERSARIAL_TRAIN        :   False
+PROPERTIES               :   druglikeness
+DIS_LAMBDA               :   0.5
+MODEL_NAME               :   TenGAN_0.5
+UPDATE_RATE              :   0.8
+ADV_LR                   :   8e-05
+G_STEP                   :   1
+D_STEP                   :   1
+ADV_EPOCHS               :   100
+ROLL_NUM                 :   16
+==================================================================
+
+
+
+Start time is 2025-04-27 16:43:06
+
+
+
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Pre-train Generator...
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Epoch 149: 100%|███████████████████| 79/79 [00:02&lt;00:00, 37.42it/s, loss=0.534, v_num=2, val_loss=0.891]
+Generator Pre-train Time: 0.25 hours
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:14&lt;00:00,  5.26it/s]
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4471    (89.56%)
+Uniqueness:   4183    (93.56%)
+Novelty:      3493    (83.50%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+NC1C2NC1C(O)C2O
+NC(=O)CC1(O)COC1
+CCCC12NC3C1C32O
+CC(CO)C(=O)C(=N)N
+O=Cn1nnc(CO)n1
+
+
+[druglikeness]: [Mean: 0.477   STD: 0.069   MIN: 0.175   MAX: 0.665]
+********************************************************************************
+
+
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Pre-train Discriminator...
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Epoch 9: 100%|█| 157/157 [00:02&lt;00:00, 77.58it/s, loss=0.699, v_num=3, val_loss=0.693, val_acc=0.519, tr
+Discriminator Pre-train Time: 0.27 hours
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+TenGAN Generator path does NOT exist: res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/Epoch_66_gen.pkl
+</code></pre><h4 id="敵対的学習">敵対的学習 </h4>
+<p>事前学習した生成器と識別機を用いて敵対的学習および生成を行った。</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>(tengan_env) you2002724@UD0724:~/workspace/MultiMediaEngineeringExercises/TenGAN$ python main.py --adversarial_train --dataset_name QM9 --max_len 60 --generated_num 5000 --gen_train_size 4800 --roll_num 16
+
+
+
+Vocabulary Information:
+==================================================================
+{' ': 0, '^': 1, '$': 2, 'H': 3, 'B': 4, 'c': 5, 'C': 6, 'n': 7, 'N': 8, 'o': 9, 'O': 10, 'p': 11, 'P': 12, 's': 13, 'S': 14, 'F': 15, 'Q': 16, 'W': 17, 'I': 18, '[': 19, ']': 20, '+': 21, 'Z': 22, 'X': 23, '-': 24, '=': 25, '#': 26, '.': 27, '(': 28, ')': 29, '1': 30, '2': 31, '3': 32, '4': 33, '5': 34, '6': 35, '7': 36, '@': 37, '/': 38, '\\': 39}
+
+
+Parameter Information:
+==================================================================
+POSITIVE_FILE            :   dataset/QM9.csv
+NEGATIVE_FILE            :   res/generated_smiles_QM9.csv
+G_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/g_pretrained.pkl
+D_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/d_pretrained.pkl
+PROPERTY_FILE            :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/druglikeness/trained_results.csv
+BATCH_SIZE               :   64
+MAX_LEN                  :   60
+VOCAB_SIZE               :   40
+DEVICE                   :   cuda
+GPUS                     :   1
+
+
+GEN_PRETRAIN             :   False
+GENERATED_NUM            :   5000
+GEN_TRAIN_SIZE           :   4800
+GEN_NUM_ENCODER_LAYERS   :   4
+GEN_DIM_FEEDFORWARD      :   1024
+GEN_D_MODEL              :   128
+GEN_NUM_HEADS            :   4
+GEN_MAX_LR               :   0.0008
+GEN_DROPOUT              :   0.1
+GEN_EPOCHS               :   150
+
+
+DIS_PRETRAIN             :   False
+DIS_WGAN                 :   False
+DIS_MINIBATCH            :   False
+DIS_NUM_ENCODER_LAYERS   :   4
+DIS_D_MODEL              :   100
+DIS_NUM_HEADS            :   5
+DIS_MAX_LR               :   8e-07
+DIS_EPOCHS               :   10
+DIS_FEED_FORWARD         :   200
+DIS_DROPOUT              :   0.25
+
+
+ADVERSARIAL_TRAIN        :   True
+PROPERTIES               :   druglikeness
+DIS_LAMBDA               :   0.5
+MODEL_NAME               :   TenGAN_0.5
+UPDATE_RATE              :   0.8
+ADV_LR                   :   8e-05
+G_STEP                   :   1
+D_STEP                   :   1
+ADV_EPOCHS               :   100
+ROLL_NUM                 :   16
+==================================================================
+
+
+
+Start time is 2025-04-27 17:03:37
+
+
+
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Load Pre-trained Generator.
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [01:07&lt;00:00,  1.16it/s]
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4459    (89.32%)
+Uniqueness:   4149    (93.05%)
+Novelty:      3456    (83.30%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+COc1cc(CO)no1
+CC1C2C[N][C]3OC1N32
+N#CC12CC1C1CC12
+O=C1CC12CCOC2=O
+CCOc1oncc1N
+
+
+[druglikeness]: [Mean: 0.478   STD: 0.069   MIN: 0.000   MAX: 0.690]
+********************************************************************************
+
+
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Load Pre-trained Discriminator.
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+
+
+Adversarial Training...
+
+
+
+Epoch 1 / 100, G_STEP 1 / 1, PG_Loss: -1.757
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:14&lt;00:00,  5.41it/s]
+
+Total Computational Time:  0.22  hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4499    (90.12%)
+Uniqueness:   4185    (93.02%)
+Novelty:      3494    (83.49%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CC12CC(O)(C1)[C]([NH])O2
+CCC(=NC)N(C)C#N
+C#CC1CC12CC(=O)C2
+OC12CCCOC1C2
+C1=CC2C3CC1C1C2C31
+
+
+[druglikeness]: [Mean: 0.477   STD: 0.071   MIN: 0.162   MAX: 0.658]
+********************************************************************************
+
+
+:
+:
+:
+
+
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+
+
+Epoch 99 / 100, G_STEP 1 / 1, PG_Loss: -3.988
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:26&lt;00:00,  3.00it/s]
+
+Total Computational Time:  3.94  hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4914    (98.44%)
+Uniqueness:   2882    (58.65%)
+Novelty:      2757    (95.66%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+CCCCC(N)CNC
+CCOCCC(C)C
+CC(N)CC(C)CC#N
+CCC(C)(CC)CO
+COCC(C)OCC(C)O
+
+
+[druglikeness]: [Mean: 0.555   STD: 0.055   MIN: 0.247   MAX: 0.673]
+********************************************************************************
+
+
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+
+
+Epoch 100 / 100, G_STEP 1 / 1, PG_Loss: 0.952
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:24&lt;00:00,  3.20it/s]
+
+Total Computational Time:  4.00  hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4891    (97.98%)
+Uniqueness:   2826    (57.78%)
+Novelty:      2689    (95.15%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+CCC(=N)NC(C)=O
+CC(C)C(C)CCCCO
+CC(C=O)C1(C)CCO1
+CCOCCC(C)C
+CCC(COC)C(C)N
+
+
+[druglikeness]: [Mean: 0.555   STD: 0.055   MIN: 0.311   MAX: 0.687]
+********************************************************************************
+
+
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Top-12 Molecules of [druglikeness]:
+c1[nH]c(CCOC)nc1C        0.687
+C(C)c1c(N)onc1OC         0.674
+[nH]1ncc(CCC)c1NC        0.671
+Nc1nc(CCC)ncc1   0.671
+c1(OCCC)ncc[nH]1         0.668
+CCCc1cc(N)oc1    0.659
+o1c(CCCO)ncc1    0.658
+n1c(OCCC)n[nH]c1         0.658
+C1CCC(CCC(=O)O)C1        0.657
+CC(C)C(O)CC(OC)C         0.656
+CCc1c(NC)ocn1    0.656
+C(c1occ(CO)c1)C          0.655
+********************************************************************************
+
+
+File names for drawing distributions: ['res/generated_smiles_QM9.csv', 'res/generated_smiles_ZINC.csv']
+Mean Real QED Score: 0.479
+Mean GAN QED Score: 0.559
+Mean WGAN QED Score: 0.836
+
+Mean Real SA Score: 0.263
+Mean GAN SA Score: 0.553
+Mean WGAN SA Score: 0.886
+
+Mean Real logP Score: 0.299
+Mean GAN logP Score: 0.423
+Mean WGAN logP Score: 0.643
+
+********************************************************************************
+</code></pre><h1 id="author">Author </h1>
+<p>大阪大学大学院 情報科学研究科 マルチメディア工学専攻 データ生成工学講座 1年<br>
+松村優大</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
