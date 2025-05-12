@@ -103,8 +103,9 @@ $ bash Anaconda3-2024.10-1-Linux-x86_64.sh
 3. condaコマンドのパスを通す
 ホームディレクトリの下にある「.bashrc」ファイルを開き、末尾に
 ```
-export PATH="/home/you2002724/anaconda3/bin:$PATH"
+export PATH="/home/[User Name]/anaconda3/bin:$PATH"
 ```
+※[User Name]はUbuntuのユーザー名
 を追加し、一度、ターミナルを再起動するか、
 ```
 $ source .bashrc
