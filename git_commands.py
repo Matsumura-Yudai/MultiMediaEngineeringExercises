@@ -14,11 +14,12 @@ import os
 # Commit comment
 print("===== Input The Comment About Pushing =====")
 comment = input()
-print("===========================================")
+print("===========================================\n\n")
 
 # --- サブモジュール側で作業 ---
 print("[Step 1] Working on submodule 'TenGAN'")
 os.chdir('TenGAN')  # TenGANディレクトリに移動
+os.system('git checkout main')  # detached HEADの回避
 os.system('git add .')
 os.system('git commit -m "{}"'.format(comment))
 os.system('git push origin main')  # サブモジュールのブランチ（mainやmasterに注意）
