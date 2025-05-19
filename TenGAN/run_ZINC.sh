@@ -5,15 +5,15 @@ ADV_FLAG=$3
 # ===========================
 # General Hyperparameters
 # ===========================   # default
-DATASET_NAME="ZINC"
-MAX_LEN=40                      # 70
+DATASET_NAME="ZINC"             # "ZINC"
+MAX_LEN=40                      # 70(ZINC) 60(QM9)
 BATCH_SIZE=64                   # 64
 
 # ===========================
 # Generator Parameters
 # ===========================
-GENERATED_NUM=10000             # 10000
-GEN_TRAIN_SIZE=9600             # 9600
+GENERATED_NUM=10000             # 10000(ZINC) 5000(QM9) 
+GEN_TRAIN_SIZE=9600             # 9600(ZINC) 4800(QM9)
 GEN_NUM_ENCODER_LAYERS=2        # 4
 GEN_D_MODEL=20                  # 128
 GEN_DIM_FEEDFORWARD=1024        # 1024
@@ -40,7 +40,7 @@ PROPERTIES="druglikeness"       # "druglikeness"
 DIS_LAMBDA=0.5                  # 0.5
 ADV_LR=8e-5                     # 8e-5
 SAVE_NAME=66                    # 66
-ROLL_NUM=4                      # 8
+ROLL_NUM=4                      # 8(ZINC) 16(QM9)
 ADV_EPOCHS=100                  # 100
 
 # ===========================

@@ -7,3 +7,4 @@
 druglikeness, solubility, synthesizabilityの単純和の最適化が行われるように。
 
 d_modelでembedding後のベクトルの次元数を設定
+

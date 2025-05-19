@@ -1,8 +1,17 @@
+---
+title: "マルチメディア工学演習"
+numbering: true
+output:
+  html_document:
+    toc: true
+    number_sections: true
+---
+
 [TenGAN: Pure Transformer Encoders Make an Efficient Discrete GAN for De Novo Molecular Generation | Chen Li, Yoshihiro Yamanishi Proceedings of The 27th International Conference on Artificial Intelligence and Statistics, PMLR 238:361-369, 2024.]:https://proceedings.mlr.press/v238/li24d.html
 [TenGAN ソースコード]:https://github.com/naruto7283/TenGAN
 [WSL Anaconda導入]:https://www.salesanalytics.co.jp/datascience/datascience141/
 
-# マルチメディア工学演習
+# マルチメディア工学演習について
 生成AIを活用したゼロからの創薬に取り組む予定です。
 具体的には、以下の論文で提案されている手法（Transformer Encoder＋GAN＋強化学習を用いたSMILESの単一属性最適化）を基に、複数属性の最適化を目指します。
 
@@ -25,6 +34,7 @@
             - [敵対的学習](#敵対的学習)
 - [演習内容](#演習内容)
     - [単純和](#単純和)
+- [20250517](#20250517)
 
 # 参考文献
 1. [TenGAN: Pure Transformer Encoders Make an Efficient Discrete GAN for De Novo Molecular Generation | Chen Li, Yoshihiro Yamanishi Proceedings of The 27th International Conference on Artificial Intelligence and Statistics, PMLR 238:361-369, 2024.]
