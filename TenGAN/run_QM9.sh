@@ -1,0 +1,1 @@
+python ~/workspace/MultiMediaEngineeringExercises/TenGAN/main.py --gen_pretrain --dis_pretrain --adversarial_train --dataset_name QM9 --max_len 60 --generated_num 5000 --gen_train_size 4800 --roll_num 16

@@ -1,0 +1,1 @@
+python ~/workspace/MultiMediaEngineeringExercises/TenGAN/main.py
