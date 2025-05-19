@@ -52,7 +52,7 @@ if [ "$GEN_FLAG" != "y" ] && [ "$GEN_FLAG" != "n" ] || [ "$DIS_FLAG" != "y" ] &&
 fi
 
 # ===========================
-# Execute 
+# Execute
 # ===========================
 # conda activate tengan_env
 
