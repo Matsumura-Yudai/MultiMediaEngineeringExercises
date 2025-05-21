@@ -8,15 +8,15 @@ ADV_FLAG=$3
 # ===========================
 # General Hyperparameters
 # ===========================   # default
-DATASET_NAME="QM9"
-MAX_LEN=40                      # 70
+DATASET_NAME="QM9"              # "ZINC"
+MAX_LEN=60                      # 60
 BATCH_SIZE=64                   # 64
 
 # ===========================
 # Generator Parameters
 # ===========================
-GENERATED_NUM=10000             # 10000
-GEN_TRAIN_SIZE=9600             # 9600
+GENERATED_NUM=5000              # 5000 
+GEN_TRAIN_SIZE=4800             # 4800
 GEN_NUM_ENCODER_LAYERS=2        # 4
 GEN_D_MODEL=20                  # 128
 GEN_DIM_FEEDFORWARD=1024        # 1024
@@ -43,7 +43,7 @@ PROPERTIES="druglikeness"       # "druglikeness"
 DIS_LAMBDA=0.5                  # 0.5
 ADV_LR=8e-5                     # 8e-5
 SAVE_NAME=66                    # 66
-ROLL_NUM=4                      # 8
+ROLL_NUM=16                     # 16
 ADV_EPOCHS=100                  # 100
 
 # ===========================
