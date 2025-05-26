@@ -1,3 +1,9 @@
+#!/bin/bash
+set -eux
+
+# ===========================
+# Command Line
+# ===========================
 GEN_FLAG=$1
 DIS_FLAG=$2
 ADV_FLAG=$3
