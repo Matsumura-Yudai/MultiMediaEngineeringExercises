@@ -87,7 +87,10 @@ def reward_fn(properties, generated_smiles):
     elif properties == 'solubility':
         vals = batch_solubility(generated_smiles)
     elif properties == 'synthesizability':
-        vals = batch_SA(generated_smiles)   
+        vals = batch_SA(generated_smiles)
+    # 2025/05/26 allオプションの追加
+    elif properties == 'all':
+        vals = (batch_druglikeness(generated_smiles) + batch_solubility(generated_smiles) + batch_SA(generated_smiles)) / 3.0
     return vals
 
 # Diversity

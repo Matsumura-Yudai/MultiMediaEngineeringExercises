@@ -61,6 +61,7 @@ parser.add_argument('--dis_dropout', type=float, default=0.25, help='the dropout
 # Adversarial training
 parser.add_argument('--adversarial_train', action='store_true', help='whether adversarial trian TenGAN or Ten(W)GAN')
 parser.add_argument('--update_rate', type=float, default=0.8, help='the update rate')
+# 2025/05/26 'all'追加
 parser.add_argument('--properties', type=str, default='druglikeness', help='the chemical property for molecular generation (druglikeness, solubility, or synthesizability)')
 parser.add_argument('--dis_lambda', type=float, default=0.5, help='the tradeoff between RL and GAN. If 0: NAIVE elif 1: SeqGAN else: TenGAN')
 parser.add_argument('--adv_lr', type=float, default=8e-5, help='the learning rate for the GAN or WGAN')

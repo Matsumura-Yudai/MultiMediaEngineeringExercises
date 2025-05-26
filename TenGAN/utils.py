@@ -10,41 +10,44 @@ import matplotlib.pyplot as plt
 # ============================================================================
 # Show Top-12 Molecules
 def top_mols_show(filename, properties):
-    """
+	"""
 		filename: NEGATIVE FILES (generated dataset of SMILES)
 		properties: 'druglikeness' or 'solubility' or 'synthesizability'
-    """
-    mols, scores = [], []
-    # Read the generated SMILES data
-    smiles = open(filename, 'r').read()
-    smiles = list(smiles.split('\n'))  
-        
-    if properties == 'druglikeness':
-        scores = batch_druglikeness(smiles)      
-    elif properties == 'synthesizability':
-        scores = batch_SA(smiles)  
-    elif properties == 'solubility':
-        scores = batch_solubility(smiles)   
-  
-  	# Sort the scores
-    dic = dict(zip(smiles, scores))
-    dic=sorted(dic.items(),key=lambda x:x[1],reverse=True)
-    
-    flag = 0
-    top_mols= []
-    for i in range(len(dic)):
-        if flag < 12:
-            if properties == 'synthesizability':
-                if dic[i][0] not in top_mols and dic[i][1] > 0.95 and QED.default(Chem.MolFromSmiles(dic[i][0])) >= 0.5:
-                    flag += 1
-                    top_mols.append(Chem.MolFromSmiles(dic[i][0]))
-                    print(dic[i][0], '\t %.3f' %dic[i][1])
-            else:
-                 if dic[i][0] not in top_mols:
-                    flag += 1
-                    top_mols.append(Chem.MolFromSmiles(dic[i][0]))
-                    print(dic[i][0], '\t %.3f' %dic[i][1])                    
-    return top_mols
+					'all' (sum of the above the three properties)
+	"""
+	mols, scores = [], []
+	# Read the generated SMILES data
+	smiles = open(filename, 'r').read()
+	smiles = list(smiles.split('\n'))  
+
+	if properties == 'druglikeness':
+		scores = batch_druglikeness(smiles)
+	elif properties == 'synthesizability':
+		scores = batch_SA(smiles)
+	elif properties == 'solubility':
+		scores = batch_solubility(smiles)
+	elif properties == 'all':
+		scores = (batch_druglikeness(smiles) + batch_SA(smiles) + batch_solubility(smiles)) / 3.0
+
+	# Sort the scores
+	dic = dict(zip(smiles, scores))
+	dic=sorted(dic.items(),key=lambda x:x[1],reverse=True)
+
+	flag = 0
+	top_mols= []
+	for i in range(len(dic)):
+		if flag < 12:
+			if properties == 'synthesizability':
+				if dic[i][0] not in top_mols and dic[i][1] > 0.95 and QED.default(Chem.MolFromSmiles(dic[i][0])) >= 0.5:
+					flag += 1
+					top_mols.append(Chem.MolFromSmiles(dic[i][0]))
+					print(dic[i][0], '\t %.3f' %dic[i][1])
+			else:
+				if dic[i][0] not in top_mols:
+					flag += 1
+					top_mols.append(Chem.MolFromSmiles(dic[i][0]))
+					print(dic[i][0], '\t %.3f' %dic[i][1])                    
+	return top_mols
 
 
 # Figure out the distributions

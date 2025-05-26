@@ -109,8 +109,8 @@ class Rollout(object):
                         pred[k] += (1 - dis_lambda) * r
                     # Choose the seqs finished in the last iteration
                     for j, k in enumerate(gind): # k: real idx of gind
-                    	if paded[given_num-1][k] == self.tokenizer.char_to_int[self.tokenizer.end]:
-                        	already.append((k, rew[j]))                            
+                        if paded[given_num-1][k] == self.tokenizer.char_to_int[self.tokenizer.end]:
+                            already.append((k, rew[j]))                            
                     already = sorted(already, key = lambda el: el[0]) 
                 if i == 0:
                     rewards.append(pred)

@@ -8,3 +8,8 @@ druglikeness, solubility, synthesizabilityの単純和の最適化が行われ�
 
 d_modelでembedding後のベクトルの次元数を設定
 
+utils.py top_mol_show
+    synthesizabilty は良いスコアが出やすい
+    QEDなどの別のスコアも参考にtopを決定
+
+SA_score.pkl.gz 強化学習スコア計算に使用
