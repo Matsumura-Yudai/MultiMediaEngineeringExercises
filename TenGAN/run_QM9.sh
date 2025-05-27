@@ -18,10 +18,10 @@ BATCH_SIZE=64                   # 64
 # ===========================
 # Generator Parameters
 # ===========================
-GENERATED_NUM=5000              # 5000 
+GENERATED_NUM=5000              # 5000
 GEN_TRAIN_SIZE=4800             # 4800
-GEN_NUM_ENCODER_LAYERS=2        # 4
-GEN_D_MODEL=20                  # 128
+GEN_NUM_ENCODER_LAYERS=4        # 4
+GEN_D_MODEL=128                  # 128
 GEN_DIM_FEEDFORWARD=1024        # 1024
 GEN_NUM_HEADS=4                 # 4
 GEN_MAX_LR=8e-4                 # 8e-4
@@ -31,21 +31,21 @@ GEN_EPOCHS=100                  # 100
 # ===========================
 # Discriminator Parameters
 # ===========================
-DIS_NUM_ENCODER_LAYERS=2        # 4
-DIS_D_MODEL=20                  # 128
+DIS_NUM_ENCODER_LAYERS=4        # 4
+DIS_D_MODEL=128                  # 128
 DIS_NUM_HEADS=4                 # 4
 DIS_EPOCHS=10                   # 10
 DIS_FEED_FORWARD=200            # 200
-DIS_DROPOUT=0.25                # 0.1
+DIS_DROPOUT=0.25                # 0.25
 
 # ===========================
 # Adversarial Training Parameters
 # ===========================
 UPDATE_RATE=0.8                 # 0.8
-PROPERTIES="druglikeness"       # "druglikeness"
+PROPERTIES="all"       # "druglikeness"
 DIS_LAMBDA=0.5                  # 0.5
 ADV_LR=8e-5                     # 8e-5
-SAVE_NAME=66                    # 66
+SAVE_NAME=20250527                    # 66
 ROLL_NUM=16                     # 16
 ADV_EPOCHS=100                  # 100
 

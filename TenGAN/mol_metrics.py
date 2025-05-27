@@ -90,7 +90,7 @@ def reward_fn(properties, generated_smiles):
         vals = batch_SA(generated_smiles)
     # 2025/05/26 allオプションの追加
     elif properties == 'all':
-        vals = (batch_druglikeness(generated_smiles) + batch_solubility(generated_smiles) + batch_SA(generated_smiles)) / 3.0
+        vals = batch_all_with_weight(generated_smiles)
     return vals
 
 # Diversity
@@ -395,4 +395,11 @@ def batch_SA(smiles):
             vals.append(val)
         else:
             vals.append(0.0)
+    return vals
+
+def batch_all_with_weight(smiles, weight=[1/3, 1/3, 1/3]):
+    val_d = batch_druglikeness(smiles)
+    val_sol = batch_solubility(smiles)
+    val_SA = batch_SA(smiles)
+    vals = [weight[0] * val_d[i] + weight[1] * val_sol[i] + weight[2] * val_SA[i] for i in range(len(smiles))]
     return vals

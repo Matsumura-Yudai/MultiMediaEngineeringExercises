@@ -27,7 +27,7 @@ def top_mols_show(filename, properties):
 	elif properties == 'solubility':
 		scores = batch_solubility(smiles)
 	elif properties == 'all':
-		scores = (batch_druglikeness(smiles) + batch_SA(smiles) + batch_solubility(smiles)) / 3.0
+		scores = batch_all_with_weight(smiles)
 
 	# Sort the scores
 	dic = dict(zip(smiles, scores))
