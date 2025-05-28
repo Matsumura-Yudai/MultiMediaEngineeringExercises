@@ -9,6 +9,12 @@ DIS_FLAG=$2
 ADV_FLAG=$3
 
 # ===========================
+# Log Files
+# ===========================
+LOG_STD="~/workspace/MultiMediaEngineeringExercises/TenGAN/log_files/std.log"
+LOG_ERR="~/workspace/MultiMediaEngineeringExercises/TenGAN/log_files/stderr.log"
+
+# ===========================
 # General Hyperparameters
 # ===========================   # default
 DATASET_NAME="ZINC"             # "ZINC"
@@ -93,4 +99,5 @@ $([[ "$ADV_FLAG" = "y" ]] && echo "--adversarial_train") \
 --adv_lr $ADV_LR \
 --save_name $SAVE_NAME \
 --roll_num $ROLL_NUM \
---adv_epochs $ADV_EPOCHS
+--adv_epochs $ADV_EPOCHS \
+> "$LOG_STDOUT_FILE" 2> "$LOG_STDERR_FILE"
