@@ -11,8 +11,8 @@ ADV_FLAG=$3
 # ===========================
 # Log Files
 # ===========================
-LOG_STD="~/workspace/MultiMediaEngineeringExercises/TenGAN/log_files/std.log"
-LOG_ERR="~/workspace/MultiMediaEngineeringExercises/TenGAN/log_files/stderr.log"
+LOG_STD="$HOME/workspace/MultiMediaEngineeringExercises/TenGAN/log_files/std.log"
+LOG_ERR="$HOME/workspace/MultiMediaEngineeringExercises/TenGAN/log_files/stderr.log"
 
 # ===========================
 # General Hyperparameters
@@ -68,7 +68,7 @@ fi
 # ===========================
 # conda activate tengan_env
 
-python3 ~/workspace/MultiMediaEngineeringExercises/TenGAN/main.py \
+python3 $HOME/workspace/MultiMediaEngineeringExercises/TenGAN/main.py \
 --dataset_name $DATASET_NAME \
 --max_len $MAX_LEN \
 --batch_size $BATCH_SIZE \
@@ -100,4 +100,4 @@ $([[ "$ADV_FLAG" = "y" ]] && echo "--adversarial_train") \
 --save_name $SAVE_NAME \
 --roll_num $ROLL_NUM \
 --adv_epochs $ADV_EPOCHS \
-> "$LOG_STDOUT_FILE" 2> "$LOG_STDERR_FILE"
+> "$LOG_STD" 2> "$LOG_ERR"
