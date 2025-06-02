@@ -1,0 +1,3026 @@
+
+
+
+Vocabulary Information:
+==================================================================
+{' ': 0, '^': 1, '$': 2, 'H': 3, 'B': 4, 'c': 5, 'C': 6, 'n': 7, 'N': 8, 'o': 9, 'O': 10, 'p': 11, 'P': 12, 's': 13, 'S': 14, 'F': 15, 'Q': 16, 'W': 17, 'I': 18, '[': 19, ']': 20, '+': 21, 'Z': 22, 'X': 23, '-': 24, '=': 25, '#': 26, '.': 27, '(': 28, ')': 29, '1': 30, '2': 31, '3': 32, '4': 33, '5': 34, '6': 35, '7': 36, '@': 37, '/': 38, '\\': 39}
+
+
+Parameter Information:
+==================================================================
+POSITIVE_FILE            :   dataset/QM9.csv
+NEGATIVE_FILE            :   res/generated_smiles_QM9.csv
+G_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/all/g_pretrained.pkl
+D_PRETRAINED_MODEL       :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/all/d_pretrained.pkl
+PROPERTY_FILE            :   res/save_models/QM9/TenGAN_0.5/rollout_16//batch_64/all/trained_results.csv
+BATCH_SIZE               :   64
+MAX_LEN                  :   60
+VOCAB_SIZE               :   40
+DEVICE                   :   cuda
+GPUS                     :   1
+
+
+GEN_PRETRAIN             :   False
+GENERATED_NUM            :   5000
+GEN_TRAIN_SIZE           :   4800
+GEN_NUM_ENCODER_LAYERS   :   4
+GEN_DIM_FEEDFORWARD      :   1024
+GEN_D_MODEL              :   128
+GEN_NUM_HEADS            :   4
+GEN_MAX_LR               :   0.0008
+GEN_DROPOUT              :   0.1
+GEN_EPOCHS               :   100
+
+
+DIS_PRETRAIN             :   False
+DIS_WGAN                 :   False
+DIS_MINIBATCH            :   False
+DIS_NUM_ENCODER_LAYERS   :   4
+DIS_D_MODEL              :   128
+DIS_NUM_HEADS            :   4
+DIS_MAX_LR               :   8e-07
+DIS_EPOCHS               :   10
+DIS_FEED_FORWARD         :   200
+DIS_DROPOUT              :   0.25
+
+
+ADVERSARIAL_TRAIN        :   True
+PROPERTIES               :   all
+DIS_LAMBDA               :   0.5
+MODEL_NAME               :   TenGAN_0.5
+UPDATE_RATE              :   0.8
+ADV_LR                   :   8e-05
+G_STEP                   :   1
+D_STEP                   :   1
+ADV_EPOCHS               :   100
+ROLL_NUM                 :   16
+==================================================================
+
+
+
+Start time is 2025-06-02 14:15:12
+
+
+
+
+
+Load Pre-trained Generator.
+Generating 5000 samples...
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4226    (84.66%)
+Uniqueness:   4140    (97.96%)
+Novelty:      3889    (93.94%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+COCC(=O)C1(O)CN1
+COCCCC(C)CO
+NC(=O)C(CO)OC=O
+COC1C2OC1C2C#N
+CC#CC(C#N)OC=O
+
+
+[all]: [Mean: 0.329   STD: 0.088   MIN: 0.000   MAX: 0.698]
+********************************************************************************
+
+
+
+
+Load Pre-trained Discriminator.
+
+
+Adversarial Training...
+
+
+
+[1;35mEpoch 1[0m / 100, G_STEP 1 / 1, PG_Loss: -4.498
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.19 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4303    (86.20%)
+Uniqueness:   4200    (97.61%)
+Novelty:      3960    (94.29%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+O=C1C2COC3C(C2)C13
+CCC12COC(O1)C2O
+NC(=O)c1cnoc1
+CC12COC(=O)C1OC2
+C#CCC1(O)CCC1=O
+
+
+[all]: [Mean: 0.331   STD: 0.087   MIN: 0.133   MAX: 0.705]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 2[0m / 100, G_STEP 1 / 1, PG_Loss: -3.847
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.23 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4321    (86.56%)
+Uniqueness:   4230    (97.89%)
+Novelty:      3997    (94.49%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+O=C1CC(C#CCO)O1
+CCC(C)C#CC1CC1
+C#CC(O)C(=O)C#CC
+O=CCNC(=O)N1CC1
+CC1C(=O)C1(O)CC=O
+
+
+[all]: [Mean: 0.333   STD: 0.090   MIN: 0.128   MAX: 0.703]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 3[0m / 100, G_STEP 1 / 1, PG_Loss: -10.446
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.27 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4333    (86.80%)
+Uniqueness:   4233    (97.69%)
+Novelty:      3988    (94.21%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+O=CCC1NCCC1=O
+C1OCC2OCOC2O1
+CC(CC(N)F)C(F)(F)F
+COC12CC(CC1O)O2
+CC#CC(C#N)OC=O
+
+
+[all]: [Mean: 0.339   STD: 0.091   MIN: 0.141   MAX: 0.693]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 4[0m / 100, G_STEP 1 / 1, PG_Loss: -6.352
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.30 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4333    (86.80%)
+Uniqueness:   4221    (97.42%)
+Novelty:      3933    (93.18%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CC12C(O)C3(C)C1CC23
+O=CC1CC2COC2C1
+O=C(O)C1CCC1CO
+O=CC1=CC2NC2C1O
+CC(C)CC(N)=O
+
+
+[all]: [Mean: 0.340   STD: 0.093   MIN: 0.117   MAX: 0.691]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 5[0m / 100, G_STEP 1 / 1, PG_Loss: -2.678
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.34 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4368    (87.50%)
+Uniqueness:   4256    (97.44%)
+Novelty:      3994    (93.84%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+O=CCn1cn[nH]c1=O
+CCC1NC1C(C)=O
+CC(=O)C#CC=O
+NC(=O)c1cnoc1
+CC1=CC2CC1(CO)O2
+
+
+[all]: [Mean: 0.343   STD: 0.091   MIN: 0.130   MAX: 0.681]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 6[0m / 100, G_STEP 1 / 1, PG_Loss: -7.063
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.38 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4397    (88.08%)
+Uniqueness:   4274    (97.20%)
+Novelty:      3989    (93.33%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CCC1(C)C2CC(=O)C21
+C#CC(O)C(=O)C#CC
+CCNC1C=C(OC)C1
+c1n[nH]nc2[nH]nc1-2
+Cc1cc(C)c(=O)[nH]n1
+
+
+[all]: [Mean: 0.344   STD: 0.093   MIN: 0.132   MAX: 0.693]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 7[0m / 100, G_STEP 1 / 1, PG_Loss: -6.239
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.41 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4433    (88.80%)
+Uniqueness:   4307    (97.16%)
+Novelty:      4033    (93.64%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CNC(C)C#CC#N
+C#CC(O)C(=O)C#CC
+C1CC1CC12CC1O2
+CC(OC(N)=O)C1CO1
+C#CC1COC1CC=O
+
+
+[all]: [Mean: 0.346   STD: 0.092   MIN: 0.104   MAX: 0.715]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 8[0m / 100, G_STEP 1 / 1, PG_Loss: -11.484
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.45 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4431    (88.76%)
+Uniqueness:   4291    (96.84%)
+Novelty:      4019    (93.66%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+N#CC(CCO)NC=O
+CC1C(=O)OCC1C=O
+O=C(C1CO1)C1CC1O
+CNC1=C2CC2CC1=O
+CC(=O)C1C=CCC1
+
+
+[all]: [Mean: 0.351   STD: 0.095   MIN: 0.130   MAX: 0.710]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 9[0m / 100, G_STEP 1 / 1, PG_Loss: -8.822
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.49 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4484    (89.82%)
+Uniqueness:   4330    (96.57%)
+Novelty:      4076    (94.13%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CC1NCC1C(C)(C)O
+CC1CC(CCC=O)C1
+COC12CC3C4C3C1C42
+C#CC1=CCOCC1=O
+C1=CC2COC2CCC1
+
+
+[all]: [Mean: 0.354   STD: 0.094   MIN: 0.129   MAX: 0.713]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 10[0m / 100, G_STEP 1 / 1, PG_Loss: -3.689
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.53 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4466    (89.46%)
+Uniqueness:   4337    (97.11%)
+Novelty:      4049    (93.36%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+O=C1CCCCC(O)C1
+O=COCC(=O)CO
+CCC1(CC)CCCC1=O
+C#CC(O)C(=O)C#CC
+C1CC1CC12CC1O2
+
+
+[all]: [Mean: 0.359   STD: 0.097   MIN: 0.142   MAX: 0.702]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 11[0m / 100, G_STEP 1 / 1, PG_Loss: -5.769
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.56 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4498    (90.10%)
+Uniqueness:   4351    (96.73%)
+Novelty:      4088    (93.96%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+O=COCC(=O)CO
+NC(=O)C(CO)OC=O
+CC(=O)C1C=CCC1
+O=CC12CC(=O)C(C1)O2
+C#CC(C)C1CC1OC
+
+
+[all]: [Mean: 0.363   STD: 0.096   MIN: 0.147   MAX: 0.716]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 12[0m / 100, G_STEP 1 / 1, PG_Loss: -13.387
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.61 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4500    (90.14%)
+Uniqueness:   4357    (96.82%)
+Novelty:      4083    (93.71%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+N#CC(CCO)NC=O
+C#CC12CC1C(C)O2
+COC1(CCO)COC1
+CNc1[nH]ncc1OC
+CCCC1CC(C)CO1
+
+
+[all]: [Mean: 0.366   STD: 0.096   MIN: 0.147   MAX: 0.703]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 13[0m / 100, G_STEP 1 / 1, PG_Loss: -9.805
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.65 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4547    (91.09%)
+Uniqueness:   4406    (96.90%)
+Novelty:      4170    (94.64%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CC1CC(=NO)C(=O)N1
+CC1(N)C[N][C]([NH])OC1
+COCc1nonc1C
+O=C1C=CC2C(=O)N12
+[NH]C1=NNCC=C(F)O1
+
+
+[all]: [Mean: 0.370   STD: 0.099   MIN: 0.123   MAX: 0.728]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 14[0m / 100, G_STEP 1 / 1, PG_Loss: -6.401
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.69 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4529    (90.73%)
+Uniqueness:   4389    (96.91%)
+Novelty:      4122    (93.92%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CC(C)c1ccc(O)[nH]1
+CC1CC(=NO)C(=O)N1
+C#CC1(C)OC2CC21
+O=CC12CC(=O)C(C1)O2
+C#CC(O)C(=O)C#CC
+
+
+[all]: [Mean: 0.373   STD: 0.097   MIN: 0.146   MAX: 0.733]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 15[0m / 100, G_STEP 1 / 1, PG_Loss: -6.495
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.72 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4530    (90.75%)
+Uniqueness:   4361    (96.27%)
+Novelty:      4094    (93.88%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+O=COCC(=O)CO
+CNC(=O)C[N]C(=O)O
+C1OC2C3C1C1CN3C12
+COCCCC(C)CO
+COC1CC2C(CO)C12
+
+
+[all]: [Mean: 0.377   STD: 0.100   MIN: 0.136   MAX: 0.728]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 16[0m / 100, G_STEP 1 / 1, PG_Loss: -10.701
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.77 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4562    (91.39%)
+Uniqueness:   4358    (95.53%)
+Novelty:      4112    (94.36%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CN=CNC1(C=O)CC1
+CC1CC(CCC=O)C1
+COC1(CCO)COC1
+C#CC1CC2CC(C2)O1
+CC(O)C1COC1C=O
+
+
+[all]: [Mean: 0.382   STD: 0.099   MIN: 0.132   MAX: 0.719]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 17[0m / 100, G_STEP 1 / 1, PG_Loss: -6.726
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.81 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4597    (92.09%)
+Uniqueness:   4398    (95.67%)
+Novelty:      4147    (94.29%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CC(=O)C1C2CC1C2
+O=C1C(CO)C2OCC12
+CCC12CC1(C=O)C2C
+COCc1nonc1C
+O=C(O)C1CCC1CO
+
+
+[all]: [Mean: 0.385   STD: 0.099   MIN: 0.154   MAX: 0.715]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 18[0m / 100, G_STEP 1 / 1, PG_Loss: -11.276
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.86 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4612    (92.39%)
+Uniqueness:   4412    (95.66%)
+Novelty:      4143    (93.90%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CC1C(=O)OCC1C=O
+CC(CC#N)CC#N
+N#CC(CCO)NC=O
+C#CC12CC1C(C)O2
+CCCNC=O
+
+
+[all]: [Mean: 0.389   STD: 0.101   MIN: 0.141   MAX: 0.727]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 19[0m / 100, G_STEP 1 / 1, PG_Loss: -12.314
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.89 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4575    (91.65%)
+Uniqueness:   4342    (94.91%)
+Novelty:      4092    (94.24%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+[NH][C]1N=COCC(=O)O1
+O=COCC(=O)CO
+CC(C(N)=O)C1NC1=O
+CC#CC(C#N)OC=O
+COC1CC2C(CO)C12
+
+
+[all]: [Mean: 0.394   STD: 0.101   MIN: 0.144   MAX: 0.715]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 20[0m / 100, G_STEP 1 / 1, PG_Loss: -5.396
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.92 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4604    (92.23%)
+Uniqueness:   4349    (94.46%)
+Novelty:      4106    (94.41%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+O=COCC(=O)CO
+OCC1CCOC=NC1
+CCCC1CC2C(O)C12
+c1n[nH]nc2[nH]nc1-2
+CCCNC=O
+
+
+[all]: [Mean: 0.400   STD: 0.101   MIN: 0.153   MAX: 0.727]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 21[0m / 100, G_STEP 1 / 1, PG_Loss: -7.330
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 0.97 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4629    (92.73%)
+Uniqueness:   4348    (93.93%)
+Novelty:      4093    (94.14%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CC1C(=O)OCC1C=O
+CC(N=N)=C(C)C(C)O
+O=COCC(=O)CO
+OCC1CCOC=NC1
+N#CC(CCO)NC=O
+
+
+[all]: [Mean: 0.405   STD: 0.101   MIN: 0.131   MAX: 0.727]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 22[0m / 100, G_STEP 1 / 1, PG_Loss: -10.118
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.01 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4621    (92.57%)
+Uniqueness:   4335    (93.81%)
+Novelty:      4094    (94.44%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CC(=O)C1C2CC1C2
+O=COCC(=O)CO
+O=C1CCCCC(O)C1
+C#CC(O)C(=O)C#CC
+CC1CCN(C=O)C1=O
+
+
+[all]: [Mean: 0.409   STD: 0.102   MIN: 0.149   MAX: 0.719]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 23[0m / 100, G_STEP 1 / 1, PG_Loss: -8.657
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.04 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4604    (92.23%)
+Uniqueness:   4284    (93.05%)
+Novelty:      4025    (93.95%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CC(CC#N)CC#N
+O=C1C(CO)C2OCC12
+CC#CCOC(=O)C=O
+CC(C)C12CC(O1)C2C
+CC(=O)C1CO[C]([NH])O1
+
+
+[all]: [Mean: 0.409   STD: 0.103   MIN: 0.131   MAX: 0.728]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 24[0m / 100, G_STEP 1 / 1, PG_Loss: -14.660
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.09 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4657    (93.29%)
+Uniqueness:   4326    (92.89%)
+Novelty:      4101    (94.80%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+O=CCC1NCCC1=O
+C#CC1=CCOCC1=O
+CC(O)C1COC1C=O
+OCCC(CO)CO
+CC(=NO)C(C=O)CO
+
+
+[all]: [Mean: 0.414   STD: 0.104   MIN: 0.158   MAX: 0.728]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 25[0m / 100, G_STEP 1 / 1, PG_Loss: -11.110
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.13 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4708    (94.31%)
+Uniqueness:   4314    (91.63%)
+Novelty:      4090    (94.81%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CC1C(=O)OCC1C=O
+O=COCC(=O)CO
+C#CC(O)C(=O)C#CC
+CC1CCOC(C)C1=O
+C#CC(C)C1CC1OC
+
+
+[all]: [Mean: 0.422   STD: 0.104   MIN: 0.138   MAX: 0.728]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 26[0m / 100, G_STEP 1 / 1, PG_Loss: -6.725
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.17 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4633    (92.81%)
+Uniqueness:   4206    (90.78%)
+Novelty:      4006    (95.24%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+O=CCC1NCCC1=O
+COCCCC(C)CO
+CC1COCC1CC=O
+CCCC1CC(C)CO1
+OCCC(CO)CO
+
+
+[all]: [Mean: 0.421   STD: 0.105   MIN: 0.136   MAX: 0.728]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 27[0m / 100, G_STEP 1 / 1, PG_Loss: -15.795
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.21 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4656    (93.27%)
+Uniqueness:   4195    (90.10%)
+Novelty:      3988    (95.07%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CC1(N)C[N][C]([NH])OC1
+COCCCC(C)CO
+CC(=O)C1CO[C]([NH])O1
+c1n[nH]nc2[nH]nc1-2
+CCCC1CC(C)CO1
+
+
+[all]: [Mean: 0.429   STD: 0.104   MIN: 0.172   MAX: 0.729]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 28[0m / 100, G_STEP 1 / 1, PG_Loss: -7.625
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.24 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4679    (93.73%)
+Uniqueness:   4151    (88.72%)
+Novelty:      3941    (94.94%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CC1C(=O)OCC1C=O
+COCCCC(C)CO
+CC#CCOC(=O)C=O
+CNC(=O)C12CC(C1)O2
+CCC(C)C(C)(C)O
+
+
+[all]: [Mean: 0.433   STD: 0.105   MIN: 0.143   MAX: 0.728]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 29[0m / 100, G_STEP 1 / 1, PG_Loss: -10.640
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.27 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4722    (94.59%)
+Uniqueness:   4115    (87.15%)
+Novelty:      3897    (94.70%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CCC(C)C#CC1CC1
+O=COCC(=O)CO
+CCC1(CC)CCCC1=O
+CCC1(N)CC(=O)C1C
+CC1CC(CCC=O)C1
+
+
+[all]: [Mean: 0.436   STD: 0.104   MIN: 0.144   MAX: 0.727]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 30[0m / 100, G_STEP 1 / 1, PG_Loss: -10.638
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.31 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4736    (94.87%)
+Uniqueness:   4122    (87.04%)
+Novelty:      3928    (95.29%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CCC(C)C#CC1CC1
+CC1CC(CCC=O)C1
+CC1C(=O)OCC2C(O)C12
+COC1(CCO)COC1
+CC(C)CC1CC(=O)O1
+
+
+[all]: [Mean: 0.438   STD: 0.104   MIN: 0.173   MAX: 0.719]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 31[0m / 100, G_STEP 1 / 1, PG_Loss: -10.766
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.35 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4715    (94.45%)
+Uniqueness:   4008    (85.01%)
+Novelty:      3818    (95.26%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+N#CC(CCO)NC=O
+O=COCC(=O)CO
+CNC(CC(C)O)N(C)C
+CCC1(CCO)OC1C
+CCCNC=O
+
+
+[all]: [Mean: 0.444   STD: 0.102   MIN: 0.152   MAX: 0.733]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 32[0m / 100, G_STEP 1 / 1, PG_Loss: -5.171
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.38 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4716    (94.47%)
+Uniqueness:   3947    (83.69%)
+Novelty:      3753    (95.08%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+N#CC(CCO)NC=O
+CC(CC#N)CC#N
+COCc1nonc1C
+c1n[nH]nc2[nH]nc1-2
+CCCNC=O
+
+
+[all]: [Mean: 0.447   STD: 0.105   MIN: 0.156   MAX: 0.733]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 33[0m / 100, G_STEP 1 / 1, PG_Loss: -8.114
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.42 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4751    (95.17%)
+Uniqueness:   3940    (82.93%)
+Novelty:      3749    (95.15%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+CCC(C)C#CC1CC1
+CCN(C)CCCCO
+O=COCC(=O)CO
+N#CC(CCO)NC=O
+CC(C)C12CC(O1)C2C
+
+
+[all]: [Mean: 0.454   STD: 0.103   MIN: 0.171   MAX: 0.728]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 34[0m / 100, G_STEP 1 / 1, PG_Loss: -10.589
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.46 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4756    (95.27%)
+Uniqueness:   3865    (81.27%)
+Novelty:      3677    (95.14%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+O=COCC(=O)CO
+CC#CCOC(=O)C=O
+CC1(CO)CCCCC1
+CC1CC1C1CC1CO
+COC1CC(=O)C(O)C1
+
+
+[all]: [Mean: 0.453   STD: 0.103   MIN: 0.187   MAX: 0.733]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 35[0m / 100, G_STEP 1 / 1, PG_Loss: -4.239
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.51 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4743    (95.01%)
+Uniqueness:   3652    (77.00%)
+Novelty:      3491    (95.59%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+O=COCC(=O)CO
+CNC1(CC(C)O)CO1
+CC(C)(C)n1ccnn1
+CC(C)CC(N)=O
+CCCC1CC(C)CO1
+
+
+[all]: [Mean: 0.459   STD: 0.104   MIN: 0.167   MAX: 0.738]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 36[0m / 100, G_STEP 1 / 1, PG_Loss: -11.396
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.55 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4772    (95.59%)
+Uniqueness:   3741    (78.39%)
+Novelty:      3570    (95.43%)
+Diversity:    0.92
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+N#CC(O)C1CCC1O
+CN=COCC1CCC1
+CCCNC=O
+COC12CC(C)CC1C2
+
+
+[all]: [Mean: 0.461   STD: 0.101   MIN: 0.172   MAX: 0.728]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 37[0m / 100, G_STEP 1 / 1, PG_Loss: -10.466
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.58 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4770    (95.55%)
+Uniqueness:   3602    (75.51%)
+Novelty:      3443    (95.59%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+CCC1C2CC(COC)C12
+O=COC1CCC1O
+COC1(CCO)COC1
+CCCNC=O
+CC#CC(C)(C=O)NC
+
+
+[all]: [Mean: 0.468   STD: 0.103   MIN: 0.147   MAX: 0.733]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 38[0m / 100, G_STEP 1 / 1, PG_Loss: -15.259
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.61 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4774    (95.63%)
+Uniqueness:   3504    (73.40%)
+Novelty:      3347    (95.52%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+CC1CC(CCC=O)C1
+CCCC1([C+]([O-])[O-])CC1[NH2+]
+CC(=O)C#CC=O
+CCCNC=O
+
+
+[all]: [Mean: 0.472   STD: 0.101   MIN: 0.173   MAX: 0.738]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 39[0m / 100, G_STEP 1 / 1, PG_Loss: -5.755
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.65 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4767    (95.49%)
+Uniqueness:   3357    (70.42%)
+Novelty:      3214    (95.74%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+CC(C)c1ccc(O)[nH]1
+[NH][C]1N=COCC(=O)O1
+O=CCC1NCCC1=O
+CC12CCN1C(=O)NC2
+CCC#CCC1CCC1O
+
+
+[all]: [Mean: 0.477   STD: 0.101   MIN: 0.144   MAX: 0.739]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 40[0m / 100, G_STEP 1 / 1, PG_Loss: -9.982
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.68 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4767    (95.49%)
+Uniqueness:   3354    (70.36%)
+Novelty:      3201    (95.44%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+O=COCC(=O)CO
+COCCCC(C)CO
+CC1CC(CCC=O)C1
+CCCNC=O
+CC(C)C(C)(C)CC=O
+
+
+[all]: [Mean: 0.481   STD: 0.099   MIN: 0.188   MAX: 0.740]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 41[0m / 100, G_STEP 1 / 1, PG_Loss: -10.867
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.72 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4809    (96.33%)
+Uniqueness:   3184    (66.21%)
+Novelty:      3045    (95.63%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+CCCC(CC)CCC#N
+CC1COCCC2C(C)C12
+CCCC1CC(C)CO1
+CC1(CO)CCCCC1
+CCC1(C)CCC(C)C1C
+
+
+[all]: [Mean: 0.482   STD: 0.100   MIN: 0.150   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 42[0m / 100, G_STEP 1 / 1, PG_Loss: -15.675
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.75 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4788    (95.91%)
+Uniqueness:   3083    (64.39%)
+Novelty:      2962    (96.08%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+CCC(O)CCC(C)(C)C
+C1C2OC1C13CC(C1)C23
+COCCCC(C)CO
+CCCNC=O
+NC(=O)c1cnoc1
+
+
+[all]: [Mean: 0.489   STD: 0.099   MIN: 0.173   MAX: 0.740]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 43[0m / 100, G_STEP 1 / 1, PG_Loss: -15.624
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.78 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4787    (95.89%)
+Uniqueness:   3009    (62.86%)
+Novelty:      2873    (95.48%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+CCCC(CC)CCC#N
+CCCC(CC)CCCO
+CCCNC=O
+CC(C)C(C)(C)CC=O
+CCCC1CC(C)CO1
+
+
+[all]: [Mean: 0.492   STD: 0.099   MIN: 0.136   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 44[0m / 100, G_STEP 1 / 1, PG_Loss: -9.321
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.82 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4991
+Validity:     4812    (96.41%)
+Uniqueness:   2902    (60.31%)
+Novelty:      2793    (96.24%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+CC(C)c1ccc(O)[nH]1
+O=COCC(=O)CO
+CNc1[nH]ncc1OC
+CCCC1CC(C)CO1
+CC1(CO)CCCCC1
+
+
+[all]: [Mean: 0.498   STD: 0.097   MIN: 0.165   MAX: 0.740]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 45[0m / 100, G_STEP 1 / 1, PG_Loss: -11.186
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.84 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4828    (96.71%)
+Uniqueness:   2766    (57.29%)
+Novelty:      2659    (96.13%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+CC(C)C1C(C)C2CN1N2
+CCC1(N)CC(=O)C1C
+COCCCC(C)CO
+CC1CCOC(C)C1=O
+CC1CC(CCC=O)C1
+
+
+[all]: [Mean: 0.500   STD: 0.098   MIN: 0.192   MAX: 0.739]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 46[0m / 100, G_STEP 1 / 1, PG_Loss: -7.384
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.87 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4816    (96.47%)
+Uniqueness:   2643    (54.88%)
+Novelty:      2535    (95.91%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+[NH][C]1N=COCC(=O)O1
+CNC1(C=O)CCC1C
+CCCC1([C+]([O-])[O-])CC1[NH2+]
+CCCNC=O
+CC(C)C(C)(C)CC=O
+
+
+[all]: [Mean: 0.507   STD: 0.096   MIN: 0.188   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 47[0m / 100, G_STEP 1 / 1, PG_Loss: -6.735
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.91 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4854    (97.24%)
+Uniqueness:   2614    (53.85%)
+Novelty:      2514    (96.17%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+CC1CC(CCC=O)C1
+CC(C)C(C)(C)CC=O
+CCCC1CC(C)CO1
+CC1CCCC(=O)C(C)C1
+C#CC(CC(C)NC)NC
+
+
+[all]: [Mean: 0.510   STD: 0.096   MIN: 0.157   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 48[0m / 100, G_STEP 1 / 1, PG_Loss: -13.252
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.94 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4852    (97.20%)
+Uniqueness:   2487    (51.26%)
+Novelty:      2384    (95.86%)
+Diversity:    0.91
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+CCC(O)CC(C)N
+CC1CC(CCC=O)C1
+CCC(NC)C(C)(C)OC
+CCCC(CC)CCCO
+
+
+[all]: [Mean: 0.511   STD: 0.096   MIN: 0.150   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 49[0m / 100, G_STEP 1 / 1, PG_Loss: -9.159
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 1.98 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4852    (97.20%)
+Uniqueness:   2407    (49.61%)
+Novelty:      2331    (96.84%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+CC1CC(CCC=O)C1
+CCC(CC=O)=NO
+CCCNC=O
+CC(C)C(C)(C)CC=O
+
+
+[all]: [Mean: 0.516   STD: 0.094   MIN: 0.172   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 50[0m / 100, G_STEP 1 / 1, PG_Loss: -14.585
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.01 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4862    (97.40%)
+Uniqueness:   2275    (46.79%)
+Novelty:      2193    (96.40%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+C#CC([NH])C(=O)OCC
+CCCC1CC(C)CO1
+CCC(C)C(C)(C)O
+CCC1CC2C=CC1C2
+CCC1(CC)CC(C)C1
+
+
+[all]: [Mean: 0.519   STD: 0.095   MIN: 0.195   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 51[0m / 100, G_STEP 1 / 1, PG_Loss: -12.906
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.05 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4849    (97.14%)
+Uniqueness:   2191    (45.18%)
+Novelty:      2124    (96.94%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+CCCC(CC)CCCO
+CCCNC=O
+CCCC1CC(C)CO1
+CNc1nc(C)c(N)[nH]1
+
+
+[all]: [Mean: 0.524   STD: 0.093   MIN: 0.210   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 52[0m / 100, G_STEP 1 / 1, PG_Loss: -10.843
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.08 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4865    (97.46%)
+Uniqueness:   2126    (43.70%)
+Novelty:      2047    (96.28%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+CC(=O)C1(C)C[C]1[NH]
+CCCC(CC)CCCO
+CC(C)C(C)(C)CC=O
+CCCC1CC(C)CO1
+CCC1(C)CCC(C)C1C
+
+
+[all]: [Mean: 0.528   STD: 0.091   MIN: 0.213   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 53[0m / 100, G_STEP 1 / 1, PG_Loss: -11.168
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.11 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4860    (97.36%)
+Uniqueness:   2011    (41.38%)
+Novelty:      1946    (96.77%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+O=C1CCCCC(O)C1
+CCCc1[nH]nc(C)c1N
+CCCC(CC)CCCO
+CCCNC=O
+CCCC1CC(C)CO1
+
+
+[all]: [Mean: 0.534   STD: 0.089   MIN: 0.203   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 54[0m / 100, G_STEP 1 / 1, PG_Loss: -10.070
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.14 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4854    (97.24%)
+Uniqueness:   1921    (39.58%)
+Novelty:      1867    (97.19%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+CCCC(CC)CCCO
+CC1(CO)CCCCC1
+CCC#CCC(C#N)NC
+CCC1(CC)CC(C)C1
+
+
+[all]: [Mean: 0.537   STD: 0.091   MIN: 0.238   MAX: 0.758]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 55[0m / 100, G_STEP 1 / 1, PG_Loss: -8.258
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.19 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4880    (97.76%)
+Uniqueness:   1883    (38.59%)
+Novelty:      1826    (96.97%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+CC1CC(CCC=O)C1
+CCCC(CC)CCCO
+CC(C)C(C)(C)CC=O
+CCCC1CC(C)CO1
+
+
+[all]: [Mean: 0.535   STD: 0.090   MIN: 0.216   MAX: 0.755]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 56[0m / 100, G_STEP 1 / 1, PG_Loss: -7.604
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.23 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4900    (98.16%)
+Uniqueness:   1734    (35.39%)
+Novelty:      1678    (96.77%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+CCCc1[nH]nc(C)c1N
+CCCC(CC)CCCO
+CC1(CO)CCCCC1
+CC(=O)NCC(C)C
+CCC1(CC)CC(C)C1
+
+
+[all]: [Mean: 0.541   STD: 0.090   MIN: 0.208   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 57[0m / 100, G_STEP 1 / 1, PG_Loss: -11.224
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.26 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4902    (98.20%)
+Uniqueness:   1695    (34.58%)
+Novelty:      1644    (96.99%)
+Diversity:    0.90
+
+
+Samples of Novel SMILES:
+CC(CO)C(C)C1CCC1
+COCCCC(C)CO
+CCCC(CC)CCCO
+CC(C)C(C)(C)CC=O
+CC1CC2CCCC2C1C
+
+
+[all]: [Mean: 0.543   STD: 0.089   MIN: 0.185   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 58[0m / 100, G_STEP 1 / 1, PG_Loss: -8.401
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.29 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4900    (98.16%)
+Uniqueness:   1558    (31.80%)
+Novelty:      1505    (96.60%)
+Diversity:    0.89
+
+
+Samples of Novel SMILES:
+CCC(C)C#CC1CC1
+CCN(C)CCCCO
+CCCNC=O
+CCC1(CC)CC(C)C1
+CCCCOCC1CCC1
+
+
+[all]: [Mean: 0.549   STD: 0.086   MIN: 0.206   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 59[0m / 100, G_STEP 1 / 1, PG_Loss: -7.412
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.32 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4897    (98.10%)
+Uniqueness:   1500    (30.63%)
+Novelty:      1457    (97.13%)
+Diversity:    0.89
+
+
+Samples of Novel SMILES:
+CCN(C)CCCCO
+CCCC1CC(C)CO1
+CC1(CO)CCCCC1
+CNC(C)(C)C(C)CN
+CCC1(CC)CC(C)C1
+
+
+[all]: [Mean: 0.550   STD: 0.086   MIN: 0.193   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 60[0m / 100, G_STEP 1 / 1, PG_Loss: -6.591
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.35 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4912    (98.40%)
+Uniqueness:   1434    (29.19%)
+Novelty:      1401    (97.70%)
+Diversity:    0.89
+
+
+Samples of Novel SMILES:
+Cc1ncoc1CC(C)O
+CCCC(CC)CCCO
+COCC(C)C1CCC1
+CCCC1CCC(C)(C)C1
+CC(C)c1cocc1N
+
+
+[all]: [Mean: 0.553   STD: 0.088   MIN: 0.196   MAX: 0.755]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 61[0m / 100, G_STEP 1 / 1, PG_Loss: -5.122
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.38 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4921    (98.58%)
+Uniqueness:   1330    (27.03%)
+Novelty:      1291    (97.07%)
+Diversity:    0.89
+
+
+Samples of Novel SMILES:
+CCC(C)C#CC1CC1
+CCCOCCO[CH][NH]
+Cc1nc(O)n[nH]1
+CC1CC(CCC=O)C1
+CC(C)CC(C#N)CO
+
+
+[all]: [Mean: 0.556   STD: 0.085   MIN: 0.259   MAX: 0.755]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 62[0m / 100, G_STEP 1 / 1, PG_Loss: -11.508
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.41 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4912    (98.40%)
+Uniqueness:   1238    (25.20%)
+Novelty:      1208    (97.58%)
+Diversity:    0.89
+
+
+Samples of Novel SMILES:
+CCC(O)C(C=O)CC
+CCc1c(C)noc1C
+CCCNCC(F)(F)F
+CCNCC(=O)NCC
+CCCC(CC)CCCO
+
+
+[all]: [Mean: 0.563   STD: 0.082   MIN: 0.276   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 63[0m / 100, G_STEP 1 / 1, PG_Loss: -9.238
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.44 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4901    (98.18%)
+Uniqueness:   1200    (24.48%)
+Novelty:      1170    (97.50%)
+Diversity:    0.89
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+CCCC(CC)CCCO
+CC1CCCC2CC2C1
+C#CCCCC(C)CC
+CCCC(C)(C=O)CC
+
+
+[all]: [Mean: 0.561   STD: 0.083   MIN: 0.263   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 64[0m / 100, G_STEP 1 / 1, PG_Loss: -1.892
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.46 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4909    (98.34%)
+Uniqueness:   1081    (22.02%)
+Novelty:      1051    (97.22%)
+Diversity:    0.89
+
+
+Samples of Novel SMILES:
+OCCCCO
+CCC(=O)C1CCCC1
+COCC(C)CCO
+C#CCCCC(C)CC
+C#CCCCC1CC(C)C1
+
+
+[all]: [Mean: 0.566   STD: 0.080   MIN: 0.308   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 65[0m / 100, G_STEP 1 / 1, PG_Loss: -5.440
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.49 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4910    (98.36%)
+Uniqueness:   1094    (22.28%)
+Novelty:      1059    (96.80%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CCC(O)C(C=O)CC
+CCOCC1CCNC1=O
+CC(C)CC(=O)C(C)C
+CCCNC=O
+CCCC(CC)CCCO
+
+
+[all]: [Mean: 0.564   STD: 0.082   MIN: 0.213   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 66[0m / 100, G_STEP 1 / 1, PG_Loss: -11.782
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.52 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4932    (98.80%)
+Uniqueness:   1027    (20.82%)
+Novelty:      989    (96.30%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CC#CC(C)(C)CCC
+COCCCC(C)CO
+CCCC(CC)CCCO
+CCC#CCCCOC
+CCC(CCO)O[CH][NH]
+
+
+[all]: [Mean: 0.574   STD: 0.079   MIN: 0.213   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 67[0m / 100, G_STEP 1 / 1, PG_Loss: -5.495
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.55 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4920    (98.56%)
+Uniqueness:   1025    (20.83%)
+Novelty:      998    (97.37%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CC1CC(CCC=O)C1
+CCCNC=O
+C#CCCCC(C)CC
+CCCC1CC(C)CO1
+CCC(C)(CO)COC
+
+
+[all]: [Mean: 0.566   STD: 0.081   MIN: 0.261   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 68[0m / 100, G_STEP 1 / 1, PG_Loss: -3.278
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.58 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4932    (98.80%)
+Uniqueness:   988    (20.03%)
+Novelty:      959    (97.06%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CCC(O)C(C=O)CC
+CC1CC(CCC=O)C1
+CC(C)CCCNC(C)C
+CCCC1CCC(CC)O1
+C#CCCCC(C)CC
+
+
+[all]: [Mean: 0.571   STD: 0.079   MIN: 0.204   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 69[0m / 100, G_STEP 1 / 1, PG_Loss: 0.759
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.62 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4930    (98.76%)
+Uniqueness:   934    (18.95%)
+Novelty:      907    (97.11%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CCOCc1coc(N)n1
+CNC(C=O)CC1CC1
+OCCCCO
+CCOC1CCC[C]1[NH]
+CCC(O)C(C)CO
+
+
+[all]: [Mean: 0.571   STD: 0.082   MIN: 0.228   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 70[0m / 100, G_STEP 1 / 1, PG_Loss: -1.285
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.65 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4912    (98.40%)
+Uniqueness:   906    (18.44%)
+Novelty:      872    (96.25%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CC#CC(C)(C)CCC
+CC(C)C(=O)CCC=O
+OCCCCO
+CCCC(CC)CCCO
+CC(=O)C1(C(C)C)CC1
+
+
+[all]: [Mean: 0.580   STD: 0.075   MIN: 0.320   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 71[0m / 100, G_STEP 1 / 1, PG_Loss: -6.510
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.68 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4904    (98.24%)
+Uniqueness:   868    (17.70%)
+Novelty:      843    (97.12%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CCCC(CC)CCC#N
+OCCCCO
+C#CCCCC(C)CC
+CCN=C(CC)C(C)C
+CCC(CCNC)NC
+
+
+[all]: [Mean: 0.574   STD: 0.081   MIN: 0.186   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 72[0m / 100, G_STEP 1 / 1, PG_Loss: -8.190
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.71 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4919    (98.54%)
+Uniqueness:   885    (17.99%)
+Novelty:      862    (97.40%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CC[CH][C]CC(C)(C)C
+CCCNC=O
+CCC1C(C)CC12CC2C
+CCCNC(=O)CCC
+CCCC(C)(C=O)CC
+
+
+[all]: [Mean: 0.580   STD: 0.077   MIN: 0.201   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 73[0m / 100, G_STEP 1 / 1, PG_Loss: -11.231
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.73 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4913    (98.42%)
+Uniqueness:   880    (17.91%)
+Novelty:      855    (97.16%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CCC(O)C(C=O)CC
+CC#CC(C)(C)CCC
+CC(C)C(C)C(N)=O
+CCCC1CCC(=O)C1C
+CC(C)CCCNC(C)C
+
+
+[all]: [Mean: 0.580   STD: 0.074   MIN: 0.318   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 74[0m / 100, G_STEP 1 / 1, PG_Loss: -0.499
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.76 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4921    (98.58%)
+Uniqueness:   877    (17.82%)
+Novelty:      850    (96.92%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CCc1c(C)noc1C
+COCCCC(C)CO
+CC1CC(CCC=O)C1
+CCCCc1cc[nH]c1C
+CC(C)C(C)(C)CC=O
+
+
+[all]: [Mean: 0.582   STD: 0.074   MIN: 0.313   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 75[0m / 100, G_STEP 1 / 1, PG_Loss: -9.030
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.78 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4927    (98.70%)
+Uniqueness:   838    (17.01%)
+Novelty:      815    (97.26%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+CC1CCC(C(C)C)CC1
+CC(C)CC(=O)C(C)C
+COCC(C)CCO
+C#CCCCC(C)CC
+
+
+[all]: [Mean: 0.581   STD: 0.075   MIN: 0.217   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 76[0m / 100, G_STEP 1 / 1, PG_Loss: -2.379
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.80 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4919    (98.54%)
+Uniqueness:   843    (17.14%)
+Novelty:      821    (97.39%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CC(CO)C(C)C1CCC1
+CCCCCOC[CH][NH]
+COCCC#CCCO
+C#CCCCC(C)CC
+COC(C)CC1(C)CN1
+
+
+[all]: [Mean: 0.584   STD: 0.071   MIN: 0.331   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 77[0m / 100, G_STEP 1 / 1, PG_Loss: 1.051
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.83 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4922    (98.60%)
+Uniqueness:   846    (17.19%)
+Novelty:      816    (96.45%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CCCC12CCC(C)(C1)C2
+CCCC(CC)CCCO
+CCC1(CC)CC(C)C1
+CCC(C)(C)CCC=O
+CNC(C)C(C)(F)F
+
+
+[all]: [Mean: 0.585   STD: 0.076   MIN: 0.325   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 78[0m / 100, G_STEP 1 / 1, PG_Loss: -4.123
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.85 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4918    (98.52%)
+Uniqueness:   852    (17.32%)
+Novelty:      825    (96.83%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CC1CC(C(C)CCO)C1
+CCCC(=O)C(=O)NC
+CCC(C)(CO)COC
+CCC#CCCCOC
+CCC(C)C(C)(C)O
+
+
+[all]: [Mean: 0.584   STD: 0.075   MIN: 0.264   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 79[0m / 100, G_STEP 1 / 1, PG_Loss: -3.703
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.87 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4929    (98.74%)
+Uniqueness:   834    (16.92%)
+Novelty:      814    (97.60%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CCC[C]CC(C)CC
+CC1CC(CCC=O)C1
+C#CCCCC(C)CC
+CCCC(C)(C=O)CC
+CCN=C(CC)C(C)C
+
+
+[all]: [Mean: 0.587   STD: 0.072   MIN: 0.256   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 80[0m / 100, G_STEP 1 / 1, PG_Loss: -1.883
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.89 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4911    (98.38%)
+Uniqueness:   826    (16.82%)
+Novelty:      801    (96.97%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+COCCCC(C)CO
+CNC(CC(C)C)C(N)=O
+CC(C)CCCNC(C)C
+C#CCCCC(C)CC
+CCCNC(=O)CCC
+
+
+[all]: [Mean: 0.588   STD: 0.070   MIN: 0.308   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 81[0m / 100, G_STEP 1 / 1, PG_Loss: -6.559
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.92 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4906    (98.28%)
+Uniqueness:   836    (17.04%)
+Novelty:      816    (97.61%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CCCC(CC)CCCO
+CCCC1(C)CC(C)C1C
+CC(C)C(C)(C)CC=O
+CCC(C)C(C)(C)O
+CCC=CCC(C)CC
+
+
+[all]: [Mean: 0.587   STD: 0.073   MIN: 0.264   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 82[0m / 100, G_STEP 1 / 1, PG_Loss: -2.731
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.94 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4915    (98.46%)
+Uniqueness:   811    (16.50%)
+Novelty:      787    (97.04%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCCC(CC)CCCO
+COC(C)c1ccn[nH]1
+CCCC(C)(C=O)CC
+CCC=CCC(C)CC
+CCCCO
+
+
+[all]: [Mean: 0.590   STD: 0.070   MIN: 0.303   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 83[0m / 100, G_STEP 1 / 1, PG_Loss: -1.599
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.97 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4905    (98.26%)
+Uniqueness:   827    (16.86%)
+Novelty:      808    (97.70%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CCC(=O)C1CCCC1
+CCCC(CC)CCCO
+CCCC1(CC)CC(C)N1
+C#CCCCC(C)CC
+CCCNC(=O)CCC
+
+
+[all]: [Mean: 0.589   STD: 0.071   MIN: 0.235   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 84[0m / 100, G_STEP 1 / 1, PG_Loss: -3.613
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 2.99 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4916    (98.48%)
+Uniqueness:   788    (16.03%)
+Novelty:      766    (97.21%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CCC(O)C(C=O)CC
+CC#CC(C)(C)CCC
+CC[CH][C]CC(C)(C)C
+CC(C)CC(=O)C(C)C
+CCC(C)C(O)CC(C)C
+
+
+[all]: [Mean: 0.589   STD: 0.070   MIN: 0.307   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 85[0m / 100, G_STEP 1 / 1, PG_Loss: -2.685
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.01 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4933    (98.82%)
+Uniqueness:   783    (15.87%)
+Novelty:      763    (97.45%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCC(CNC=O)C(C)C
+CC(C)CCOCC=O
+CC1COCC1CC=O
+CCCC(C)(C=O)CC
+CCC(C)(C)CCC=O
+
+
+[all]: [Mean: 0.590   STD: 0.072   MIN: 0.208   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 86[0m / 100, G_STEP 1 / 1, PG_Loss: -4.563
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.03 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4929    (98.74%)
+Uniqueness:   768    (15.58%)
+Novelty:      747    (97.27%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CC(C)CCOCC=O
+CCC(O)C(C)CO
+CCCC1CCC(CC)O1
+C#CCCCC(C)CC
+CCC#CCCCOC
+
+
+[all]: [Mean: 0.589   STD: 0.070   MIN: 0.328   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 87[0m / 100, G_STEP 1 / 1, PG_Loss: -0.237
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.06 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4902    (98.20%)
+Uniqueness:   751    (15.32%)
+Novelty:      730    (97.20%)
+Diversity:    0.87
+
+
+Samples of Novel SMILES:
+CCC(O)C(C=O)CC
+CCOCCC1CCOC1
+CCCC(C)(C=O)CC
+CCCCC(C)OCCC
+CCCCCOCC(C)(C)C
+
+
+[all]: [Mean: 0.596   STD: 0.068   MIN: 0.316   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 88[0m / 100, G_STEP 1 / 1, PG_Loss: -5.520
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.08 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4913    (98.42%)
+Uniqueness:   742    (15.10%)
+Novelty:      728    (98.11%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CC(C)CC(=O)C(C)C
+CCCC(CC)CCCO
+COCC(C)CCO
+CC(C)C(C)(C)CC=O
+C#CCCCC(C)CC
+
+
+[all]: [Mean: 0.591   STD: 0.071   MIN: 0.286   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 89[0m / 100, G_STEP 1 / 1, PG_Loss: -5.470
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.10 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4911    (98.38%)
+Uniqueness:   738    (15.03%)
+Novelty:      717    (97.15%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCC(O)CCC(C)(C)C
+CC1CCC(C(C)C)CC1
+CCCC1CCC(CC)O1
+C#CCCCC(C)CC
+C[CH][C]CC(C)CCCC
+
+
+[all]: [Mean: 0.598   STD: 0.066   MIN: 0.359   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 90[0m / 100, G_STEP 1 / 1, PG_Loss: -3.512
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.13 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4921    (98.58%)
+Uniqueness:   754    (15.32%)
+Novelty:      736    (97.61%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CC#CC(C)(C)CCC
+CCN(C)CCCCO
+CCC(O)C(C)CO
+CCCCC(C)OCCC
+CCCC(C)(C=O)CC
+
+
+[all]: [Mean: 0.591   STD: 0.069   MIN: 0.283   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 91[0m / 100, G_STEP 1 / 1, PG_Loss: -3.779
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.15 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4916    (98.48%)
+Uniqueness:   711    (14.46%)
+Novelty:      696    (97.89%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCC(O)CCC(C)(C)C
+CC#CC(C)(C)CCC
+C#CCCCC(C)CC
+CCCCC(C)OCCC
+CCCC(C)(C=O)CC
+
+
+[all]: [Mean: 0.597   STD: 0.069   MIN: 0.184   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 92[0m / 100, G_STEP 1 / 1, PG_Loss: 2.023
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.17 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4925    (98.66%)
+Uniqueness:   714    (14.50%)
+Novelty:      700    (98.04%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+COCc1nonc1C
+CCC[C]CC(C)CC
+CCCCC(C)OCCC
+CCC(C)(C)CCC=O
+CCCCC1CC2CCC12
+
+
+[all]: [Mean: 0.597   STD: 0.066   MIN: 0.346   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 93[0m / 100, G_STEP 1 / 1, PG_Loss: -3.040
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.20 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4916    (98.48%)
+Uniqueness:   668    (13.59%)
+Novelty:      655    (98.05%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCCCC(C)OCCC
+CCC(CC)C1COC1C
+CCCC(CC)CC
+CCCNC(CC)CC
+COCCCC(C)C
+
+
+[all]: [Mean: 0.596   STD: 0.070   MIN: 0.321   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 94[0m / 100, G_STEP 1 / 1, PG_Loss: -3.099
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.22 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4921    (98.58%)
+Uniqueness:   658    (13.37%)
+Novelty:      642    (97.57%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCN(C)CCCCO
+CC1CC(C(C)CCO)C1
+CCC[C]CC(C)CC
+CCN(CC=O)C(C)C
+CCC1COCCCC1C
+
+
+[all]: [Mean: 0.603   STD: 0.065   MIN: 0.370   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 95[0m / 100, G_STEP 1 / 1, PG_Loss: -4.442
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.24 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4914    (98.44%)
+Uniqueness:   640    (13.02%)
+Novelty:      625    (97.66%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCC(O)CCC(C)(C)C
+C#CCCCC(C)CC
+CCCC(C)(C=O)CC
+CCC(C)(C)CCC=O
+CC1CCC(C)(C)CC1
+
+
+[all]: [Mean: 0.601   STD: 0.065   MIN: 0.361   MAX: 0.749]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 96[0m / 100, G_STEP 1 / 1, PG_Loss: -1.821
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.26 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4938    (98.92%)
+Uniqueness:   632    (12.80%)
+Novelty:      612    (96.84%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCC(O)CCC(C)(C)C
+CCC[C]CC(C)CC
+CC(C)CCOCC=O
+CC(C)C(C)(C)CC=O
+C[CH][C]CC(C)CCCC
+
+
+[all]: [Mean: 0.602   STD: 0.065   MIN: 0.328   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 97[0m / 100, G_STEP 1 / 1, PG_Loss: -5.117
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.28 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4928    (98.72%)
+Uniqueness:   609    (12.36%)
+Novelty:      592    (97.21%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCCNC(=O)CCC
+CCC(CC)(CC)NC
+CCC(O)CCCC(C)O
+CCC(CO)CCC(C)C
+CC1CCC(C)(C)CC1
+
+
+[all]: [Mean: 0.599   STD: 0.068   MIN: 0.211   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 98[0m / 100, G_STEP 1 / 1, PG_Loss: 1.680
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.31 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4925    (98.66%)
+Uniqueness:   637    (12.93%)
+Novelty:      618    (97.02%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CC(C)CCCNC(C)C
+CCC=CCC(C)CC
+CCC1(CC)CC(C)C1
+CCc1c(C)n[nH]c1O
+CCC(C)(C)CCC=O
+
+
+[all]: [Mean: 0.598   STD: 0.070   MIN: 0.319   MAX: 0.747]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 99[0m / 100, G_STEP 1 / 1, PG_Loss: -0.333
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.33 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4927    (98.70%)
+Uniqueness:   607    (12.32%)
+Novelty:      594    (97.86%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CCNCC(=O)NCC
+CCCCC(C)OCCC
+CCCC(C)(C=O)CC
+CCCCO[C]([NH])CC
+CCC1(CC)CC(C)C1
+
+
+[all]: [Mean: 0.601   STD: 0.069   MIN: 0.320   MAX: 0.751]
+********************************************************************************
+
+
+
+
+
+[1;35mEpoch 100[0m / 100, G_STEP 1 / 1, PG_Loss: -7.853
+Generating 5000 samples...
+
+Total Computational Time: [1;35m 3.36 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4937    (98.90%)
+Uniqueness:   613    (12.42%)
+Novelty:      595    (97.06%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CC(C)CC1(C)CCC1C
+CCCCC(C)OCCC
+CCCC(C)(C=O)CC
+CCCCc1cc(C)n[nH]1
+CCCOCC(C)CO
+
+
+[all]: [Mean: 0.601   STD: 0.067   MIN: 0.341   MAX: 0.749]
+********************************************************************************
+
+
+Top-12 Molecules of [all]:
+C(C)CCCCCCCCC 	 0.749
+C(CCCCCCCC)(C)C 	 0.747
+C(C)CCCCCCC(C)C 	 0.747
+C(CCCCCC)CCC 	 0.739
+C(C)CCCCCCCC 	 0.739
+C(CCCCCCC)CC 	 0.739
+C(CCC)CCCCC(C) 	 0.739
+C(CCCCCCCC)C 	 0.739
+C(CCCCC)CCCC 	 0.739
+C(CCCCCCCC)(C) 	 0.739
+C(CCC)CCCCCC 	 0.739
+C(CC)CCCCCCC 	 0.739
+********************************************************************************
+
+
+File names for drawing distributions: ['res/generated_smiles_QM9.csv', 'res/generated_smiles_ZINC.csv']
+Mean Real QED Score: 0.479
+Mean GAN QED Score: 0.531
+Mean WGAN QED Score: 0.777
+
+Mean Real SA Score: 0.263
+Mean GAN SA Score: 0.725
+Mean WGAN SA Score: 0.868
+
+Mean Real logP Score: 0.299
+Mean GAN logP Score: 0.634
+Mean WGAN logP Score: 0.673
+
+********************************************************************************
