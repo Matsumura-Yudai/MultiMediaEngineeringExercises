@@ -149,7 +149,7 @@ class GenSampler():
                 logits = self.model.forward(tensor)[-1] # The final token as the result
                 probabilities = torch.nn.functional.softmax(logits, dim=1).squeeze()
                 sampled_char = torch.multinomial(probabilities, 1) # [batch_size, 1]   
-               
+
                 for idx in range(self.batch_size):
                     if finished[idx]:
                         sampled_char[idx, 0] = self.tokenizer.char_to_int[self.tokenizer.end]

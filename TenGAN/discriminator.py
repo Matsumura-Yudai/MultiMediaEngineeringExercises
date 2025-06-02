@@ -113,7 +113,11 @@ class DiscriminatorModel(LightningModule):
         """
         non_mask = mask.transpose(0,1).unsqueeze(-1) == False # [batch_size, maxlength, 1] if Pad: 0, else 1
         masked_encoded = encoded * non_mask # [batch_size, maxlength, d_model]
+        # 2025/06/02 nanが含まれる問題を解決
+        # この時点でのゼロ除算は許容
         ave = masked_encoded.sum(dim=1) / non_mask.sum(dim=1) # [batch_size, d_model]
+        # NaNがある場合、それをゼロベクトルで置換
+        ave = torch.where(torch.isnan(ave), torch.zeros_like(ave), ave)
 
         return ave
 
