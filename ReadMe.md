@@ -112,7 +112,7 @@ $ bash Anaconda3-2024.10-1-Linux-x86_64.sh
 
 3. condaコマンドのパスを通す
 ホームディレクトリの下にある「.bashrc」ファイルを開き、末尾に
-```
+```bash
 export PATH="/home/[User Name]/anaconda3/bin:$PATH"
 ```
 ※[User Name]はUbuntuのユーザー名
@@ -134,17 +134,17 @@ $ conda --version
 1. ソースコードの一部を書き換え
 付属しているソースコードは一部、書き換えが必要な箇所が存在する。
 具体的には、TenGAN/env/env.ymlの117行目
-```
+```yml
 - install==1.3.5
 ```
 である。これをコメントアウトするか、削除する必要がある。
 
 また、TenGAN/main.pyの36行目の
-```
+```python
 parser.add_argument('--gen_pretrain:', action='store_true', help='whether pretrain the dataset')
 ```
 のうち```'--gen_pretrain:'```の末尾の:(コロン)が不要なため、元の行を削除するかコメントアウトして、以下のように書き換える。
-```
+```python
 parser.add_argument('--gen_pretrain', action='store_true', help='whether pretrain the dataset')
 ```
 
@@ -695,10 +695,21 @@ Mean WGAN logP Score: 0.643
 ## 単純和
 「druglikeness」「solubility」「synthesizability」のすべてのスコアを単純に足し合わせる。
 コマンドライン引数の```--properties```オプションに```all```という設定を追加した。
-これを指定することで、単純和が最適化対象となる。
+これを指定することで、3つの属性すべてが最適化対象となる。
 
-また、mol_metrics.pyのreward_fn()関数に処理を追加した。
+### 実装
+単純和の計算用関数は以下のように実装した。
+```python
+def batch_all_with_weight(smiles, weight=[1/3, 1/3, 1/3]):
+    val_d = batch_druglikeness(smiles)
+    val_sol = batch_solubility(smiles)
+    val_SA = batch_SA(smiles)
+    vals = [weight[0] * val_d[i] + weight[1] * val_sol[i] + weight[2] * val_SA[i] for i in range(len(smiles))]
+    return vals
 ```
+
+そして、mol_metrics.pyのreward_fn()関数に処理を追加した。
+```python
 def reward_fn(properties, generated_smiles):
     if properties == 'druglikeness':
         vals = batch_druglikeness(generated_smiles) 
@@ -706,13 +717,14 @@ def reward_fn(properties, generated_smiles):
         vals = batch_solubility(generated_smiles)
     elif properties == 'synthesizability':
         vals = batch_SA(generated_smiles)
+    # 2025/05/26 allオプションの追加
     elif properties == 'all':
-        vals = batch_druglikeness(generated_smiles) + batch_solubility(generated_smiles) + batch_SA(generated_smiles)
+        vals = batch_all_with_weight(generated_smiles)
     return vals
 ```
 
 utils.pyのtop_mols_show()関数にも```all```分岐での処理を追加した。
-```
+```python
 def top_mols_show(filename, properties):
     """
 		filename: NEGATIVE FILES (generated dataset of SMILES)
@@ -730,7 +742,7 @@ def top_mols_show(filename, properties):
     elif properties == 'solubility':
         scores = batch_solubility(smiles)
 	elif properties == 'all':
-		scores = batch_druglikeness(smiles) + batch_SA(smiles) + batch_solubility(smiles)
+		scores = batch_all_with_weight(smiles)
 
   	# Sort the scores
     dic = dict(zip(smiles, scores))
@@ -739,6 +751,62 @@ def top_mols_show(filename, properties):
 :
 ```
 
+### 結果
+```
+Total Computational Time: 3.36 hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4937    (98.90%)
+Uniqueness:   613    (12.42%)
+Novelty:      595    (97.06%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CC(C)CC1(C)CCC1C
+CCCCC(C)OCCC
+CCCC(C)(C=O)CC
+CCCCc1cc(C)n[nH]1
+CCCOCC(C)CO
+
+
+[all]: [Mean: 0.601   STD: 0.067   MIN: 0.341   MAX: 0.749]
+********************************************************************************
+
+
+Top-12 Molecules of [all]:
+C(C)CCCCCCCCC 	 0.749
+C(CCCCCCCC)(C)C 	 0.747
+C(C)CCCCCCC(C)C 	 0.747
+C(CCCCCC)CCC 	 0.739
+C(C)CCCCCCCC 	 0.739
+C(CCCCCCC)CC 	 0.739
+C(CCC)CCCCC(C) 	 0.739
+C(CCCCCCCC)C 	 0.739
+C(CCCCC)CCCC 	 0.739
+C(CCCCCCCC)(C) 	 0.739
+C(CCC)CCCCCC 	 0.739
+C(CC)CCCCCCC 	 0.739
+********************************************************************************
+
+
+File names for drawing distributions: ['res/generated_smiles_QM9.csv', 'res/generated_smiles_ZINC.csv']
+Mean Real QED Score: 0.479
+Mean GAN QED Score: 0.531
+Mean WGAN QED Score: 0.777
+
+Mean Real SA Score: 0.263
+Mean GAN SA Score: 0.725
+Mean WGAN SA Score: 0.868
+
+Mean Real logP Score: 0.299
+Mean GAN logP Score: 0.634
+Mean WGAN logP Score: 0.673
+
+********************************************************************************
+```
 
 # 20250517
 ```
@@ -944,6 +1012,49 @@ Mean GAN logP Score: 0.688
 Mean WGAN logP Score: 0.423
 
 ********************************************************************************
+```
+
+# コードの修正
+付属しているソースコードは一部、書き換えが必要な箇所が存在する。
+
+1. TenGAN/env/env.ymlの117行目
+```yml
+- install==1.3.5
+```
+これをコメントアウトするか、削除する必要がある。
+
+2. TenGAN/main.pyの36行目
+```python
+parser.add_argument('--gen_pretrain:', action='store_true', help='whether pretrain the dataset')
+```
+のうち```'--gen_pretrain:'```の末尾の:(コロン)が不要なため、元の行を削除するかコメントアウトして、以下のように書き換える。
+```python
+parser.add_argument('--gen_pretrain', action='store_true', help='whether pretrain the dataset')
+```
+
+3. TenGAN/discriminator.py
+```non_mask```がゼロベクトルとなってしまった場合（```reward_fn()```関数の値がゼロベクトル）、
+$masked\_encoded = encoded * [0, 0, ..., 0]$
+$ave = [0, 0, ..., 0] / [0, 0, ..., 0] = [nan, nan, ..., nan]$
+となり、ゼロ除算が発生して```ave```の値が欠損値となってしまう。
+それを避けるために、$0 / 0 = 0$として```nan```をゼロに置き換える処理を追加した。
+
+```python
+def masked_mean(self, encoded, mask):
+    """
+        encoded: output of TransformerEncoder with size [batch_size, maxlength, d_model]
+        mask: output of _padding_mask with size [maxlength, batch_size]: if pad: True, else False
+        return: mean of the encoded according to the non-zero/True mask [batch_size, d_model]
+    """
+    non_mask = mask.transpose(0,1).unsqueeze(-1) == False # [batch_size, maxlength, 1] if Pad: 0, else 1
+    masked_encoded = encoded * non_mask # [batch_size, maxlength, d_model]
+    # 2025/06/02 nanが含まれる問題を解決
+    # この時点でのゼロ除算は許容
+    ave = masked_encoded.sum(dim=1) / non_mask.sum(dim=1) # [batch_size, d_model]
+    # NaNがある場合、それをゼロベクトルで置換
+    ave = torch.where(torch.isnan(ave), torch.zeros_like(ave), ave)
+
+    return ave
 ```
 
 # Author
