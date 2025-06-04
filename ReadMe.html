@@ -203,7 +203,7 @@ Ubuntu上で、以下のコマンドを記述し実行すると、ダウンロ�
 <li>condaコマンドのパスを通す<br>
 ホームディレクトリの下にある「.bashrc」ファイルを開き、末尾に</li>
 </ol>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>export PATH="/home/[User Name]/anaconda3/bin:$PATH"
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span><span class="token string">"/home/[User Name]/anaconda3/bin:<span class="token environment constant">$PATH</span>"</span>
 </code></pre><p>※[User Name]はUbuntuのユーザー名<br>
 を追加し、一度、ターミナルを再起動するか、</p>
 <pre data-role="codeBlock" data-info="" class="language-text"><code>$ source .bashrc
@@ -219,12 +219,12 @@ Ubuntu上で、以下のコマンドを記述し実行すると、ダウンロ�
 付属しているソースコードは一部、書き換えが必要な箇所が存在する。<br>
 具体的には、TenGAN/env/env.ymlの117行目</li>
 </ol>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>- install==1.3.5
+<pre data-role="codeBlock" data-info="yml" class="language-yaml yml"><code><span class="token punctuation">-</span> install==1.3.5
 </code></pre><p>である。これをコメントアウトするか、削除する必要がある。</p>
 <p>また、TenGAN/main.pyの36行目の</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>parser.add_argument('--gen_pretrain:', action='store_true', help='whether pretrain the dataset')
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code>parser<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">'--gen_pretrain:'</span><span class="token punctuation">,</span> action<span class="token operator">=</span><span class="token string">'store_true'</span><span class="token punctuation">,</span> <span class="token builtin">help</span><span class="token operator">=</span><span class="token string">'whether pretrain the dataset'</span><span class="token punctuation">)</span>
 </code></pre><p>のうち<code>'--gen_pretrain:'</code>の末尾の:(コロン)が不要なため、元の行を削除するかコメントアウトして、以下のように書き換える。</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>parser.add_argument('--gen_pretrain', action='store_true', help='whether pretrain the dataset')
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code>parser<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">'--gen_pretrain'</span><span class="token punctuation">,</span> action<span class="token operator">=</span><span class="token string">'store_true'</span><span class="token punctuation">,</span> <span class="token builtin">help</span><span class="token operator">=</span><span class="token string">'whether pretrain the dataset'</span><span class="token punctuation">)</span>
 </code></pre><ol start="2">
 <li>環境の構築と起動<br>
 TenGANディレクトリに移動し、以下のコマンドを順に実行すれば、仮想環境の構築は完了である。</li>
@@ -755,43 +755,106 @@ Mean WGAN logP Score: 0.643
 <h2 id="単純和">単純和 </h2>
 <p>「druglikeness」「solubility」「synthesizability」のすべてのスコアを単純に足し合わせる。<br>
 コマンドライン引数の<code>--properties</code>オプションに<code>all</code>という設定を追加した。<br>
-これを指定することで、単純和が最適化対象となる。</p>
-<p>また、mol_metrics.pyのreward_fn()関数に処理を追加した。</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>def reward_fn(properties, generated_smiles):
-    if properties == 'druglikeness':
-        vals = batch_druglikeness(generated_smiles) 
-    elif properties == 'solubility':
-        vals = batch_solubility(generated_smiles)
-    elif properties == 'synthesizability':
-        vals = batch_SA(generated_smiles)
-    elif properties == 'all':
-        vals = batch_druglikeness(generated_smiles) + batch_solubility(generated_smiles) + batch_SA(generated_smiles)
-    return vals
+これを指定することで、3つの属性すべてが最適化対象となる。</p>
+<h3 id="実装">実装 </h3>
+<p>単純和の計算用関数は以下のように実装した。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-def">def</span> <span class="token function">batch_all_with_weight</span><span class="token punctuation">(</span>smiles<span class="token punctuation">,</span> weight<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">/</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token operator">/</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token operator">/</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    val_d <span class="token operator">=</span> batch_druglikeness<span class="token punctuation">(</span>smiles<span class="token punctuation">)</span>
+    val_sol <span class="token operator">=</span> batch_solubility<span class="token punctuation">(</span>smiles<span class="token punctuation">)</span>
+    val_SA <span class="token operator">=</span> batch_SA<span class="token punctuation">(</span>smiles<span class="token punctuation">)</span>
+    vals <span class="token operator">=</span> <span class="token punctuation">[</span>weight<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> val_d<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> weight<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> val_sol<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> weight<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">*</span> val_SA<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword keyword-for">for</span> i <span class="token keyword keyword-in">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>smiles<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword keyword-return">return</span> vals
+</code></pre><p>そして、mol_metrics.pyのreward_fn()関数に処理を追加した。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-def">def</span> <span class="token function">reward_fn</span><span class="token punctuation">(</span>properties<span class="token punctuation">,</span> generated_smiles<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword keyword-if">if</span> properties <span class="token operator">==</span> <span class="token string">'druglikeness'</span><span class="token punctuation">:</span>
+        vals <span class="token operator">=</span> batch_druglikeness<span class="token punctuation">(</span>generated_smiles<span class="token punctuation">)</span> 
+    <span class="token keyword keyword-elif">elif</span> properties <span class="token operator">==</span> <span class="token string">'solubility'</span><span class="token punctuation">:</span>
+        vals <span class="token operator">=</span> batch_solubility<span class="token punctuation">(</span>generated_smiles<span class="token punctuation">)</span>
+    <span class="token keyword keyword-elif">elif</span> properties <span class="token operator">==</span> <span class="token string">'synthesizability'</span><span class="token punctuation">:</span>
+        vals <span class="token operator">=</span> batch_SA<span class="token punctuation">(</span>generated_smiles<span class="token punctuation">)</span>
+    <span class="token comment"># 2025/05/26 allオプションの追加</span>
+    <span class="token keyword keyword-elif">elif</span> properties <span class="token operator">==</span> <span class="token string">'all'</span><span class="token punctuation">:</span>
+        vals <span class="token operator">=</span> batch_all_with_weight<span class="token punctuation">(</span>generated_smiles<span class="token punctuation">)</span>
+    <span class="token keyword keyword-return">return</span> vals
 </code></pre><p>utils.pyのtop_mols_show()関数にも<code>all</code>分岐での処理を追加した。</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>def top_mols_show(filename, properties):
-    """
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-def">def</span> <span class="token function">top_mols_show</span><span class="token punctuation">(</span>filename<span class="token punctuation">,</span> properties<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
 		filename: NEGATIVE FILES (generated dataset of SMILES)
 		properties: 'druglikeness' or 'solubility' or 'synthesizability'
-    """
-    mols, scores = [], []
-    # Read the generated SMILES data
-    smiles = open(filename, 'r').read()
-    smiles = list(smiles.split('\n'))  
+    """</span>
+    mols<span class="token punctuation">,</span> scores <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token comment"># Read the generated SMILES data</span>
+    smiles <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span>filename<span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    smiles <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>smiles<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  
         
-    if properties == 'druglikeness':
-        scores = batch_druglikeness(smiles)      
-    elif properties == 'synthesizability':
-        scores = batch_SA(smiles)  
-    elif properties == 'solubility':
-        scores = batch_solubility(smiles)
-	elif properties == 'all':
-		scores = batch_druglikeness(smiles) + batch_SA(smiles) + batch_solubility(smiles)
+    <span class="token keyword keyword-if">if</span> properties <span class="token operator">==</span> <span class="token string">'druglikeness'</span><span class="token punctuation">:</span>
+        scores <span class="token operator">=</span> batch_druglikeness<span class="token punctuation">(</span>smiles<span class="token punctuation">)</span>      
+    <span class="token keyword keyword-elif">elif</span> properties <span class="token operator">==</span> <span class="token string">'synthesizability'</span><span class="token punctuation">:</span>
+        scores <span class="token operator">=</span> batch_SA<span class="token punctuation">(</span>smiles<span class="token punctuation">)</span>  
+    <span class="token keyword keyword-elif">elif</span> properties <span class="token operator">==</span> <span class="token string">'solubility'</span><span class="token punctuation">:</span>
+        scores <span class="token operator">=</span> batch_solubility<span class="token punctuation">(</span>smiles<span class="token punctuation">)</span>
+	<span class="token keyword keyword-elif">elif</span> properties <span class="token operator">==</span> <span class="token string">'all'</span><span class="token punctuation">:</span>
+		scores <span class="token operator">=</span> batch_all_with_weight<span class="token punctuation">(</span>smiles<span class="token punctuation">)</span>
 
-  	# Sort the scores
-    dic = dict(zip(smiles, scores))
-    dic=sorted(dic.items(),key=lambda x:x[1],reverse=True)
-:
-:
+  	<span class="token comment"># Sort the scores</span>
+    dic <span class="token operator">=</span> <span class="token builtin">dict</span><span class="token punctuation">(</span><span class="token builtin">zip</span><span class="token punctuation">(</span>smiles<span class="token punctuation">,</span> scores<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    dic<span class="token operator">=</span><span class="token builtin">sorted</span><span class="token punctuation">(</span>dic<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>key<span class="token operator">=</span><span class="token keyword keyword-lambda">lambda</span> x<span class="token punctuation">:</span>x<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span>reverse<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span class="token punctuation">:</span>
+<span class="token punctuation">:</span>
+</code></pre><h3 id="結果">結果 </h3>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>Total Computational Time: 3.36 hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4937    (98.90%)
+Uniqueness:   613    (12.42%)
+Novelty:      595    (97.06%)
+Diversity:    0.86
+
+
+Samples of Novel SMILES:
+CC(C)CC1(C)CCC1C
+CCCCC(C)OCCC
+CCCC(C)(C=O)CC
+CCCCc1cc(C)n[nH]1
+CCCOCC(C)CO
+
+
+[all]: [Mean: 0.601   STD: 0.067   MIN: 0.341   MAX: 0.749]
+********************************************************************************
+
+
+Top-12 Molecules of [all]:
+C(C)CCCCCCCCC 	 0.749
+C(CCCCCCCC)(C)C 	 0.747
+C(C)CCCCCCC(C)C 	 0.747
+C(CCCCCC)CCC 	 0.739
+C(C)CCCCCCCC 	 0.739
+C(CCCCCCC)CC 	 0.739
+C(CCC)CCCCC(C) 	 0.739
+C(CCCCCCCC)C 	 0.739
+C(CCCCC)CCCC 	 0.739
+C(CCCCCCCC)(C) 	 0.739
+C(CCC)CCCCCC 	 0.739
+C(CC)CCCCCCC 	 0.739
+********************************************************************************
+
+
+File names for drawing distributions: ['res/generated_smiles_QM9.csv', 'res/generated_smiles_ZINC.csv']
+Mean Real QED Score: 0.479
+Mean GAN QED Score: 0.531
+Mean WGAN QED Score: 0.777
+
+Mean Real SA Score: 0.263
+Mean GAN SA Score: 0.725
+Mean WGAN SA Score: 0.868
+
+Mean Real logP Score: 0.299
+Mean GAN logP Score: 0.634
+Mean WGAN logP Score: 0.673
+
+********************************************************************************
 </code></pre><h1 id="20250517">20250517 </h1>
 <pre data-role="codeBlock" data-info="" class="language-text"><code>(tengan_env) matsumura@Matsumura:~/workspace/MultiMediaEngineeringExercises/TenGAN$ ./run_ZINC.sh y y y
 
@@ -995,6 +1058,42 @@ Mean GAN logP Score: 0.688
 Mean WGAN logP Score: 0.423
 
 ********************************************************************************
+</code></pre><h1 id="コードの修正">コードの修正 </h1>
+<p>付属しているソースコードは一部、書き換えが必要な箇所が存在する。</p>
+<ol>
+<li>TenGAN/env/env.ymlの117行目</li>
+</ol>
+<pre data-role="codeBlock" data-info="yml" class="language-yaml yml"><code><span class="token punctuation">-</span> install==1.3.5
+</code></pre><p>これをコメントアウトするか、削除する必要がある。</p>
+<ol start="2">
+<li>TenGAN/main.pyの36行目</li>
+</ol>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code>parser<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">'--gen_pretrain:'</span><span class="token punctuation">,</span> action<span class="token operator">=</span><span class="token string">'store_true'</span><span class="token punctuation">,</span> <span class="token builtin">help</span><span class="token operator">=</span><span class="token string">'whether pretrain the dataset'</span><span class="token punctuation">)</span>
+</code></pre><p>のうち<code>'--gen_pretrain:'</code>の末尾の:(コロン)が不要なため、元の行を削除するかコメントアウトして、以下のように書き換える。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code>parser<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">'--gen_pretrain'</span><span class="token punctuation">,</span> action<span class="token operator">=</span><span class="token string">'store_true'</span><span class="token punctuation">,</span> <span class="token builtin">help</span><span class="token operator">=</span><span class="token string">'whether pretrain the dataset'</span><span class="token punctuation">)</span>
+</code></pre><ol start="3">
+<li>TenGAN/discriminator.py<br>
+<code>non_mask</code>がゼロベクトルとなってしまった場合（<code>reward_fn()</code>関数の値がゼロベクトル）、<br>
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>a</mi><mi>s</mi><mi>k</mi><mi>e</mi><mi>d</mi><mi mathvariant="normal">_</mi><mi>e</mi><mi>n</mi><mi>c</mi><mi>o</mi><mi>d</mi><mi>e</mi><mi>d</mi><mo>=</mo><mi>e</mi><mi>n</mi><mi>c</mi><mi>o</mi><mi>d</mi><mi>e</mi><mi>d</mi><mo>∗</mo><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>0</mn><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">masked\_encoded = encoded * [0, 0, ..., 0]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">s</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">co</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">co</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">]</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>v</mi><mi>e</mi><mo>=</mo><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>0</mn><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">]</mo><mi mathvariant="normal">/</mi><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>0</mn><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">]</mo><mo>=</mo><mo stretchy="false">[</mo><mi>n</mi><mi>a</mi><mi>n</mi><mo separator="true">,</mo><mi>n</mi><mi>a</mi><mi>n</mi><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mi>n</mi><mi>a</mi><mi>n</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">ave = [0, 0, ..., 0] / [0, 0, ..., 0] = [nan, nan, ..., nan]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">]</span><span class="mord">/</span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal">nan</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">nan</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">nan</span><span class="mclose">]</span></span></span></span><br>
+となり、ゼロ除算が発生して<code>ave</code>の値が欠損値となってしまう。<br>
+それを避けるために、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mi mathvariant="normal">/</mi><mn>0</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0 / 0 = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0/0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>として<code>nan</code>をゼロに置き換える処理を追加した。</li>
+</ol>
+<pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-def">def</span> <span class="token function">masked_mean</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> encoded<span class="token punctuation">,</span> mask<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+        encoded: output of TransformerEncoder with size [batch_size, maxlength, d_model]
+        mask: output of _padding_mask with size [maxlength, batch_size]: if pad: True, else False
+        return: mean of the encoded according to the non-zero/True mask [batch_size, d_model]
+    """</span>
+    non_mask <span class="token operator">=</span> mask<span class="token punctuation">.</span>transpose<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token boolean">False</span> <span class="token comment"># [batch_size, maxlength, 1] if Pad: 0, else 1</span>
+    masked_encoded <span class="token operator">=</span> encoded <span class="token operator">*</span> non_mask <span class="token comment"># [batch_size, maxlength, d_model]</span>
+    <span class="token comment"># 2025/06/02 nanが含まれる問題を解決</span>
+    <span class="token comment"># この時点でのゼロ除算は許容</span>
+    ave <span class="token operator">=</span> masked_encoded<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">/</span> non_mask<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment"># [batch_size, d_model]</span>
+    <span class="token comment"># NaNがある場合、それをゼロベクトルで置換</span>
+    ave <span class="token operator">=</span> torch<span class="token punctuation">.</span>where<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>isnan<span class="token punctuation">(</span>ave<span class="token punctuation">)</span><span class="token punctuation">,</span> torch<span class="token punctuation">.</span>zeros_like<span class="token punctuation">(</span>ave<span class="token punctuation">)</span><span class="token punctuation">,</span> ave<span class="token punctuation">)</span>
+
+    <span class="token keyword keyword-return">return</span> ave
 </code></pre><h1 id="author">Author </h1>
 <p>大阪大学大学院 情報科学研究科 マルチメディア工学専攻 データ生成工学講座 1年<br>
 松村優大</p>
