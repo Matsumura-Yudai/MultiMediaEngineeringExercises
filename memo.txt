@@ -13,3 +13,6 @@ utils.py top_mol_show
     QEDなどの別のスコアも参考にtopを決定
 
 SA_score.pkl.gz 強化学習スコア計算に使用
+
+lambdaが小さくなるほどUniquenessに関するペナルティが大きくなる
+SAスコアは簡単な化学物質を生成しやすい->Uniquenessが下がりやすい

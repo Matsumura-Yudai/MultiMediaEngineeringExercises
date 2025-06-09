@@ -7,6 +7,7 @@ set -eux
 GEN_FLAG=$1
 DIS_FLAG=$2
 ADV_FLAG=$3
+LOG_FLAG=$4
 
 # ===========================
 # Log Files
@@ -100,4 +101,5 @@ $([[ "$ADV_FLAG" = "y" ]] && echo "--adversarial_train") \
 --save_name $SAVE_NAME \
 --roll_num $ROLL_NUM \
 --adv_epochs $ADV_EPOCHS \
-> "$LOG_STD" 2> "$LOG_ERR"
+$([[ "$LOG_FLAG" = "y" ]] && echo "> "$LOG_STD" 2> "$LOG_ERR"")
+# > "$LOG_STD" 2> "$LOG_ERR"
