@@ -8,8 +8,9 @@ import heapq
 import pickle
 import argparse
 import warnings
-import numpy as np 
+import numpy as np
 import pandas as pd
+from fractions import Fraction
 from utils import *
 from rdkit import Chem
 import pytorch_lightning
@@ -22,6 +23,17 @@ from generator import GeneratorModel, GenSampler
 from data_iter import GenDataLoader, DisDataLoader
 rdBase.DisableLog('rdApp.error')
 warnings.filterwarnings("ignore")
+
+def parse_weight(value):
+    try:
+        # 小数か整数として試みる
+        return float(value)
+    except ValueError:
+        try:
+            # 分数として解釈（例: "1/3"）
+            return float(Fraction(value))
+        except ValueError:
+            raise ValueError(f"Invalid weight format: {value}")
 
 # ===========================
 # Default settings
@@ -68,6 +80,17 @@ parser.add_argument('--adv_lr', type=float, default=8e-5, help='the learning rat
 parser.add_argument('--save_name', type=int, default=66, help='the name of the loaded model')
 parser.add_argument('--roll_num', type=int, default=8, help='the rollout times for Monte Carlo tree search: 16 for QM9, 8 for ZINC')
 parser.add_argument('--adv_epochs', type=int, default=100, help='the adverarial training epochs for TenGAN or Ten(W)GAN')
+
+# ===========================
+# Reinforcement Learning
+parser.add_argument(
+    '--weights',
+    type=parse_weight,
+    nargs=3,
+    default=[1/3, 1/3, 1/3],
+    help='Weights for druglikeness, solubility, synthesizability (e.g., 0.5 or 1/2)'
+)
+
 args = parser.parse_known_args()[0]
 
 # ===========================
@@ -245,7 +268,7 @@ def evaluation(generated_smiles, gen_data_loader, time=None, epoch=None):
         print('\n')  
         # Compute the property scores of novel smiles   
         if len(novel_smiles):
-            vals = reward_fn(args.properties, novel_smiles)
+            vals = reward_fn(args.properties, novel_smiles, args.weights)
             mean_s, std_s, min_s, max_s = np.mean(vals), np.std(vals), np.min(vals), np.max(vals)
             print('[{}]: [Mean: {:.3f}   STD: {:.3f}   MIN: {:.3f}   MAX: {:.3f}]'.format(args.properties, mean_s, std_s, min_s, max_s))
             # Write the property scores into file
@@ -257,7 +280,7 @@ def evaluation(generated_smiles, gen_data_loader, time=None, epoch=None):
         print('*'*80)
         print('\n')
     return validity, uniqueness, novelty, diversity
-        
+
 def pg_loss(probs, targets, rewards):
     """
     probs: [batch_size * max_len, vocab_size], logP of the gen output
@@ -390,7 +413,7 @@ def main():
     # Adversarial training
     if args.adversarial_train:
         print("\n\nAdversarial Training...")
-        for epoch in range(args.adv_epochs): 
+        for epoch in range(args.adv_epochs):
             rollsampler = GenSampler(rollout.own_model, gen_data_loader.tokenizer, args.batch_size, args.max_len)
             for g_step in range(G_STEP):
                 # Sampling a batch of samples
@@ -403,7 +426,7 @@ def main():
                 gen_pred = torch.nn.functional.log_softmax(gen_pred, dim=1) 
                 targets = encoded[1:].transpose(0, 1).contiguous().view(-1,) # [batch_size * max_len]
                 # Calculate the rewards of each token in a batch  
-                rewards = rollout.get_reward(samples, rollsampler, args.roll_num, dis, args.dis_lambda, args.properties) # [batch_size, seq_len-init]
+                rewards = rollout.get_reward(samples, rollsampler, args.roll_num, dis, args.dis_lambda, args.properties, args.weights) # [batch_size, seq_len-init]
                 rewards = torch.tensor(rewards).to(DEVICE)
                 # Compute policy gradient loss
                 loss = pg_loss(gen_pred, targets, rewards)  

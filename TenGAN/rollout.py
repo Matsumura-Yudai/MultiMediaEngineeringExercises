@@ -62,7 +62,7 @@ class Rollout(object):
         self.update_rate = update_rate
         self.device = device
 
-    def get_reward(self, samples, rollsampler, rollout_num, dis, dis_lambda = 0.5, properties = None):
+    def get_reward(self, samples, rollsampler, rollout_num, dis, dis_lambda = 0.5, properties = None, weight=[1/3, 1/3, 1/3]):
         """
             - samples: a batch of generated SMILES (Be NOT decoded yet)
             - rollout_num: the number of rollout times
@@ -102,7 +102,7 @@ class Rollout(object):
                     if len(generated_smiles): # batch_size
                         pct_unique = len(list(set(generated_smiles))) / float(len(generated_smiles))
                         weights = np.array([pct_unique / float(generated_smiles.count(sm)) for sm in generated_smiles])
-                        vals = reward_fn(properties, generated_smiles)
+                        vals = reward_fn(properties, generated_smiles, weight)
                         rew = vals * weights
                     # Add the just calculated rewards
                     for k, r in zip(gind, rew):
@@ -126,7 +126,7 @@ class Rollout(object):
                 pred = dis_lambda * pred
                 pct_unique = len(list(set(samples))) / float(len(samples))
                 weights = np.array([pct_unique / float(samples.count(s)) for s in samples])                
-                vals = reward_fn(properties, samples)
+                vals = reward_fn(properties, samples, weight)
                 rew = vals * weights
                 pred += (1 - dis_lambda) * rew
             if i == 0:

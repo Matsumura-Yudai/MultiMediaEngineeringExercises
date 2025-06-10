@@ -5,6 +5,7 @@ import pickle
 import random
 import numpy as np
 import pandas as pd
+import sys
 from rdkit import Chem
 from rdkit import rdBase
 from math import exp, log
@@ -81,16 +82,19 @@ class Tokenizer():
 
 # ============================================================================
 # Select chemical properties
-def reward_fn(properties, generated_smiles):
+def reward_fn(properties, generated_smiles, w=[1/3, 1/3, 1/3]):
     if properties == 'druglikeness':
-        vals = batch_druglikeness(generated_smiles) 
+        vals = batch_druglikeness(generated_smiles)
     elif properties == 'solubility':
         vals = batch_solubility(generated_smiles)
     elif properties == 'synthesizability':
         vals = batch_SA(generated_smiles)
     # 2025/05/26 allオプションの追加
     elif properties == 'all':
-        vals = batch_all_with_weight(generated_smiles)
+        if len(w) != 3:
+            print(f"The Length of **w** must be 3, but it is {len(w)} now.")
+            sys.exit(-1)
+        vals = batch_all_with_weight(generated_smiles, w)
     return vals
 
 # Diversity

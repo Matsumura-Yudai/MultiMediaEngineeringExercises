@@ -808,208 +808,64 @@ Mean WGAN logP Score: 0.673
 ********************************************************************************
 ```
 
-# 20250517
+### 重み変更($\frac{2}{3} \frac{1}{6} \frac{1}{6}$)
 ```
-(tengan_env) matsumura@Matsumura:~/workspace/MultiMediaEngineeringExercises/TenGAN$ ./run_ZINC.sh y y y
+Epoch 100 / 100, G_STEP 1 / 1, PG_Loss: -2.090
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:12<00:00,  6.34it/s]
 
-
-
-Vocabulary Information:
-==================================================================
-{' ': 0, '^': 1, '$': 2, 'H': 3, 'B': 4, 'c': 5, 'C': 6, 'n': 7, 'N': 8, 'o': 9, 'O': 10, 'p': 11, 'P': 12, 's': 13, 'S': 14, 'F': 15, 'Q': 16, 'W': 17, 'I': 18, '[': 19, ']': 20, '+': 21, 'Z': 22, 'X': 23, '-': 24, '=': 25, '#': 26, '.': 27, '(': 28, ')': 29, '1': 30, '2': 31, '3': 32, '4': 33, '5': 34, '6': 35, '7': 36, '@': 37, '/': 38, '\\': 39}
-
-
-Parameter Information:
-==================================================================
-POSITIVE_FILE            :   dataset/ZINC.csv
-NEGATIVE_FILE            :   res/generated_smiles_ZINC.csv
-G_PRETRAINED_MODEL       :   res/save_models/ZINC/TenGAN_0.5/rollout_4//batch_64/druglikeness/g_pretrained.pkl
-D_PRETRAINED_MODEL       :   res/save_models/ZINC/TenGAN_0.5/rollout_4//batch_64/druglikeness/d_pretrained.pkl
-PROPERTY_FILE            :   res/save_models/ZINC/TenGAN_0.5/rollout_4//batch_64/druglikeness/trained_results.csv
-BATCH_SIZE               :   64
-MAX_LEN                  :   40
-VOCAB_SIZE               :   40
-DEVICE                   :   cpu
-GPUS                     :   0
-
-
-GEN_PRETRAIN             :   True
-GENERATED_NUM            :   10000
-GEN_TRAIN_SIZE           :   9600
-GEN_NUM_ENCODER_LAYERS   :   2
-GEN_DIM_FEEDFORWARD      :   1024
-GEN_D_MODEL              :   20
-GEN_NUM_HEADS            :   4
-GEN_MAX_LR               :   0.0008
-GEN_DROPOUT              :   0.1
-GEN_EPOCHS               :   100
-
-
-DIS_PRETRAIN             :   True
-DIS_WGAN                 :   False
-DIS_MINIBATCH            :   False
-DIS_NUM_ENCODER_LAYERS   :   2
-DIS_D_MODEL              :   20
-DIS_NUM_HEADS            :   5
-DIS_MAX_LR               :   8e-07
-DIS_EPOCHS               :   10
-DIS_FEED_FORWARD         :   200
-DIS_DROPOUT              :   0.25
-
-
-ADVERSARIAL_TRAIN        :   True
-PROPERTIES               :   druglikeness
-DIS_LAMBDA               :   0.5
-MODEL_NAME               :   TenGAN_0.5
-UPDATE_RATE              :   0.8
-ADV_LR                   :   8e-05
-G_STEP                   :   1
-D_STEP                   :   1
-ADV_EPOCHS               :   100
-ROLL_NUM                 :   4
-==================================================================
-
-
-
-Start time is 2025-05-17 14:33:58
-
-
-
-GPU available: False, used: False
-TPU available: False, using: 0 TPU cores
-IPU available: False, using: 0 IPUs
-
-
-Pre-train Generator...
-Epoch 99: 100%|██████████████████████████| 154/154 [00:24<00:00,  6.30it/s, loss=0.694, v_num=7, val_loss=0.666]
-Generator Pre-train Time: 0.69 hours
-Generating 10000 samples...
-100%|█████████████████████████████████████████████████████████████████████████| 156/156 [00:37<00:00,  4.12it/s]
+Total Computational Time:  3.77  hours.
 
 Results Report:
 ********************************************************************************
-Total Mols:   9984
-Validity:     889    (8.90%)
-Uniqueness:   888    (99.89%)
-Novelty:      884    (99.55%)
-Diversity:    0.89
-
-
-Samples of Novel SMILES:
-CC(C)C1=CC=C(c2ccccc2)OC[NH+]C=C1
-Cc1cccc(CCCOC(=O)OC2=CC(=O)C3=C2CC3)c1
-O=C(CCOc1ccc(Cl)cc1)OC(=O)Nc1ccccc1F
-O=C(Nc1ccccc1)C(=O)Nc1ccccc1
-O=C(NCc1ccc(F)cc1)c1ccc(I)c(Cl)c1
-
-
-[druglikeness]: [Mean: 0.755   STD: 0.133   MIN: 0.000   MAX: 0.942]
-********************************************************************************
-
-
-GPU available: False, used: False
-TPU available: False, using: 0 TPU cores
-IPU available: False, using: 0 IPUs
-
-
-Pre-train Discriminator...
-Epoch 9: 100%|█| 314/314 [00:21<00:00, 14.62it/s, loss=0.715, v_num=8, val_loss=0.710, val_acc=0.477, train_loss
-Discriminator Pre-train Time: 0.76 hours
-GPU available: False, used: False
-TPU available: False, using: 0 TPU cores
-IPU available: False, using: 0 IPUs
-
-
-Adversarial Training...
-
-
-
-Epoch 1 / 100, G_STEP 1 / 1, PG_Loss: -21.447
-Generating 10000 samples...
-100%|█████████████████████████████████████████████████████████████████████████| 156/156 [00:38<00:00,  4.07it/s]
-
-Total Computational Time:  0.78  hours.
-
-Results Report:
-********************************************************************************
-Total Mols:   9984
-Validity:     918    (9.19%)
-Uniqueness:   918    (100.00%)
-Novelty:      916    (99.78%)
-Diversity:    0.88
-
-
-Samples of Novel SMILES:
-O=C(COC(=O)c1ccccc1)Nc1ccc(F)c(F)c1Cl
-O=C(CSc1cccc(Cl)c1)NCCc1ccccc1Cl
-CS1=CC=CC=C1NC(=O)CC(=O)Nc1ccccc1
-O=C(COc1c(Cl)cccc1Cl)CSc1ccc(Cl)c(Cl)n1
-O=C(NCCSc1ccccc1)c1ccc(F)nc1Cl
-
-
-[druglikeness]: [Mean: 0.755   STD: 0.134   MIN: 0.000   MAX: 0.939]
-********************************************************************************
-
-:
-中略
-:
-
-
-Epoch 100 / 100, G_STEP 1 / 1, PG_Loss: -43.552
-Generating 10000 samples...
-100%|█████████████████████████████████████████████████████████████████████████| 156/156 [00:38<00:00,  4.02it/s]
-
-Total Computational Time:  3.16  hours.
-
-Results Report:
-********************************************************************************
-Total Mols:   9984
-Validity:     3578    (35.84%)
-Uniqueness:   2832    (79.15%)
-Novelty:      2811    (99.26%)
+Total Mols:   4992
+Validity:     4930    (98.76%)
+Uniqueness:   1659    (33.65%)
+Novelty:      1636    (98.61%)
 Diversity:    0.86
 
 
 Samples of Novel SMILES:
-CCOc1cccc(CCC(=O)Nc2ccccc2Cl)c1
-Nc1ccccc1OCCc1ccccc1Br
-O=NCCc1ccccc1Br
-C[C@@H](COC(=O)c1ccccc1)c1cccc(Br)c1
-O=C(Nc1cccc(F)c1)c1cc(Cl)cc(Cl)c1
+CCC(O)C(O)CC(C)O
+CC(C)CCOC(C)O
+CCC(O)CC(C)C(C)C
+CCOCCC(O)CCO
+CCC(C)C(C=O)CC
 
 
-[druglikeness]: [Mean: 0.782   STD: 0.115   MIN: 0.000   MAX: 0.939]
+[all]: [Mean: 0.572   STD: 0.040   MIN: 0.338   MAX: 0.659]
 ********************************************************************************
 
 
-Top-12 Molecules of [druglikeness]:
-O=C(c1ccccc1)NCc1ncccc1Br        0.939
-n1cccc(Br)c1CNC(=O)c1ccccc1F     0.939
-c1ccccc1CNC(=O)c1ncc(Br)cc1F     0.939
-O=c1cccccc1S(=O)(=O)Nc1c(OC)cccc1        0.939
-c1ccc(Br)cc1NC(COc1ncccc1)=O     0.938
-c1(Br)cnccc1NC(COc1ccccc1)=O     0.938
-c1ccccc1OCC(=O)NC(c1ccccc1Cl)=O          0.938
-O=C(c1ccccc1)NC(=O)COc1ccccc1Cl          0.938
-O=C(c1ccccc1)NC(=O)Cc1ccccc1Br   0.937
-c1ccc(Cl)cc(CNC(=O)c2ncccc2)c1=O         0.936
-c1cc(OC)ccc1CNC(=O)c1cc(C#N)ccc1F        0.935
-C(c1c(Br)cccc1)C(=O)Nc1ncccc1    0.934
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Top-12 Molecules of [all]:
+C(CCCCCCCC)C     0.739
+C(CCCCC)CCCC     0.739
+C(CCCCCC)C(C)C   0.738
+C(CCCCCCC)(C)C   0.738
+C(CCC)CCCCC      0.728
+C(C)CCCCCCC      0.728
+C(CCC)CCC(C)C    0.727
+C(C)(C)CCCCCC    0.727
+C(CCCCC)C(C)C    0.727
+C(CCCCCC)(C)C    0.727
+CCCCCCC(C)C      0.727
+C(CCC(C)C)CCC    0.727
 ********************************************************************************
 
 
-File names for drawing distributions: ['res/generated_smiles_ZINC.csv', 'res/generated_smiles_QM9.csv']
-Mean Real QED Score: 0.779
-Mean GAN QED Score: 0.791
-Mean WGAN QED Score: 0.559
+File names for drawing distributions: ['res/generated_smiles_QM9.csv', 'res/generated_smiles_ZINC.csv']
+Mean Real QED Score: 0.479
+Mean GAN QED Score: 0.575
+Mean WGAN QED Score: 0.777
 
-Mean Real SA Score: 0.759
-Mean GAN SA Score: 0.869
-Mean WGAN SA Score: 0.553
+Mean Real SA Score: 0.263
+Mean GAN SA Score: 0.616
+Mean WGAN SA Score: 0.868
 
-Mean Real logP Score: 0.625
-Mean GAN logP Score: 0.688
-Mean WGAN logP Score: 0.423
+Mean Real logP Score: 0.299
+Mean GAN logP Score: 0.560
+Mean WGAN logP Score: 0.673
 
 ********************************************************************************
 ```

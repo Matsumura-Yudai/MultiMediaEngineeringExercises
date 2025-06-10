@@ -5,11 +5,12 @@ import seaborn as sns
 from rdkit import Chem
 from mol_metrics import *
 import matplotlib.pyplot as plt
+import sys
 
 
 # ============================================================================
 # Show Top-12 Molecules
-def top_mols_show(filename, properties):
+def top_mols_show(filename, properties, w=[1/3, 1/3, 1/3]):
 	"""
 		filename: NEGATIVE FILES (generated dataset of SMILES)
 		properties: 'druglikeness' or 'solubility' or 'synthesizability'
@@ -27,6 +28,9 @@ def top_mols_show(filename, properties):
 	elif properties == 'solubility':
 		scores = batch_solubility(smiles)
 	elif properties == 'all':
+		if len(w) != 3:
+			print(f"The Length of **w** must be 3, but it is {len(w)} now.")
+			sys.exit(-1)
 		scores = batch_all_with_weight(smiles)
 
 	# Sort the scores

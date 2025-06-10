@@ -51,10 +51,15 @@ DIS_DROPOUT=0.25                # 0.25
 UPDATE_RATE=0.8                 # 0.8
 PROPERTIES="all"       # "druglikeness"
 DIS_LAMBDA=0.5                  # 0.5
-ADV_LR=8e-6                     # 8e-5
-SAVE_NAME=20250527                    # 66
+ADV_LR=8e-5                     # 8e-5
+SAVE_NAME=20250610                  # 66
 ROLL_NUM=16                     # 16
 ADV_EPOCHS=100                  # 100
+
+# ===========================
+# Reinforcement Learning
+# ===========================
+WEIGHTS=(2/3 1/6 1/6)
 
 # ===========================
 # Usage
@@ -101,5 +106,7 @@ $([[ "$ADV_FLAG" = "y" ]] && echo "--adversarial_train") \
 --save_name $SAVE_NAME \
 --roll_num $ROLL_NUM \
 --adv_epochs $ADV_EPOCHS \
-$([[ "$LOG_FLAG" = "y" ]] && echo "> "$LOG_STD" 2> "$LOG_ERR"")
-# > "$LOG_STD" 2> "$LOG_ERR"
+\
+--weights "${WEIGHTS[@]}" \
+# $([[ "$LOG_FLAG" = "y" ]] && echo "> "$LOG_STD" 2> "$LOG_ERR"")
+> "$LOG_STD" 2> "$LOG_ERR"
