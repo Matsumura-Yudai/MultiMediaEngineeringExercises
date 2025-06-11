@@ -1,5 +1,9 @@
 #!/bin/bash
-set -eux
+set -e  # シェルスクリプト内で何らかのエラーが発生した時点で、シェルスクリプトを終了
+set -u  # 未定義の変数を参照しようとした際にシェルスクリプトをエラー終了
+# set -x  # 実行したコマンドをすべて標準エラー出力
+# set -C  # > で出力のリダイレクト先に既存のファイルを指定すると、元々の中身を上書きしてしまうが、-C オプションを使うと上書きしようとした際にエラーにしてくれる
+# set -o pipefail # パイプラインの途中でエラーが起きた時に、パイラプイン全体の終了ステータスをエラーの起きたコマンドの終了ステータスと同じにしてくれる
 
 # ===========================
 # Command Line
@@ -91,6 +95,8 @@ $([[ "$GEN_FLAG" = "y" ]] && echo "--gen_pretrain") \
 --gen_epochs $GEN_EPOCHS \
 \
 $([[ "$DIS_FLAG" = "y" ]] && echo "--dis_pretrain") \
+--dis_wgan \
+--dis_minibatch \
 --dis_num_encoder_layers $DIS_NUM_ENCODER_LAYERS \
 --dis_d_model $DIS_D_MODEL \
 --dis_num_heads $DIS_NUM_HEADS \
