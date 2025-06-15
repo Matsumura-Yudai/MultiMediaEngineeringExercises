@@ -870,6 +870,70 @@ Mean WGAN logP Score: 0.673
 ********************************************************************************
 ```
 
+### 重み($\frac{2}{3} \frac{1}{6} \frac{1}{6}$) + WGAN + minibatch
+```
+Epoch 100 / 100, G_STEP 1 / 1, PG_Loss: -4.141
+Generating 5000 samples...
+100%|███████████████████████████████████████████████████████████████████| 78/78 [00:10<00:00,  7.27it/s]
+
+Total Computational Time:  3.52  hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4905    (98.26%)
+Uniqueness:   1124    (22.92%)
+Novelty:      1106    (98.40%)
+Diversity:    0.88
+
+
+Samples of Novel SMILES:
+CCCC(N)C(C)CC
+CCOC(C)CC(C)OC
+CCCC(C=O)C(C)C
+CCC(C)C(=O)C(C)N
+CC(C)CC(C)(C)C
+
+
+[all]: [Mean: 0.571   STD: 0.040   MIN: 0.384   MAX: 0.648]
+********************************************************************************
+
+
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Top-12 Molecules of [all]:
+C1CCC(CCCC)CC1   0.740
+C(CC)CCCCCCC     0.739
+C(CCCCCCCC)C     0.739
+C(CCCCCCC)CC     0.739
+C(CCCC)CCCCC     0.739
+CCCCCCCCCC       0.739
+C(CCCCCC)C(C)C   0.738
+C(CCC)CCCC(C)C   0.738
+CC(CCCCCCC)C     0.738
+CCCCCCCC(C)C     0.738
+C(CCCCCCC)(C)C   0.738
+C(C)(CCCCCCC)C   0.738
+********************************************************************************
+
+
+File names for drawing distributions: ['res/generated_smiles_QM9.csv', 'res/generated_smiles_ZINC.csv']
+Mean Real QED Score: 0.479
+Mean GAN QED Score: 0.555
+Mean WGAN QED Score: 0.777
+
+Mean Real SA Score: 0.263
+Mean GAN SA Score: 0.686
+Mean WGAN SA Score: 0.868
+
+Mean Real logP Score: 0.299
+Mean GAN logP Score: 0.577
+Mean WGAN logP Score: 0.673
+
+********************************************************************************
+```
+
 # コードの修正
 付属しているソースコードは一部、書き換えが必要な箇所が存在する。
 

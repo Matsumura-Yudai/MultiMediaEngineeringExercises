@@ -114,5 +114,4 @@ $([[ "$ADV_FLAG" = "y" ]] && echo "--adversarial_train") \
 --adv_epochs $ADV_EPOCHS \
 \
 --weights "${WEIGHTS[@]}" \
-# $([[ "$LOG_FLAG" = "y" ]] && echo "> "$LOG_STD" 2> "$LOG_ERR"")
 > "$LOG_STD" 2> "$LOG_ERR"
