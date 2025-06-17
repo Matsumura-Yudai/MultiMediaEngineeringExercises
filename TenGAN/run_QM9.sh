@@ -55,7 +55,7 @@ DIS_DROPOUT=0.25                # 0.25
 UPDATE_RATE=0.8                 # 0.8
 PROPERTIES="all"       # "druglikeness"
 DIS_LAMBDA=0.5                  # 0.5
-ADV_LR=8e-5                     # 8e-5
+ADV_LR=8e-6                     # 8e-5
 SAVE_NAME=20250610                  # 66
 ROLL_NUM=16                     # 16
 ADV_EPOCHS=100                  # 100
@@ -114,4 +114,4 @@ $([[ "$ADV_FLAG" = "y" ]] && echo "--adversarial_train") \
 --adv_epochs $ADV_EPOCHS \
 \
 --weights "${WEIGHTS[@]}" \
-> "$LOG_STD" 2> "$LOG_ERR"
+# > "$LOG_STD" 2> "$LOG_ERR"
