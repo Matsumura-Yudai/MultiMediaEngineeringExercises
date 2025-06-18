@@ -16,3 +16,5 @@ SA_score.pkl.gz 強化学習スコア計算に使用
 
 lambdaが小さくなるほどUniquenessに関するペナルティが大きくなる
 SAスコアは簡単な化学物質を生成しやすい->Uniquenessが下がりやすい
+
+w = [5/6, 1/6, 0], LR=8e-5 (3e-5)
