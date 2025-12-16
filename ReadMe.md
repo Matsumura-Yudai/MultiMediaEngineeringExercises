@@ -934,6 +934,63 @@ Mean WGAN logP Score: 0.673
 ********************************************************************************
 ```
 
+### 5.1.4 + LR(8e-6)
+```
+Total Computational Time: [1;35m 4.07 [0m hours.
+
+Results Report:
+********************************************************************************
+Total Mols:   4992
+Validity:     4538    (90.91%)
+Uniqueness:   4404    (97.05%)
+Novelty:      4139    (93.98%)
+Diversity:    0.93
+
+
+Samples of Novel SMILES:
+CC1COC2CC1C2
+CCC(=O)CC1CCC1
+COC(C#N)C1COC1
+CC(=O)OC(=O)NC=N
+CCOC(C)C(=O)NC
+
+
+[all]: [Mean: 0.421   STD: 0.073   MIN: 0.155   MAX: 0.653]
+********************************************************************************
+
+
+Top-12 Molecules of [all]:
+C(CCC(C)(C)C)CC 	 0.700
+C1CCCCCC(C)(C)C1 	 0.692
+c1c(F)ccc(C)c1F 	 0.681
+O(C)CCCCCC 	 0.678
+C(CC)OCCCCC 	 0.675
+C1C(CCC(O)=O)CC1 	 0.673
+O=C(CCCC)CCC 	 0.672
+C1C(CCC(C)C)C1 	 0.671
+Fc1c(F)cccc1C 	 0.663
+C(CCC)CNC(=O)C 	 0.659
+CCCCCCO 	 0.657
+CC(C(C)C)CCCC 	 0.656
+********************************************************************************
+
+
+File names for drawing distributions: ['res/generated_smiles_QM9.csv', 'res/generated_smiles_ZINC.csv']
+Mean Real QED Score: 0.479
+Mean GAN QED Score: 0.483
+Mean WGAN QED Score: 0.777
+
+Mean Real SA Score: 0.263
+Mean GAN SA Score: 0.274
+Mean WGAN SA Score: 0.868
+
+Mean Real logP Score: 0.299
+Mean GAN logP Score: 0.318
+Mean WGAN logP Score: 0.673
+
+********************************************************************************
+```
+
 # コードの修正
 付属しているソースコードは一部、書き換えが必要な箇所が存在する。
 
