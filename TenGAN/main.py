@@ -1,8 +1,10 @@
 import os
 import csv
+import sys
 import copy
 import glob
 import time
+import json
 import torch
 import heapq
 import pickle
@@ -10,6 +12,7 @@ import argparse
 import warnings
 import numpy as np
 import pandas as pd
+from datetime import datetime
 from fractions import Fraction
 from utils import *
 from rdkit import Chem
@@ -90,6 +93,16 @@ parser.add_argument(
     default=[1/3, 1/3, 1/3],
     help='Weights for druglikeness, solubility, synthesizability (e.g., 0.5 or 1/2)'
 )
+
+# ===========================
+# Performance Optimization
+parser.add_argument('--skip_distribution', action='store_true', default=True, help='Skip distribution comparison (saves 5-15 minutes)')
+parser.add_argument('--no_skip_distribution', dest='skip_distribution', action='store_false', help='Enable distribution comparison')
+
+# ===========================
+# Gradient Clipping
+parser.add_argument('--gen_grad_clip', type=float, default=5.0, help='Gradient clipping threshold for Generator (default: 5.0, recommended: 3.0 for large models)')
+parser.add_argument('--dis_grad_clip', type=float, default=1.0, help='Gradient clipping threshold for Discriminator (default: 1.0)')
 
 args = parser.parse_known_args()[0]
 
@@ -231,11 +244,14 @@ def evaluation(generated_smiles, gen_data_loader, time=None, epoch=None):
         valid_smiles = []
         for mol in generated_mols:
             if mol != None and mol.GetNumAtoms() > 1 and Chem.MolToSmiles(mol) != ' ':
-                valid_smiles.append(Chem.MolToSmiles(mol))   
+                valid_smiles.append(Chem.MolToSmiles(mol))
         unique_smiles = list(set(valid_smiles))
         novel_smiles = []
         # Keep the unique order for the POSITIVE dataset
-        train_smiles = [Chem.MolToSmiles(Chem.MolFromSmiles(sm)) for sm in gen_data_loader.train_data]
+        # 最適化: train_smilesをキャッシュ（train_dataは不変なので一度だけ正規化）
+        if not hasattr(gen_data_loader, '_train_smiles_cached'):
+            gen_data_loader._train_smiles_cached = [Chem.MolToSmiles(Chem.MolFromSmiles(sm)) for sm in gen_data_loader.train_data]
+        train_smiles = gen_data_loader._train_smiles_cached
         for smile in unique_smiles:
             if smile not in train_smiles:
                 novel_smiles.append(smile)
@@ -297,11 +313,100 @@ def pg_loss(probs, targets, rewards):
     return loss
 
 # ============================================================================
+class TeeLogger:
+    """Redirect stdout to both console and log file"""
+    def __init__(self, log_file):
+        self.terminal = sys.stdout
+        self.log = open(log_file, 'w', buffering=1)  # Line buffering
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        self.terminal.flush()
+        self.log.flush()
+
+    def close(self):
+        self.log.close()
+
+def save_config(log_dir, args):
+    """Save configuration to JSON file"""
+    config = {
+        'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'dataset': {
+            'name': args.dataset_name,
+            'max_len': args.max_len,
+            'batch_size': args.batch_size,
+        },
+        'generator': {
+            'pretrain': args.gen_pretrain,
+            'generated_num': args.generated_num,
+            'train_size': args.gen_train_size,
+            'num_encoder_layers': args.gen_num_encoder_layers,
+            'd_model': args.gen_d_model,
+            'dim_feedforward': args.gen_dim_feedforward,
+            'num_heads': args.gen_num_heads,
+            'max_lr': args.gen_max_lr,
+            'dropout': args.gen_dropout,
+            'epochs': args.gen_epochs,
+            'gradient_clip': args.gen_grad_clip,
+        },
+        'discriminator': {
+            'pretrain': args.dis_pretrain,
+            'wgan': args.dis_wgan,
+            'minibatch': args.dis_minibatch,
+            'num_encoder_layers': args.dis_num_encoder_layers,
+            'd_model': args.dis_d_model,
+            'num_heads': args.dis_num_heads,
+            'epochs': args.dis_epochs,
+            'feed_forward': args.dis_feed_forward,
+            'dropout': args.dis_dropout,
+            'gradient_clip': args.dis_grad_clip,
+        },
+        'adversarial': {
+            'train': args.adversarial_train,
+            'update_rate': args.update_rate,
+            'properties': args.properties,
+            'dis_lambda': args.dis_lambda,
+            'learning_rate': args.adv_lr,
+            'save_name': args.save_name,
+            'roll_num': args.roll_num,
+            'epochs': args.adv_epochs,
+            'weights': args.weights,
+        },
+        'evaluation': {
+            'skip_distribution': args.skip_distribution,
+        }
+    }
+
+    config_path = os.path.join(log_dir, 'config.json')
+    with open(config_path, 'w') as f:
+        json.dump(config, f, indent=4)
+    print(f'Configuration saved to {config_path}')
+
 def main():
+    # ===========================
+    # Setup logging
+    # Create log directory with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_base_dir = os.path.join(os.path.dirname(__file__), 'log_files')
+    log_dir = os.path.join(log_base_dir, timestamp)
+    os.makedirs(log_dir, exist_ok=True)
+
+    # Save configuration
+    save_config(log_dir, args)
+
+    # Redirect stdout to log file
+    log_file_path = os.path.join(log_dir, 'log.txt')
+    tee_logger = TeeLogger(log_file_path)
+    sys.stdout = tee_logger
+
     # ===========================
     # For reproducing experiments
     start_time = time.time()
     print('\n\n\nStart time is {}\n\n\n'.format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    print(f'Log directory: {log_dir}\n')
     # Apply the seed to reproduct the results
     np.random.seed(0)
     torch.manual_seed(0)
@@ -321,11 +426,11 @@ def main():
         epochs = args.gen_epochs, 
         max_lr = args.gen_max_lr)
     gen_trainer = pytorch_lightning.Trainer(
-        max_epochs = args.gen_epochs, 
-        gpus = GPUS, 
+        max_epochs = args.gen_epochs,
+        gpus = GPUS,
         weights_summary=None,
         progress_bar_refresh_rate = 5,
-        gradient_clip_val = 5.0,
+        gradient_clip_val = args.gen_grad_clip,
         gradient_clip_algorithm = 'norm')
 
     # Pre-train the generator
@@ -340,12 +445,23 @@ def main():
         # Load the pre-trained generator
         print("\n\nLoad Pre-trained Generator.")
         gen.load_state_dict(torch.load(G_PRETRAINED_MODEL))
+        print("[DEBUG] Model weights loaded.")
+    print("[DEBUG] Moving model to device...")
     gen.to(DEVICE)
+    print("[DEBUG] Model moved to device.")
+
     # Sample the generated data
-    print('Generating {} samples...'.format(args.generated_num))
-    sampler = GenSampler(gen, gen_data_loader.tokenizer, args.batch_size, args.max_len)
-    generated_smiles = sampler.sample_multi(args.generated_num, NEGATIVE_FILE)
-    validity, uniqueness, novelty, diversity = evaluation(generated_smiles, gen_data_loader)
+    # 最適化: Adversarial trainingを行う場合は初期評価をスキップ（各エポックで評価するため）
+    if not args.adversarial_train:
+        print('Generating {} samples...'.format(args.generated_num))
+        sampler = GenSampler(gen, gen_data_loader.tokenizer, args.batch_size, args.max_len)
+        generated_smiles = sampler.sample_multi(args.generated_num, NEGATIVE_FILE)
+        validity, uniqueness, novelty, diversity = evaluation(generated_smiles, gen_data_loader)
+    else:
+        print('Skipping initial evaluation (will be done in adversarial training loop)')
+        # Discriminatorトレーニング用に最小限のサンプルを生成
+        sampler = GenSampler(gen, gen_data_loader.tokenizer, args.batch_size, args.max_len)
+        generated_smiles = sampler.sample_multi(args.generated_num, NEGATIVE_FILE)
     
     # ===========================
     # Discriminator objects definition
@@ -364,10 +480,10 @@ def main():
         dis_wgan = args.dis_wgan,
         minibatch = args.dis_minibatch)
     dis_trainer = pytorch_lightning.Trainer(
-        max_epochs = args.dis_epochs, 
-        gpus = GPUS, 
+        max_epochs = args.dis_epochs,
+        gpus = GPUS,
         weights_summary=None,
-        gradient_clip_val = 1.0,
+        gradient_clip_val = args.dis_grad_clip,
         gradient_clip_algorithm = 'value')
 
     # Pre-train the discriminator
@@ -403,10 +519,12 @@ def main():
     roll_own_model.to(DEVICE)
     gen.requires_grad = True
     adv_trainer = pytorch_lightning.Trainer(
-        max_epochs = D_STEP, 
-        gpus = GPUS, 
+        max_epochs = D_STEP,
+        gpus = GPUS,
         weights_summary=None,
-        progress_bar_refresh_rate=0)
+        progress_bar_refresh_rate=0,
+        gradient_clip_val = args.dis_grad_clip,
+        gradient_clip_algorithm = 'value')
     pg_optimizer = torch.optim.Adam(params = gen.parameters(), lr=args.adv_lr)
     rollout = Rollout(gen, roll_own_model, tokenizer, args.update_rate, DEVICE)
 
@@ -414,8 +532,11 @@ def main():
     if args.adversarial_train:
         print("\n\nAdversarial Training...")
         for epoch in range(args.adv_epochs):
+            epoch_start = time.time()
+
             rollsampler = GenSampler(rollout.own_model, gen_data_loader.tokenizer, args.batch_size, args.max_len)
             for g_step in range(G_STEP):
+                g_step_start = time.time()
                 # Sampling a batch of samples
                 samples = sampler.sample()
                 encoded = [torch.tensor(tokenizer.encode(s)) for s in samples] # Within the start and end token
@@ -423,37 +544,68 @@ def main():
                 gen_pred = gen.forward(encoded[:-1]) # [max_len, batch_size, vocab_size]
                 gen_pred = gen_pred.transpose(0, 1) # [batch_size, max_len, vocab_size]
                 gen_pred = gen_pred.contiguous().view(-1, gen_pred.size(-1)) # [batch_size * max_len, vocab_size]
-                gen_pred = torch.nn.functional.log_softmax(gen_pred, dim=1) 
+                gen_pred = torch.nn.functional.log_softmax(gen_pred, dim=1)
                 targets = encoded[1:].transpose(0, 1).contiguous().view(-1,) # [batch_size * max_len]
-                # Calculate the rewards of each token in a batch  
+
+                # Calculate the rewards of each token in a batch
+                reward_start = time.time()
                 rewards = rollout.get_reward(samples, rollsampler, args.roll_num, dis, args.dis_lambda, args.properties, args.weights) # [batch_size, seq_len-init]
+                reward_time = time.time() - reward_start
+
                 rewards = torch.tensor(rewards).to(DEVICE)
                 # Compute policy gradient loss
-                loss = pg_loss(gen_pred, targets, rewards)  
-                print('\n\n\n\033[1;35mEpoch {}\033[0m / {}, G_STEP {} / {}, PG_Loss: {:.3f}'.format(epoch+1, args.adv_epochs, g_step+1, G_STEP, loss))  
+                loss = pg_loss(gen_pred, targets, rewards)
+                print('\n\n\n\033[1;35mEpoch {}\033[0m / {}, G_STEP {} / {}, PG_Loss: {:.3f}, Reward計算: {:.1f}秒, G_STEP合計: {:.1f}秒'.format(
+                    epoch+1, args.adv_epochs, g_step+1, G_STEP, loss, reward_time, time.time() - g_step_start))
                 pg_optimizer.zero_grad()
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(gen.parameters(), 5, norm_type=2)
-                pg_optimizer.step() 
+                torch.nn.utils.clip_grad_norm_(gen.parameters(), args.gen_grad_clip, norm_type=2)
+                pg_optimizer.step()
+
             # Update models
             rollout.update_params()
-            # Save models
-            torch.save(gen.state_dict(), PATHS + '/Epoch_' + str(epoch+1) + '_gen.pkl')
-            if args.dis_lambda:
-                torch.save(dis.state_dict(), PATHS + '/Epoch_' + str(epoch+1) + '_dis.pkl')
+
+            # Save models (最適化: 5エポックごと + 最終エポックで保存)
+            SAVE_INTERVAL = 5
+            if (epoch + 1) % SAVE_INTERVAL == 0 or (epoch + 1) == args.adv_epochs:
+                torch.save(gen.state_dict(), PATHS + '/Epoch_' + str(epoch+1) + '_gen.pkl')
+                if args.dis_lambda:
+                    torch.save(dis.state_dict(), PATHS + '/Epoch_' + str(epoch+1) + '_dis.pkl')
+
             # Generate Samples
+            sample_start = time.time()
             print('Generating {} samples...'.format(args.generated_num))
             sampler = GenSampler(gen, gen_data_loader.tokenizer, args.batch_size, args.max_len)
             generated_smiles = sampler.sample_multi(args.generated_num, NEGATIVE_FILE)
+            sample_time = time.time() - sample_start
+            print('[TIMING] サンプル生成: {:.1f}秒'.format(sample_time))
+
             current_time = (time.time() - start_time) / 3600.
             print('\nTotal Computational Time: \033[1;35m {:.2f} \033[0m hours.'.format(current_time))
+
+            eval_start = time.time()
             validity, uniqueness, novelty, diversity = evaluation(generated_smiles, gen_data_loader, current_time, epoch)
+            eval_time = time.time() - eval_start
+            print('[TIMING] 評価: {:.1f}秒'.format(eval_time))
+
             # Train discriminator
             if args.dis_lambda:
+                dis_start = time.time()
                 for i in range(D_STEP):
+                    setup_start = time.time()
                     # Update the dis_data_loader
-                    dis_data_loader.setup() 
+                    dis_data_loader.setup()
+                    setup_time = time.time() - setup_start
+
+                    fit_start = time.time()
                     adv_trainer.fit(dis, dis_data_loader)
+                    fit_time = time.time() - fit_start
+                    print('[TIMING] Discriminator #{}: setup={:.1f}秒, fit={:.1f}秒'.format(i+1, setup_time, fit_time))
+                dis_total_time = time.time() - dis_start
+                print('[TIMING] Discriminator訓練合計: {:.1f}秒'.format(dis_total_time))
+
+            epoch_time = time.time() - epoch_start
+            print('[TIMING] ★★★ Epoch {} 合計時間: {:.1f}秒 ({:.2f}分) ★★★'.format(epoch+1, epoch_time, epoch_time/60))
     else:
         # Load the trained TenGAN
         if not os.path.exists(TenGAN_G_MODEL):
@@ -491,15 +643,31 @@ def main():
         print('*'*80)
 
     # Figure out distributions
-    all_files = glob.glob('res/*.csv')
-    print('\n\nFile names for drawing distributions:', all_files)
-    # Notice: Add '_w.csv' to the name of WGAN file 
-    if len(all_files) == 2: 
-        distribution(POSITIVE_FILE, all_files[0], all_files[1])
+    # 最適化: distribution()はQM9とZINCを比較する設計だが、QM9のみ使用時は不要
+    # 実行には5-15分かかるため、スキップ可能にする（--skip_distribution / --no_skip_distribution）
+    if not args.skip_distribution:
+        all_files = glob.glob('res/*.csv')
+        print('\n\nFile names for drawing distributions:', all_files)
+        # Notice: Add '_w.csv' to the name of WGAN file
+        if len(all_files) == 2:
+            distribution(POSITIVE_FILE, all_files[0], all_files[1])
+        else:
+            print('Distributions are not generated.')
     else:
-        print('Distributions are not generated.')
+        print('\n\nDistribution comparison skipped (--skip_distribution enabled)')
     print('*'*80)
-        
+
+    # ===========================
+    # Cleanup logging
+    try:
+        sys.stdout.flush()
+        sys.stdout.close()
+        sys.stdout = sys.__stdout__
+        print(f'\n\nLog saved to {log_file_path}')
+        print(f'Config saved to {os.path.join(log_dir, "config.json")}')
+    except:
+        pass
+
 
 #============================================================================
 if __name__ == '__main__':

@@ -402,8 +402,86 @@ def batch_SA(smiles):
     return vals
 
 def batch_all_with_weight(smiles, weight=[1/3, 1/3, 1/3]):
-    val_d = batch_druglikeness(smiles)
-    val_sol = batch_solubility(smiles)
-    val_SA = batch_SA(smiles)
-    vals = [weight[0] * val_d[i] + weight[1] * val_sol[i] + weight[2] * val_SA[i] for i in range(len(smiles))]
+    """
+    最適化版: Mol生成を一度だけ実行し、3つのプロパティを同時に計算
+    これにより、Chem.MolFromSmiles()の呼び出しが3回→1回に削減される
+    """
+    vals = []
+    for sm in smiles:
+        mol = Chem.MolFromSmiles(sm)
+
+        # Invalid SMILES
+        if mol is None or sm == '':
+            vals.append(0.0)
+            continue
+
+        # 1. Druglikeness (QED)
+        try:
+            val_d = qed(mol)
+        except:
+            val_d = 0.0
+
+        # 2. Solubility (LogP)
+        low_logp = -2.12178879609
+        high_logp = 6.0429063424
+        logp = Crippen.MolLogP(mol)
+        val_sol = (logp - low_logp) / (high_logp - low_logp)
+        val_sol = np.clip(val_sol, 0.1, 1.0)
+
+        # 3. Synthesizability (SA Score)
+        if mol.GetNumAtoms() > 1:
+            try:
+                # fragment score
+                fp = Chem.AllChem.GetMorganFingerprint(mol, 2)
+                fps = fp.GetNonzeroElements()
+                score1 = 0.
+                nf = 0
+                for bitId, v in fps.items():
+                    nf += v
+                    sfp = bitId
+                    score1 += SA_model.get(sfp, -4) * v
+                score1 /= nf
+                # features score
+                nAtoms = mol.GetNumAtoms()
+                nChiralCenters = len(Chem.FindMolChiralCenters(mol, includeUnassigned=True))
+                ri = mol.GetRingInfo()
+                nSpiro = Chem.AllChem.CalcNumSpiroAtoms(mol)
+                nBridgeheads = Chem.AllChem.CalcNumBridgeheadAtoms(mol)
+                nMacrocycles = 0
+                for x in ri.AtomRings():
+                    if len(x) > 8:
+                        nMacrocycles += 1
+                sizePenalty = nAtoms**1.005 - nAtoms
+                stereoPenalty = math.log10(nChiralCenters + 1)
+                spiroPenalty = math.log10(nSpiro + 1)
+                bridgePenalty = math.log10(nBridgeheads + 1)
+                macrocyclePenalty = 0.
+                if nMacrocycles > 0:
+                    macrocyclePenalty = math.log10(2)
+                score2 = 0. - sizePenalty - stereoPenalty - spiroPenalty - bridgePenalty - macrocyclePenalty
+                score3 = 0.
+                if nAtoms > len(fps):
+                    score3 = math.log(float(nAtoms) / len(fps)) * .5
+                sascore = score1 + score2 + score3
+                min_sa = -4.0
+                max_sa = 2.5
+                sascore = 11. - (sascore - min_sa + 1) / (max_sa - min_sa) * 9.
+                # smooth the 10-end
+                if sascore > 8.:
+                    sascore = 8. + math.log(sascore + 1. - 9.)
+                if sascore > 10.:
+                    sascore = 10.0
+                elif sascore < 1.:
+                    sascore = 1.0
+                val_SA = (sascore - 5) / (1.5 - 5)
+                val_SA = np.clip(val_SA, 0.1, 1.0)
+            except:
+                val_SA = 0.0
+        else:
+            val_SA = 0.0
+
+        # Weighted sum
+        val = weight[0] * val_d + weight[1] * val_sol + weight[2] * val_SA
+        vals.append(val)
+
     return vals

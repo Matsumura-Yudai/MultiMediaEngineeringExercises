@@ -179,12 +179,18 @@ class DiscriminatorModel(LightningModule):
         acc = pred.eq(labels.data).cpu().sum() / len(labels)
         return loss, acc
     
+    def on_train_epoch_start(self):
+        print('[DEBUG] Discriminator training epoch {} started'.format(self.current_epoch + 1))
+
     def training_step(self, batch, batch_idx):
         self.train()
         loss, acc = self.step(batch)
         self.log('train_loss', loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log('train_acc', acc, on_step=False, on_epoch=True, prog_bar=True)
         return loss
+
+    def on_train_epoch_end(self):
+        print('[DEBUG] Discriminator training epoch {} ended'.format(self.current_epoch + 1))
     
     def validation_step(self, batch, batch_idx):
         self.eval()

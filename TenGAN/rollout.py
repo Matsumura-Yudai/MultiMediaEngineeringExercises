@@ -101,7 +101,8 @@ class Rollout(object):
                     # If there are still seqs, calculate rewards
                     if len(generated_smiles): # batch_size
                         pct_unique = len(list(set(generated_smiles))) / float(len(generated_smiles))
-                        weights = np.array([pct_unique / float(generated_smiles.count(sm)) for sm in generated_smiles])
+                        # Mitigate excessive uniqueness penalty by using sqrt instead of linear penalty
+                        weights = np.array([pct_unique / np.sqrt(float(generated_smiles.count(sm))) for sm in generated_smiles])
                         vals = reward_fn(properties, generated_smiles, weight)
                         rew = vals * weights
                     # Add the just calculated rewards
@@ -125,7 +126,8 @@ class Rollout(object):
             if dis_lambda != 1.:
                 pred = dis_lambda * pred
                 pct_unique = len(list(set(samples))) / float(len(samples))
-                weights = np.array([pct_unique / float(samples.count(s)) for s in samples])                
+                # Mitigate excessive uniqueness penalty by using sqrt instead of linear penalty
+                weights = np.array([pct_unique / np.sqrt(float(samples.count(s))) for s in samples])
                 vals = reward_fn(properties, samples, weight)
                 rew = vals * weights
                 pred += (1 - dis_lambda) * rew
@@ -134,7 +136,9 @@ class Rollout(object):
             else:
                 rewards[-1] += pred
         rewards = np.transpose(np.array(rewards)) / (1.0 * rollout_num) # [batch_size, seq_len]
-        rewards = rewards - np.mean(rewards)
+        # Whitening: normalize rewards by subtracting mean and dividing by std
+        # This improves gradient signal stability and prevents mode collapse
+        rewards = (rewards - np.mean(rewards)) / (np.std(rewards) + 1e-8)
         # Activate the dropout layer
         dis.train()
         return rewards

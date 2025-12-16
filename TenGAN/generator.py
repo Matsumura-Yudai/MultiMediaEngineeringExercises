@@ -134,9 +134,12 @@ class GenSampler():
     # Sampling a batch of samples by the trained generator
     def sample(self, data=None):
         self.model.eval()
-        finished = [False] * self.batch_size # Judge whether each sequence in a batch is finished according to the tokenizer.end
+        # GPU vectorization: Use tensor instead of list for finished status
+        finished = torch.zeros(self.batch_size, dtype=torch.bool).to(self.model.device)
         sample_tensor = torch.zeros((self.max_len, self.batch_size), dtype=torch.long).to(self.model.device)
         sample_tensor[0] = self.tokenizer.char_to_int[self.tokenizer.start] # The first token is the start char
+        end_token = self.tokenizer.char_to_int[self.tokenizer.end]
+
         with torch.no_grad():
             if data is None: # Generate SMILES according to the pre-trained Generator
                 init = 1
@@ -148,16 +151,18 @@ class GenSampler():
                 tensor = sample_tensor[:i] # Assign the initial sub-SMILES to tensor
                 logits = self.model.forward(tensor)[-1] # The final token as the result
                 probabilities = torch.nn.functional.softmax(logits, dim=1).squeeze()
-                sampled_char = torch.multinomial(probabilities, 1) # [batch_size, 1]   
+                sampled_char = torch.multinomial(probabilities, 1) # [batch_size, 1]
 
-                for idx in range(self.batch_size):
-                    if finished[idx]:
-                        sampled_char[idx, 0] = self.tokenizer.char_to_int[self.tokenizer.end]
-                    if sampled_char[idx, 0] == self.tokenizer.char_to_int[self.tokenizer.end]:
-                        finished[idx] = True
+                # GPU vectorization: Replace CPU for-loop with tensor operations
+                sampled_char = torch.where(
+                    finished.unsqueeze(1),
+                    torch.full_like(sampled_char, end_token),
+                    sampled_char
+                )
+                finished = finished | (sampled_char.squeeze() == end_token)
 
                 sample_tensor[i] = sampled_char.squeeze()
-                if all(finished):
+                if finished.all():
                     break
 
         smiles = ["".join(self.tokenizer.decode(sample_tensor[:, i].squeeze().detach().cpu().numpy())).strip("^$ ") for i in range(self.batch_size)]

@@ -1,0 +1,27 @@
+<situation>
+マルチメディア工学演習という授業で、TenGANという新しい化学物質の生成を行うことのできるAIの機能拡張を行っている。
+</situation>
+<goal>
+単一目的最適化しか行うことのできなかった既存モデルを改良して、多目的同時最適化を行うことのできるようにする。
+具体的には、最適化に対する指標として用意されていた3つの項目「druglikeness」「solubility」「synthesizability」を同時に最適化するようにする。
+</goal>
+<files>
+・「./original/」に編集前のプログラム、入力データなどが置かれている。
+・「./TenGAN/」に現在編集中のプログラム、入力データなどが置かれている。
+・「./TenGAN_paper.pdf」が元のTenGANモデルの論文である。
+・「./Gemini_research.pdf」は強化学習における多目的最適化手法に関して、Google Geminiに調査させた結果である。
+</files>
+<PCspec>
+Processor: Intel(R) Core(TM) i7-14700F (2.10 GHz)
+RAM: 32.0GB
+Storage: 1TB
+GPU: NVIDIA GeForce RTX 4070 Ti SUPER
+</PCspec>
+<query>
+situationに現在の状況、goalに目標、filesに主要なファイルの説明、PCspecに使用しているPCのスペックを書きました。
+以下の手順で、プログラムを改良してください。
+1. 編集前のプログラム、元論文をよく読んで、モデルの基本構造を理解する。
+2. 「./TenGAN/」にある編集中のプログラムをよく読んで、現在までの進捗を理解する。
+3. 「./Gemini_research.pdf」やその他のWebの情報なども駆使して、最適だと思われる手法を提案する。
+    ※できるだけこれまで編集してきたプログラムをそのまま利用する。
+</query>

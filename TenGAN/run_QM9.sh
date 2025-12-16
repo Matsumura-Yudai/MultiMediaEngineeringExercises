@@ -11,7 +11,7 @@ set -u  # 未定義の変数を参照しようとした際にシェルスクリ�
 GEN_FLAG=$1
 DIS_FLAG=$2
 ADV_FLAG=$3
-LOG_FLAG=$4
+# LOG_FLAG=$4
 
 # ===========================
 # Log Files
@@ -24,7 +24,7 @@ LOG_ERR="$HOME/workspace/MultiMediaEngineeringExercises/TenGAN/log_files/stderr.
 # ===========================   # default
 DATASET_NAME="QM9"              # "ZINC"
 MAX_LEN=60                      # 60
-BATCH_SIZE=64                   # 64
+BATCH_SIZE=64                    # 64
 
 # ===========================
 # Generator Parameters
@@ -32,38 +32,40 @@ BATCH_SIZE=64                   # 64
 GENERATED_NUM=5000              # 5000
 GEN_TRAIN_SIZE=4800             # 4800
 GEN_NUM_ENCODER_LAYERS=4        # 4
-GEN_D_MODEL=128                  # 128
-GEN_DIM_FEEDFORWARD=1024        # 1024
+GEN_D_MODEL=256                  # 128
+GEN_DIM_FEEDFORWARD=2048        # 1024
 GEN_NUM_HEADS=4                 # 4
-GEN_MAX_LR=8e-4                 # 8e-4
+GEN_MAX_LR=2e-5                 # 8e-4
 GEN_DROPOUT=0.1                 # 0.1
+GEN_GRAD_CLIP=3                 # 5
 GEN_EPOCHS=100                  # 100
 
 # ===========================
 # Discriminator Parameters
 # ===========================
 DIS_NUM_ENCODER_LAYERS=4        # 4
-DIS_D_MODEL=128                  # 128
+DIS_D_MODEL=256                  # 128
 DIS_NUM_HEADS=4                 # 4
-DIS_EPOCHS=10                   # 10
-DIS_FEED_FORWARD=200            # 200
+DIS_EPOCHS=20                   # 10
+DIS_FEED_FORWARD=400            # 200
+DIS_GRAD_CLIP=1.0               # 1.0
 DIS_DROPOUT=0.25                # 0.25
 
 # ===========================
 # Adversarial Training Parameters
 # ===========================
 UPDATE_RATE=0.8                 # 0.8
-PROPERTIES="all"       # "druglikeness"
+PROPERTIES="all"                # "druglikeness"
 DIS_LAMBDA=0.5                  # 0.5
-ADV_LR=8e-6                     # 8e-5
-SAVE_NAME=20250610                  # 66
+ADV_LR=2e-6                     # 8e-5
+SAVE_NAME=20251215              # 66
 ROLL_NUM=16                     # 16
 ADV_EPOCHS=100                  # 100
 
 # ===========================
 # Reinforcement Learning
 # ===========================
-WEIGHTS=(2/3 1/6 1/6)
+WEIGHTS=(0.5 0.25 0.25)         # druglikeness重視 (提案C)
 
 # ===========================
 # Usage
@@ -76,7 +78,17 @@ fi
 # ===========================
 # Execute
 # ===========================
-# conda activate tengan_env
+# Condaの初期化（bashシェルスクリプト内で実行）
+eval "$(conda shell.bash hook)"
+
+# 仮想環境のアクティベート
+echo "Activating tengan_env..."
+conda activate tengan_env
+
+# Python環境の確認
+echo "Python version: $(python --version)"
+echo "Python path: $(which python)"
+echo ""
 
 python3 $HOME/workspace/MultiMediaEngineeringExercises/TenGAN/main.py \
 --dataset_name $DATASET_NAME \
@@ -92,6 +104,7 @@ $([[ "$GEN_FLAG" = "y" ]] && echo "--gen_pretrain") \
 --gen_num_heads $GEN_NUM_HEADS \
 --gen_max_lr $GEN_MAX_LR \
 --gen_dropout $GEN_DROPOUT \
+--gen_grad_clip $GEN_GRAD_CLIP \
 --gen_epochs $GEN_EPOCHS \
 \
 $([[ "$DIS_FLAG" = "y" ]] && echo "--dis_pretrain") \
@@ -103,6 +116,7 @@ $([[ "$DIS_FLAG" = "y" ]] && echo "--dis_pretrain") \
 --dis_epochs $DIS_EPOCHS \
 --dis_feed_forward $DIS_FEED_FORWARD \
 --dis_dropout $DIS_DROPOUT \
+--dis_grad_clip $DIS_GRAD_CLIP \
 \
 $([[ "$ADV_FLAG" = "y" ]] && echo "--adversarial_train") \
 --update_rate $UPDATE_RATE \
@@ -113,5 +127,5 @@ $([[ "$ADV_FLAG" = "y" ]] && echo "--adversarial_train") \
 --roll_num $ROLL_NUM \
 --adv_epochs $ADV_EPOCHS \
 \
---weights "${WEIGHTS[@]}" \
+--weights "${WEIGHTS[@]}" # \
 # > "$LOG_STD" 2> "$LOG_ERR"

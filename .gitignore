@@ -1,0 +1,9 @@
+
+.crossnote/
+original/
+
+TenGAN/__pycache/
+TenGAN/dataset/
+TenGAN/lightning_logs/
+TenGAN/res/
+TenGAN/log_files/

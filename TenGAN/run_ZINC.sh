@@ -66,7 +66,17 @@ fi
 # ===========================
 # Execute
 # ===========================
-# conda activate tengan_env
+# Condaの初期化（bashシェルスクリプト内で実行）
+eval "$(conda shell.bash hook)"
+
+# 仮想環境のアクティベート
+echo "Activating tengan_env..."
+conda activate tengan_env
+
+# Python環境の確認
+echo "Python version: $(python --version)"
+echo "Python path: $(which python)"
+echo ""
 
 python3 $HOME/workspace/MultiMediaEngineeringExercises/TenGAN/main.py \
 --dataset_name $DATASET_NAME \

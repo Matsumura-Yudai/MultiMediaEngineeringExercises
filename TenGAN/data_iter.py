@@ -1,13 +1,27 @@
 
 import torch
 import numpy as np
-import pandas as pd 
+import pandas as pd
 from rdkit import Chem
 from rdkit import rdBase
 from mol_metrics import Tokenizer
 from torch.utils.data import Dataset, DataLoader
 from pytorch_lightning import LightningDataModule
+from multiprocessing import Pool
 rdBase.DisableLog('rdApp.error')
+
+
+# ============================================================================
+# Helper function for parallel SMILES normalization
+def normalize_smiles(smi):
+    """RDKitでSMILESを正規化（並列処理用）"""
+    try:
+        mol = Chem.MolFromSmiles(smi)
+        if mol is not None:
+            return Chem.MolToSmiles(mol)
+        return smi
+    except:
+        return smi
 
 
 # ============================================================================
@@ -73,11 +87,28 @@ class GenDataLoader(LightningDataModule):
     def train_dataloader(self):
         dataset = GenDataset(self.train_data, self.tokenizer)
         # pin_memory=True: speed the dataloading, num_workers: multithreading for dataloading
-        return DataLoader(dataset, batch_size=self.batch_size, pin_memory=True, collate_fn=self.custom_collate_and_pad, num_workers=40) 
-    
+        return DataLoader(
+            dataset,
+            batch_size=self.batch_size,
+            pin_memory=True,
+            collate_fn=self.custom_collate_and_pad,
+            num_workers=4,              # 40 → 4: Reduce CPU resource contention
+            persistent_workers=True,    # Keep workers alive between epochs
+            prefetch_factor=2           # Prefetch 2 batches per worker
+        )
+
     def val_dataloader(self):
         dataset = GenDataset(self.val_data, self.tokenizer)
-        return DataLoader(dataset, batch_size=self.batch_size, pin_memory=True, collate_fn=self.custom_collate_and_pad, shuffle=False, num_workers=40)
+        return DataLoader(
+            dataset,
+            batch_size=self.batch_size,
+            pin_memory=True,
+            collate_fn=self.custom_collate_and_pad,
+            shuffle=False,
+            num_workers=4,              # 40 → 4: Reduce CPU resource contention
+            persistent_workers=True,    # Keep workers alive between epochs
+            prefetch_factor=2           # Prefetch 2 batches per worker
+        )
 
 
 # ============================================================================
@@ -109,6 +140,7 @@ class DisDataLoader(LightningDataModule):
         self.batch_size = batch_size
         self.positive_file = positive_file
         self.negative_file = negative_file
+        self._normalize_pool = None  # Pool reuse for performance optimization
     
     def custom_collate_and_pad(self, batch):
         # Zip a batch of data
@@ -120,18 +152,44 @@ class DisDataLoader(LightningDataModule):
         labels = torch.LongTensor(labels)
         return tensors, labels
     
-    def setup(self):
-        # Load data
-        self.positive_data = pd.read_csv(self.positive_file, names = ['smiles'])
+    def setup(self, force_reload=False, use_parallel=True):
+        # キャッシュの初期化または強制リロード
+        if not hasattr(self, '_positive_cached') or force_reload:
+            # Positive dataは変わらないので一度だけ読み込み
+            self.positive_data = pd.read_csv(self.positive_file, names = ['smiles'])
+            self._positive_cached = True
+
+        # Negative data (生成データ) のみ毎回更新
         self.negative_data = pd.read_csv(self.negative_file, names = ['smiles'])
-        # Keep the unqiue order for the NEGATIVE dataset
-        self.negative_data = pd.DataFrame([Chem.MolToSmiles(Chem.MolFromSmiles(s)) if Chem.MolFromSmiles(s) is not None else s for s in self.negative_data['smiles']], columns = ['smiles'])
+
+        # Keep the unique order for the NEGATIVE dataset
+        # 最適化: 並列処理でSMILES正規化
+        if use_parallel and len(self.negative_data) > 100:
+            # Pool再利用による高速化（D_STEP回のsetup呼び出しでプロセス起動オーバーヘッド削減）
+            if self._normalize_pool is None:
+                self._normalize_pool = Pool()
+            valid_smiles = self._normalize_pool.map(normalize_smiles, self.negative_data['smiles'])
+            self.negative_data = pd.DataFrame(valid_smiles, columns=['smiles'])
+        else:
+            # シーケンシャル処理（小データまたは並列無効時）
+            valid_smiles = []
+            for s in self.negative_data['smiles']:
+                mol = Chem.MolFromSmiles(s)
+                if mol is not None:
+                    valid_smiles.append(Chem.MolToSmiles(mol))
+                else:
+                    valid_smiles.append(s)
+            self.negative_data = pd.DataFrame(valid_smiles, columns=['smiles'])
 
         self.data = pd.concat([self.positive_data['smiles'], self.negative_data['smiles']])
         self.labels = pd.DataFrame([1 for _ in range(len(self.positive_data))] + [0 for _ in range(len(self.negative_data))], columns=['labels'])
         self.pairs = list(zip(self.data, self.labels['labels']))
-        # Initialize Tokenizer
-        self.tokenizer.build_vocab()
+
+        # Initialize Tokenizer (一度だけ)
+        if not hasattr(self, '_tokenizer_built'):
+            self.tokenizer.build_vocab()
+            self._tokenizer_built = True
+
         # Create splits for train/val
         np.random.shuffle(self.pairs)
         self.pairs = pd.DataFrame(self.pairs, columns=['smiles', 'labels'])
@@ -142,11 +200,34 @@ class DisDataLoader(LightningDataModule):
         
     def train_dataloader(self):
         dataset = DisDataset(self.train_data, self.tokenizer)
-        return DataLoader(dataset, batch_size=self.batch_size, shuffle=True, pin_memory=True, collate_fn=self.custom_collate_and_pad, num_workers=0) 
+        return DataLoader(
+            dataset,
+            batch_size=self.batch_size,
+            shuffle=True,
+            pin_memory=True,
+            collate_fn=self.custom_collate_and_pad,
+            num_workers=4,              # 0 → 4: Enable parallel data loading
+            persistent_workers=True,    # Keep workers alive between epochs
+            prefetch_factor=2           # Prefetch 2 batches per worker
+        )
 
     def val_dataloader(self):
         dataset = DisDataset(self.val_data, self.tokenizer)
-        return DataLoader(dataset, batch_size=self.batch_size, shuffle=True, pin_memory=True, collate_fn=self.custom_collate_and_pad, num_workers=0)
+        return DataLoader(
+            dataset,
+            batch_size=self.batch_size,
+            shuffle=True,
+            pin_memory=True,
+            collate_fn=self.custom_collate_and_pad,
+            num_workers=4,              # 0 → 4: Enable parallel data loading
+            persistent_workers=True,    # Keep workers alive between epochs
+            prefetch_factor=2           # Prefetch 2 batches per worker
+        )
 
+    def __del__(self):
+        """Cleanup Pool when object is destroyed"""
+        if self._normalize_pool is not None:
+            self._normalize_pool.close()
+            self._normalize_pool.join()
 
 
