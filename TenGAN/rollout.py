@@ -138,7 +138,7 @@ class Rollout(object):
         rewards = np.transpose(np.array(rewards)) / (1.0 * rollout_num) # [batch_size, seq_len]
         # Whitening: normalize rewards by subtracting mean and dividing by std
         # This improves gradient signal stability and prevents mode collapse
-        rewards = (rewards - np.mean(rewards)) / (np.std(rewards) + 1e-8)
+        # rewards = (rewards - np.mean(rewards)) / (np.std(rewards) + 1e-8)
         # Activate the dropout layer
         dis.train()
         return rewards

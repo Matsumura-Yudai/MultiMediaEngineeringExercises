@@ -1,0 +1,57 @@
+(tengan_env) you2002724@UD0724:~/workspace/MultiMediaEngineeringExercises/TenGAN$ python evaluate.py res/generated_smiles_QM9/20251220_200036.csv --output res/generated_smiles_QM9/20251220_200036_eval.csv
+
+================================================================================
+Reading input file: res/generated_smiles_QM9/20251220_200036.csv
+================================================================================
+
+Total molecules: 4992
+
+Loading training data: dataset/QM9.csv
+Training data size: 4989 unique molecules
+
+================================================================================
+Evaluating molecules...
+================================================================================
+
+Step 1/3: Checking validity...
+  Processed 1000/4992 molecules...
+  Processed 2000/4992 molecules...
+  Processed 3000/4992 molecules...
+  Processed 4000/4992 molecules...
+  Valid molecules: 4513/4992 (90.40%)
+
+Step 2/3: Checking uniqueness...
+  Unique molecules: 4387/4513 (97.21% of valid)
+
+Step 3/3: Checking novelty and calculating properties...
+  Processed 1000/4992 molecules...
+  Processed 2000/4992 molecules...
+  Processed 3000/4992 molecules...
+  Processed 4000/4992 molecules...
+  Novel molecules: 4136/4387 (94.28% of unique)
+
+================================================================================
+STATISTICS (Valid + Unique + Novel molecules only)
+================================================================================
+
+Total molecules satisfying all conditions: 4136/4992 (82.85%)
+
+Property        Mean         Std          Min          Max         
+---------------------------------------------------------------
+QED             0.476560     0.072006     0.152515     0.653861    
+SA              0.276507     0.192147     0.100000     0.983914    
+logP            0.505514     1.006579     -2.606000    3.612800    
+
+================================================================================
+
+Results saved to: res/generated_smiles_QM9/20251220_200036_eval.csv
+
+================================================================================
+SUMMARY
+================================================================================
+Total molecules:                 4992
+Valid molecules:                 4513 (90.40%)
+Unique molecules:                4387 (87.88%)
+Novel molecules:                 4136 (82.85%)
+Valid + Unique + Novel:          4136 (82.85%)
+================================================================================

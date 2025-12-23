@@ -109,7 +109,7 @@ args = parser.parse_known_args()[0]
 # ===========================
 # Other model paths
 POSITIVE_FILE = 'dataset/' + args.dataset_name + '.csv' # Save the real / original SMILES data
-NEGATIVE_FILE = 'res/generated_smiles_' + args.dataset_name + '.csv' # Save the generated SMILES data
+# NEGATIVE_FILE is now defined in main() with timestamp: res/generated_smiles_{dataset_name}/{timestamp}.csv
 
 if args.dis_lambda == 0:
     MODEL_NAME = 'Naive'
@@ -168,7 +168,7 @@ with open(PATHS+'/hyperparameters.csv', 'a+') as hp:
     print('\n\nParameter Information:')
     print('==================================================================')
     params['POSITIVE_FILE'] = POSITIVE_FILE
-    params['NEGATIVE_FILE'] = NEGATIVE_FILE
+    # NEGATIVE_FILE is now set dynamically in main() with timestamp
     params['G_PRETRAINED_MODEL'] = G_PRETRAINED_MODEL
     params['D_PRETRAINED_MODEL'] = D_PRETRAINED_MODEL
     params['PROPERTY_FILE'] = PROPERTY_FILE
@@ -330,7 +330,7 @@ class TeeLogger:
     def close(self):
         self.log.close()
 
-def save_config(log_dir, args):
+def save_config(log_dir, args, negative_file=None):
     """Save configuration to JSON file"""
     config = {
         'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -338,6 +338,9 @@ def save_config(log_dir, args):
             'name': args.dataset_name,
             'max_len': args.max_len,
             'batch_size': args.batch_size,
+        },
+        'output': {
+            'smiles_file': negative_file if negative_file else 'N/A',
         },
         'generator': {
             'pretrain': args.gen_pretrain,
@@ -387,15 +390,20 @@ def save_config(log_dir, args):
 
 def main():
     # ===========================
-    # Setup logging
+    # Setup logging and SMILES output directory
     # Create log directory with timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_base_dir = os.path.join(os.path.dirname(__file__), 'log_files')
     log_dir = os.path.join(log_base_dir, timestamp)
     os.makedirs(log_dir, exist_ok=True)
 
+    # Create SMILES output directory with timestamp
+    smiles_base_dir = os.path.join(os.path.dirname(__file__), 'res', 'generated_smiles_' + args.dataset_name)
+    os.makedirs(smiles_base_dir, exist_ok=True)
+    NEGATIVE_FILE = os.path.join(smiles_base_dir, timestamp + '.csv')
+
     # Save configuration
-    save_config(log_dir, args)
+    save_config(log_dir, args, NEGATIVE_FILE)
 
     # Redirect stdout to log file
     log_file_path = os.path.join(log_dir, 'log.txt')
@@ -406,7 +414,8 @@ def main():
     # For reproducing experiments
     start_time = time.time()
     print('\n\n\nStart time is {}\n\n\n'.format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
-    print(f'Log directory: {log_dir}\n')
+    print(f'Log directory: {log_dir}')
+    print(f'SMILES output file: {NEGATIVE_FILE}\n')
     # Apply the seed to reproduct the results
     np.random.seed(0)
     torch.manual_seed(0)
