@@ -1,4 +1,3 @@
-(tengan_env) you2002724@UD0724:~/workspace/MultiMediaEngineeringExercises/TenGAN$ python evaluate.py res/generated_smiles_QM9/20251220_200036.csv --output res/generated_smiles_QM9/20251220_200036_eval.csv
 
 ================================================================================
 Reading input file: res/generated_smiles_QM9/20251220_200036.csv
@@ -36,11 +35,11 @@ STATISTICS (Valid + Unique + Novel molecules only)
 
 Total molecules satisfying all conditions: 4136/4992 (82.85%)
 
-Property        Mean         Std          Min          Max         
+Property        Mean         Mean(top5)   Mean(top10)  Mean(top100) Mean(top1000) Std          Min          Max         
 ---------------------------------------------------------------
-QED             0.476560     0.072006     0.152515     0.653861    
-SA              0.276507     0.192147     0.100000     0.983914    
-logP            0.505514     1.006579     -2.606000    3.612800    
+QED             0.487255     0.658890      0.656847     0.629161     0.570531     0.071595     0.156300     0.661993    
+SA              0.276507     0.959119      0.944036     0.827537     0.560684     0.192147     0.100000     0.983914    
+logP            0.322812     0.670167      0.662376     0.612384     0.486392     0.121154     0.100000     0.702364    
 
 ================================================================================
 

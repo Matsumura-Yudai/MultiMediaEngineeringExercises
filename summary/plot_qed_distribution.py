@@ -13,35 +13,41 @@ import numpy as np
 from pathlib import Path
 import argparse
 import sys
-from scipy.stats import gaussian_kde
-from rdkit import Chem
-from rdkit.Chem import QED
-from rdkit.Chem.Crippen import MolLogP
-from rdkit.Chem import RDConfig
 import os
-sys.path.append(os.path.join(RDConfig.RDContribDir, 'SA_Score'))
-import sascorer
+from scipy.stats import gaussian_kde
+
+# TenGANの訓練プログラムで使用されている関数をインポート
+# mol_metrics.pyがSA_score.pkl.gzを読み込むため、TenGAN/ディレクトリに移動してからインポート
+original_dir = os.getcwd()
+sys.path.insert(0, os.path.join(original_dir, 'TenGAN'))
+os.chdir(os.path.join(original_dir, 'TenGAN'))
+from mol_metrics import batch_druglikeness, batch_solubility, batch_SA
+os.chdir(original_dir)
 
 
 def calculate_properties(smiles):
     """
     SMILESからQED, SA, logPを計算
+    TenGAN/mol_metrics.pyの関数を直接使用
 
     Returns:
         tuple: (valid, qed, sa, logp) valid=1なら有効な分子
     """
-    mol = Chem.MolFromSmiles(smiles)
-    if mol is None:
-        return (0, None, None, None)
-
     try:
-        qed = QED.qed(mol)
-        logp = MolLogP(mol)
-        sa = sascorer.calculateScore(mol)
-        # SAスコアを0-1に正規化 (元は1-10で、小さいほど合成しやすい)
-        # 論文のTable 1に合わせて: 1 → 0.0 (合成容易), 10 → 1.0 (合成困難)
-        sa_normalized = (sa - 1.0) / 9.0
-        return (1, qed, sa_normalized, logp)
+        # TenGAN/mol_metrics.pyの関数を使用
+        qed_list = batch_druglikeness([smiles])
+        logp_list = batch_solubility([smiles])
+        sa_list = batch_SA([smiles])
+
+        qed = qed_list[0]
+        logp = logp_list[0]
+        sa = sa_list[0]
+
+        # すべて0.0の場合は無効とみなす
+        # if qed == 0.0 and logp == 0.0 and sa == 0.0:
+        #     return (0, None, None, None)
+
+        return (1, qed, sa, logp)
     except:
         return (0, None, None, None)
 
@@ -49,12 +55,13 @@ def calculate_properties(smiles):
 def load_original_dataset(csv_path):
     """
     オリジナルデータセット (SMILESのみ) を読み込み、プロパティを計算
+    すべての分子を使用 (計算失敗した分子も0.0として含める)
 
     Returns:
         dict: {'QED': [...], 'SA': [...], 'logP': [...]}
     """
     data = {'QED': [], 'SA': [], 'logP': []}
-    unique_smiles = set()
+    total_count = 0
 
     print(f"オリジナルデータセットを読み込み中: {csv_path}")
 
@@ -64,21 +71,17 @@ def load_original_dataset(csv_path):
             if not row:
                 continue
             smiles = row[0].strip()
+            total_count += 1
 
-            # Uniquenessチェック
-            if smiles in unique_smiles:
-                continue
-
-            # プロパティ計算
+            # プロパティ計算 (すべての分子を使用)
             valid, qed, sa, logp = calculate_properties(smiles)
 
-            if valid:
-                unique_smiles.add(smiles)
-                data['QED'].append(qed)
-                data['SA'].append(sa)
-                data['logP'].append(logp)
+            # 計算失敗した場合も0.0として追加
+            data['QED'].append(qed if valid else 0.0)
+            data['SA'].append(sa if valid else 0.0)
+            data['logP'].append(logp if valid else 0.0)
 
-    print(f"  有効な分子数: {len(data['QED'])}")
+    print(f"  総分子数: {total_count}")
     return data
 
 
@@ -147,7 +150,7 @@ def plot_single_property(original_data, generated_data, property_name,
     # x軸の範囲を決定
     if x_range:
         x_min, x_max = x_range
-    elif property_name in ['QED', 'SA']:
+    elif property_name in ['QED', 'SA', 'logP']:
         x_min, x_max = 0.0, 1.0
     else:
         # logPなど
@@ -198,9 +201,9 @@ def plot_single_property(original_data, generated_data, property_name,
         print(f"  {model_name} - μ={mean_gen:.3f}, σ={std_gen:.3f}")
 
         # 統計情報テキスト (両方の情報を表示)
-        if original_data and len(original_data) > 0:
-            stats_text_lines.append(f'ORIGINAL: μ = {mean_orig:.2f}, σ = {std_orig:.2f}')
-        stats_text_lines.append(f'{model_name}: μ = {mean_gen:.2f}, σ = {std_gen:.2f}')
+        # if original_data and len(original_data) > 0:
+        #     stats_text_lines.append(f'ORIGINAL: μ = {mean_orig:.2f}, σ = {std_orig:.2f}')
+        # stats_text_lines.append(f'{model_name}: μ = {mean_gen:.2f}, σ = {std_gen:.2f}')
 
     # 統計情報をテキストで表示
     if stats_text_lines:
@@ -276,8 +279,8 @@ def main():
                        help='オリジナルデータセットのCSVファイル (デフォルト: TenGAN/dataset/QM9.csv)')
     parser.add_argument('--output', '-o', type=str, default=None,
                        help='出力先ディレクトリ (デフォルト: CSVと同じディレクトリ)')
-    parser.add_argument('--model-name', '-m', type=str, default='TenGAN',
-                       help='モデル名 (デフォルト: TenGAN)')
+    parser.add_argument('--model-name', '-m', type=str, default='ours',
+                       help='モデル名 (デフォルト: ours)')
 
     args = parser.parse_args()
 

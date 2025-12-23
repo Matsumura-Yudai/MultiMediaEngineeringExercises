@@ -27,8 +27,7 @@ import numpy as np
 import pandas as pd
 from rdkit import Chem
 from rdkit import rdBase
-from rdkit.Chem import Crippen, QED
-from mol_metrics import batch_SA
+from mol_metrics import batch_druglikeness, batch_solubility, batch_SA
 
 # RDKitのエラーメッセージを抑制
 rdBase.DisableLog('rdApp.error')
@@ -57,18 +56,20 @@ def validate_smiles(smiles):
         return False, None, None
 
 
-def calculate_qed(mol):
+def calculate_qed(smiles):
     """
     QED (Quantitative Estimate of Drug-likeness) を計算
+    mol_metrics.pyの実装を使用
 
     Args:
-        mol (Mol): RDKit分子オブジェクト
+        smiles (str): SMILES文字列
 
     Returns:
         float: QEDスコア (0-1)
     """
     try:
-        return QED.qed(mol)
+        qed_scores = batch_druglikeness([smiles])
+        return qed_scores[0] if len(qed_scores) > 0 else np.nan
     except:
         return np.nan
 
@@ -91,18 +92,20 @@ def calculate_sa(smiles):
         return np.nan
 
 
-def calculate_logp(mol):
+def calculate_logp(smiles):
     """
-    logP (Lipophilicity) を計算
+    logP (Solubility) を計算
+    mol_metrics.pyの実装を使用（正規化済み）
 
     Args:
-        mol (Mol): RDKit分子オブジェクト
+        smiles (str): SMILES文字列
 
     Returns:
-        float: logP値
+        float: 正規化されたlogP値 (0-1)
     """
     try:
-        return Crippen.MolLogP(mol)
+        logp_scores = batch_solubility([smiles])
+        return logp_scores[0] if len(logp_scores) > 0 else np.nan
     except:
         return np.nan
 
@@ -214,10 +217,10 @@ def evaluate_smiles_file(input_csv, train_csv='dataset/QM9.csv', output_csv=None
             # 全条件を満たす場合のみスコアを計算
             if is_novel:
                 valid_unique_novel_count += 1
-                mol = Chem.MolFromSmiles(canonical_smiles)
-                qed_list.append(calculate_qed(mol))
+                # mol = Chem.MolFromSmiles(canonical_smiles)
+                qed_list.append(calculate_qed(canonical_smiles))
                 sa_list.append(calculate_sa(canonical_smiles))
-                logp_list.append(calculate_logp(mol))
+                logp_list.append(calculate_logp(canonical_smiles))
             else:
                 # Noveltyを満たさない場合はNaN
                 qed_list.append(np.nan)
@@ -249,13 +252,14 @@ def evaluate_smiles_file(input_csv, train_csv='dataset/QM9.csv', output_csv=None
     print(f'Total molecules satisfying all conditions: {len(valid_scores)}/{total_count} ({len(valid_scores)/total_count*100:.2f}%)\n')
 
     if len(valid_scores) > 0:
-        print(f'{"Property":<15} {"Mean":<12} {"Std":<12} {"Min":<12} {"Max":<12}')
-        print(f'{"-"*63}')
+        print(f'{"Property":<15} {"Mean":<12} {"Mean(top5)":<12} {"Mean(top10)":<12} {"Mean(top100)":<12} {"Mean(top1000)":<12} {"Std":<12} {"Min":<12} {"Max":<12}')
+        print(f'{"-"*111}')
 
         for prop in ['QED', 'SA', 'logP']:
             scores = valid_scores[prop].dropna()
+            tmp = sorted(scores.tolist(), reverse=True)
             if len(scores) > 0:
-                print(f'{prop:<15} {scores.mean():<12.6f} {scores.std():<12.6f} {scores.min():<12.6f} {scores.max():<12.6f}')
+                print(f'{prop:<15} {scores.mean():<12.6f} {sum(tmp[:5])/5.0:<12.6f}  {sum(tmp[:10])/10.0:<12.6f} {sum(tmp[:100])/100.0:<12.6f} {sum(tmp[:1000])/1000.0:<12.6f} {scores.std():<12.6f} {scores.min():<12.6f} {scores.max():<12.6f}')
             else:
                 print(f'{prop:<15} {"N/A":<12} {"N/A":<12} {"N/A":<12} {"N/A":<12}')
     else:
